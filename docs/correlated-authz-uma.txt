@@ -1,0 +1,23 @@
+participant "AuthZ Server – Requesting Party (AS-RqP)" as AS-RqP
+participant "Client" as Client
+participant "Resource Server (RS)" as RS
+participant "AuthZ Server – Resource Owner (AS-RO)" as AS-RO
+
+bottomparticipants
+
+note over AS-RqP:AS-RqP:\n• supports the token exchange extension of OAuth2\n• publishes its metadata on a URL /.well-known/oauth-authorization-server\n• acts as RqP's Identity Provider
+note over Client:Client:\n• is registered at AS-RqP as a public or confidential client\n• acts as a Relying Party in a RqP's Identity Provider to obtain an an access_token_with_user_claims\n• is registered at AS-RO as a public or confidential client
+note over RS:RO has set up RS and registers its 'RS API' resource at AS-RO
+RS<-Client:1. Request 'RS API' resource with no access token
+RS->Client:2. Return 401 with permission ticket\n    {ticket}
+Client->Client:3. Generate ticket hash\n    {ticket_hash = Base64URL-Encode(SHA256(ticket))}
+AS-RqP<-Client:4. Request a claims token (token exchange request)\n    {grant_type = token-exchange,\n     resource = "RS API",\n     scope = ticket_hash,\n     subject_token = access_token_with_user_claims,\n     subject_token_type = urn:ietf:params:oauth:token-type:access_token,\n     requested_token_type = urn:ietf:params:oauth:token-type:jwt}
+Client<-AS-RqP:5. Return claims token (user claims and ticket hash)\n    {claims_token}
+
+Client->AS-RO:6. Request a Requesting Party Token (RPT)\n    {grant_type = uma-ticket,\n     ticket = ticket,\n     pushed_claims = claims_token}
+group Authorization assessment
+note over AS-RO:1. verify ticket\n2. extract user_claims from claims_token\n3. select email_address claim\n4. bootstrap discovery of AS-RqP config url from email address via WebFinger;\n    if this doesn't work, build well-known url using domain part of email_address\n5. verify claims_token signature\n6. evaluate resource = "RS API"\n7. extract ticket_hash scope from claims_token\n8. compare ticket_hash vs. Base64URL-Encode(SHA256(ticket))\n9. evaluate user_claims
+end
+Client<-AS-RO:7. Return (RPT)\n    {RPT}
+RS<-Client:8. Get data from 'RS API' resource\n    {RPT}
+RS->Client:9. Return protected resource
