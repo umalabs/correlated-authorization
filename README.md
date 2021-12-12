@@ -57,6 +57,30 @@ Steps:
 8. With the valid RPT the client tries to access the 'RS API'.
 9. The RS validates the RPT, it is valid, the RS allow access the protected 'RS API' resource.
 
+## Authority Boundaries, Interactions and Scenarios
+
+The UMA Correlated Authorization protocol allows us to indirectly (through the client) link identity providers with authorization services governed by different authorities that are not required to share information or collaborate.
+
+The following scenarios demonstrate a system of trust between two authorities that allows the conveyance of identity information from identity providers to authorization services across security domain boundaries.
+
+### Identity Federation Scenario
+
+This scenario allows to use multiple authoritative identity providers with a single authorization service. The client falls under the governance of the resource owner's respective authority.
+
+![Scenario-1](./images/authority-boundaries-scenario-1.png)
+
+### Federated Authorization Scenario
+
+The federated authorization scenario shows the use of a single authoritative identity provider with multiple authorization services. The client falls under the governance of the requesting party's respective authority.
+
+![Scenario-2](./images/authority-boundaries-scenario-2.png)
+
+### Combined Federation Scenario
+
+As the name suggests, this scenario allows to use multiple authoritative identity providers with multiple authorization services. The client falls under the governance of a third-party authority.
+
+![Scenario-3](./images/authority-boundaries-scenario-3.png)
+
 ## Use Cases
 
 Healthcare and enterprise cross-domain services e.g. email, file sharing, instant messaging, tele-conferencing. Also, Fintech and Telco services.
