@@ -57,8 +57,13 @@ Steps:
 8. With the valid RPT the client tries to access the 'RS API'.
 9. The RS validates the RPT, it is valid, the RS allow access the protected 'RS API' resource.
 
+## Acknowledgment
+
+Credits go to [WG - User-Managed Access][6].
+
 [1]: https://en.wikipedia.org/wiki/User-Managed_Access
 [2]: https://datatracker.ietf.org/doc/html/rfc6749
 [3]: https://www.rfc-editor.org/rfc/rfc8693.html
 [4]: https://docs.kantarainitiative.org/uma/wg/rec-oauth-uma-federated-authz-2.0.html
 [5]: https://kantarainitiative.org/confluence/display/uma/UMA+Roadmap+for+2016
+[6]: https://kantarainitiative.org/confluence/display/uma/Home
