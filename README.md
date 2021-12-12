@@ -57,6 +57,17 @@ Steps:
 8. With the valid RPT the client tries to access the 'RS API'.
 9. The RS validates the RPT, it is valid, the RS allow access the protected 'RS API' resource.
 
+## Use Cases
+
+Healthcare and enterprise cross-domain services e.g. email, file sharing, instant messaging, tele-conferencing. Also, Fintech and Telco services.
+
+## Future Work
+
+1. Consider a Correlated Authentication protocol, where RS/AS acts as an external authoritative attribute/claims provider.
+2. Employ the DPoP mechanism and create the permission ticket directly on the client to avoid the initial round trip to RS/AS.
+3. Describe how the resource owner can use the Correlated Authorization protocol.
+4. Consider using the Correlated Authorization mechanism to transfer digital/virtual assets in the form of transactions.
+
 ## Acknowledgment
 
 Credits go to [WG - User-Managed Access][6].
