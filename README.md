@@ -1,104 +1,193 @@
-# UMA Correlated Authorization
+<!-- @import "style.less" -->
 
-## Abstract
+# Correlated Authorization — Draft
 
-UMA Correlated Authorization is a dual-authority authorization protocol built on top of [User-Managed Access (UMA)][1] and [OAuth2][2] protocols that allows users (resource owners) to delegate access to other users (requesting parties) across security domain boundaries. The requesting party is responsible for creating the request, while the resource owner approves this request either when it is online or by creating a policy. The resource owner and the requesting party belong to different security domains administered by the respective authorities. This concept uses a permission ticket issued by the resource owner's authorization server as a correlation handle that binds the requesting party's claims to the authorization process. An email address is used as the unique requesting party identifier for cross-domain access control. The intrinsic challenge-response authentication protocol elevates trust between the resource owner's authorization server and requesting party's identity provider.
+<p class="author">
+    Igor Zboran<br>
+    izboran@gmail.com
+</p>
+<br>
+<p class="abstract">
+&emsp;<strong><em>Abstract</em></strong>—<em>Correlated&nbsp;authorization</em> is a dual-authority authorization protocol built on top of User-Managed Access (UMA) [1, 2] and OAuth 2.0 Token Exchange [3] protocols that allows users (resource owners) to delegate access to other users (requesting parties) across security domain boundaries. The requesting party is responsible for creating the request, while the resource owner approves this request either when it is online or by creating a relationship-oriented policy. The resource owner and the requesting party may belong to different security domains administered by the respective authorities. This concept uses a permission ticket issued by the resource owner's authorization server as a correlation handle that binds the requesting party's claims to the authorization process. An email address is used as the unique requesting party identifier for cross-domain access control. The intrinsic challenge-response authentication protocol elevates trust between the resource owner's authorization server and the requesting party's authorization server, which also acts as the identity provider.
+</p>
 
-## Introduction
+## I. Introduction
 
-With the growing popularity of protocols based on the OAuth2 specification, there is a need for an interoperable standard that specifies how to convey information about the user from an identity provider to an authorization server, especially across security domain boundaries. The problem is that such a system is difficult to design because OAuth2, OIDC and UMA are single-authority protocols. This draft profiles and combines the OAuth2 and UMA protocols into a dual-authority protocol, which not only meets the needs of interoperability, but also elevates trust between mutually unknown parties.
+&emsp;With the growing popularity of protocols based on the OAuth 2.0 [4] specification, there is a need for an interoperable standard that specifies how to convey information about the user from an identity provider to an authorization server, especially across security domain boundaries. The problem is that such a system is difficult to design because OAuth2 [4], OIDC [5] and UMA are single-authority protocols. This draft profiles and combines the OAuth2 and UMA protocols into a dual-authority protocol, which not only meets the needs of interoperability, but also elevates trust between mutually unknown parties.
 
-## Motivation
+## II. Motivation
 
-UMA Correlated Authorization is an attempt to revive UMA WG's original idea – [UMA wide ecosystem][5], when the resource owner and requesting party might "know each other" in the real world, but the resource owner's authorization server has no pre-established trust with the requesting party or any of their identity/claims providers – in other words, when the resource owner's authorization server and requesting party's identity provider don't know each other.
+&emsp;<em>Correlated&nbsp;authorization</em> is an attempt to revive UMA WG's original idea – UMA wide ecosystem [6], when the resource owner and requesting party might "know each other" in the real world, but the resource owner's authorization server has no pre-established trust with the requesting party or any of their identity/claims providers – in other words, when the resource owner's authorization server and requesting party's identity provider don't know each other.
 
-## UMA Wide Ecosystem Concept
+## III. UMA Wide Ecosystem Concept
 
-This high-level view gives you an idea of relationships between UMA wide ecosystem entities. The authority Foo and Bar may or may not be the same authority.
+&emsp;This high-level view illustrated in Figure&nbsp;1 gives you an idea of relationships between UMA wide ecosystem entities.
+
+UMA uses a special jargon. For the sake of brevity of this paper, the following list of acronyms will be used:
+
+* IdP - Identity Provider
+* AS - Authorization Server
+* RS - Resource Server
+* RO - Resource Owner
+* RqP - Requesting Party
+* RPT - Requesting Party Token
 
 ![UMA Wide Ecosystem](./images/uma-wide-ecosystem.png)
 
-## Challenge-Response Authentication Concept
+<p class="figure">
+Fig.&nbsp;1.&emsp;Relationships between UMA wide ecosystem entities
+</p>
 
-This unilateral entity authentication protocol elevates trust between the resource owner's authorization server and requesting party's identity provider. The authority Foo and Bar may or may not be the same authority.
+The UMA wide ecosystem concept uses relationship-oriented policies to drive automated dual-authority authorization assessment and token issuance. The relationship-oriented policies incorporate user-to-user (U2U) relationships and user-to-resource (U2R) relationships.
+
+## IV. Challenge-Response Authentication Concept
+
+&emsp;The unilateral entity authentication protocol [7] illustrated in Figure&nbsp;2 elevates trust between the resource owner's authoritative domain and requesting party's authoritative domain.
 
 ![Challenge-Response Authentication](./images/challenge-response-authentication.png)
 
-The ticket represents a random challenge and the signed ticket hash represents the response. The hash of the ticket has to be there in order not to reveal the UMA permission ticket to the authenticator.
+<p class="figure">
+Fig.&nbsp;2.&emsp;Unilateral entity authentication protocol
+</p>
 
-## Sequence Diagrams
+&emsp;The ticket represents a random challenge and the signed ticket hash represents the response. The hash of the ticket has to be there in order not to reveal the ticket to the authenticator.
 
-The following sequence diagrams describe the mechanism of the UMA Correlated Authorization protocol, which relies on the token exchange extension of OAuth2, where an access token is used to obtain a claims token from the Security Token Service (STS) endpoint.
+## V. Sequence Diagrams
 
-### UMA Profile
+&emsp;The following sequence diagrams describe the mechanism of the <em>correlated&nbsp;authorization</em> protocol, which relies on the token exchange extension of OAuth2, where an access token is used to obtain a claims token from the Security Token Service (STS) endpoint.
 
-This diagram represents a profile of the UMA protocol and is in full compliance with the UMA 2.0 specification.
+#### *UMA Profile*
 
-![Sequence Diagram – UMA](./images/correlated-authz-uma.png)
+&emsp;The sequence diagram illustrated in Figure&nbsp;3 represents a profile of the UMA protocol and is in full compliance with the UMA 2.0 specification.<sup>1</sup>
+
+![Sequence Diagram – UMA](./images/correlated-authorization.png)
+
+<p class="figure">
+Fig.&nbsp;3.&emsp;<em>Correlated&nbsp;authorization</em> sequence diagram
+</p>
+   
+---
+<p class="note">
+<sup>1</sup>Unlike the UMA specification, the <em>correlated&nbsp;authorization</em> protocol allows the use of the UMA grant with or without client authentication or identification. Whether or not to allow unauthenticated or unidentified clients are policy decisions that are at the discretion of the authorization server.
+<p/>
 
 Prerequisites:
 
-* The AS-RqP supports the [OAuth 2.0 Token Exchange][3] extension of OAuth2.
-* The AS-RqP also acts as RqP's Identity Provider.
+* The AS-RqP supports the OAuth 2.0 Token Exchange [3] extension of OAuth2.
 * The AS-RqP publishes its metadata on a URL /.well-known/oauth-authorization-server (alternatively on /.well-known/openid-configuration).
-* The client is registered at the AS-RqP as a public or confidential client and acts as a Relying Party in a RqP's Identity Provider to obtain an access token with user claims.
-* The client is registered at the AS-RO as a public or confidential client.
-* The RO has set up the RS and registers its 'RS API' resource at the AS-RO according to the [UMA Federated Authorization][4] specification.
+* The AS-RqP also acts as RqP's Identity Provider.
+* The client is registered at the AS-RqP as a public or confidential client and acts as a Relying Party in a RqP's Identity Provider in order to obtain an access token with user claims.
+* The client should be registered at the AS-RO as a public or confidential client; in case of immediate access, the client does not have to be registered at the AS-RO.
+* The RO has set up the RS and registers its 'RS API' resource at the AS-RO according to the UMA Federated Authorization [2] specification.
 
 Steps:
 
 1. The RqP directs the client to access the 'RS API' resource with no access token.
-2. Without an access token, the RS will return HTTP code 401 (Unauthorized) with a permission ticket.
-3. The client generates a ticket hash derived from the permission ticket using the following transformation ticket_hash = Base64URL-Encode(SHA256(ticket)).
-4. At the AS-RqP the client requests a claims token by presenting the access token with user claims and the generated ticket hash.
-5. The AS-RqP returns the claims token.
-6. At the AS-RO the client requests an RPT by presenting the claims token and the permission ticket.
-7. After an authorization assessment, it is positive, the AS-RO returns RPT.
-8. With the valid RPT the client tries to access the 'RS API'.
-9. The RS validates the RPT, it is valid, the RS allow access the protected 'RS API' resource.
+2. The RS requests a permission ticket. <dl><dt></dt><dd>The AS generates a permission ticket itself and the bound permission token<sup>2</sup> (bound to the permission ticket via token hash), which contains these claims:&nbsp;{issuer,&nbsp;ts,&nbsp;ticket_hash,&nbsp;rs_uri} where  
+-&nbsp;ticket is a random NONCE  
+-&nbsp;issuer is the URI that identifies who issues the permission token  
+-&nbsp;ts is the timestamp of when the permission ticket was created  
+-&nbsp;ticket_hash</em>&nbsp;=&nbsp;Base64URL-Encode(SHA256(ticket))  
+-&nbsp;rs_uri is the URI that identifies the resource server</dd></dl>
+3. The AS returns the permission ticket.
+4. Without an access token, the RS will return HTTP code 401 (Unauthorized) with the permission ticket.
+5. The client requests a claims token by presenting the <em>access&nbsp;token&nbsp;with&nbsp;user&nbsp;claims</em> and permission token (token exchange request). <dl><dt></dt><dd>{grant_type&nbsp;=&nbsp;token-exchange,
+&nbsp;resource&nbsp;=&nbsp;"RS API",
+&nbsp;scope&nbsp;=&nbsp;permission_token,
+&nbsp;subject_token&nbsp;=&nbsp;access_token_with_user_claims,
+&nbsp;subject_token_type&nbsp;=&nbsp;urn:ietf:params:oauth:token-type:access_token,
+&nbsp;requested_token_type&nbsp;=&nbsp;urn:ietf:params:oauth:token-type:jwt}<br>
+The AS-RqP performs an authorization assessment
+-&nbsp;verify permission_token
+-&nbsp;evaluate issuer, ts and rs_uri<br>
+The AS-RqP generates a claim token, which contains these claims:&nbsp;{user_claims,&nbsp;ticket_hash} where
+-&nbsp;user_claims are extracted from access_token_with_user_claims
+-&nbsp;ticket_hash is extracted from permission_token</dd></dl>
+6. The AS-RqP returns the claims token.
+7. At the AS-RO the client requests an RPT by presenting the claims token and the permission ticket. <dl><dt></dt><dd>{grant_type = uma-ticket,
+&nbsp;pushed_claims = claims_token}<br>
+The AS-RO performs an authorization assessment
+&nbsp;1.&nbsp;verify ticket
+&nbsp;2.&nbsp;extract user_claims from claims_token
+&nbsp;3.&nbsp;select email_address claim
+&nbsp;4.&nbsp;bootstrap discovery of AS-RqP config url from email address via WebFinger;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if this doesn't work, build well-known url using domain part of email_address
+&nbsp;5.&nbsp;verify claims_token signature
+&nbsp;6.&nbsp;evaluate resource = "RS API"
+&nbsp;7.&nbsp;extract ticket_hash scope from claims_token
+&nbsp;8.&nbsp;compare ticket_hash vs. Base64URL-Encode(SHA256(ticket))
+&nbsp;9.&nbsp;evaluate user_claims</dd></dl>
+8. After an authorization assessment, it is positive, the AS-RO returns RPT.
+9. With the valid RPT the client tries to access the 'RS API'.
+10. The RS validates the RPT, it is valid, the RS allow access the protected 'RS API' resource.
 
-## Authority Boundaries, Interactions and Scenarios
+---
+<p class="note">
+<sup>2</sup>The permission token is not mentioned in the UMA specification. A detailed description of the permission token format is out of scope of this paper.
+</p>
 
-The UMA Correlated Authorization protocol allows us to indirectly (through the client) link identity providers with authorization services governed by different authorities that are not required to share information or collaborate.
+## VI. Authority Boundaries, Interactions and Scenarios
 
-The following scenarios demonstrate a system of trust between two authorities that allows the conveyance of identity information from identity providers to authorization services across security domain boundaries.
+&emsp;The <em>correlated&nbsp;authorization</em> protocol allows us to indirectly (through the client) link identity providers with authorization services governed by different authorities that are not required to share information or collaborate.
 
-### Identity Federation Scenario
+&emsp;The following scenarios demonstrate a system of trust between two authorities that allows the conveyance of identity information from identity providers to authorization services across security domain boundaries.
 
-This scenario allows to use multiple authoritative identity providers with a single authorization service. The client falls under the governance of the resource owner's respective authority.
+#### *A. Identity Federation Scenario*
+
+&emsp;The scenario illustrated in Figure&nbsp;4 allows access a single authorization service through multiple identity providers. The client falls under the governance of the resource owner's respective authority.
 
 ![Scenario-1](./images/authority-boundaries-scenario-1.png)
 
-### Federated Authorization Scenario
+<p class="figure">
+Fig.&nbsp;4.&emsp;Identity federation scenario
+</p>
 
-The federated authorization scenario shows the use of a single authoritative identity provider with multiple authorization services. The client falls under the governance of the requesting party's respective authority.
+#### *B. Federated Authorization Scenario*
+
+&emsp;The federated authorization scenario illustrated in Figure&nbsp;5 shows the use of a single identity provider with multiple authorization services. The client falls under the governance of the requesting party's respective authority.
 
 ![Scenario-2](./images/authority-boundaries-scenario-2.png)
 
-### Combined Federation Scenario
+<p class="figure">
+Fig.&nbsp;5.&emsp;Federated authorization scenario
+</p>
 
-As the name suggests, this scenario allows to use multiple authoritative identity providers with multiple authorization services. The client falls under the governance of a third-party authority.
+#### *C. Combined Federation Scenario*
+
+&emsp;As the name suggests, the scenario illustrated in Figure&nbsp;6 allows access multiple authorization services through multiple identity providers. The client falls under the governance of a third-party authority.
 
 ![Scenario-3](./images/authority-boundaries-scenario-3.png)
 
-## Use Cases
+<p class="figure">
+Fig.&nbsp;6.&emsp;Combined federation scenario
+</p>
 
-Healthcare and enterprise cross-domain services e.g. email, file sharing, instant messaging, tele-conferencing. Also, Fintech and Telco services.
+## VII. Use Cases
 
-## Future Work
+&emsp;Healthcare and enterprise cross-domain services e.g. email, file sharing, instant messaging, tele-conferencing. Also, Fintech and Telco services.
 
-1. Consider a Correlated Authentication protocol, where RS/AS acts as an external authoritative attribute/claims provider.
-2. Employ the DPoP mechanism and create the permission ticket directly on the client to avoid the initial round trip to RS/AS.
-3. Describe how the resource owner can use the Correlated Authorization protocol.
-4. Consider using the Correlated Authorization mechanism to transfer digital/virtual assets in the form of transactions.
+## VIII. Future Work
+
+1.&nbsp;Consider an authentication protocol, where RS/AS acts as an external authoritative attribute/claims provider.
+2.&nbsp;Employ the DPoP to bind RPT to the client.
+3.&nbsp;Describe how the resource owner can use the <em>correlated&nbsp;authorization</em> protocol.
+4.&nbsp;Consider using the <em>correlated&nbsp;authorization</em> mechanism to transfer digital/virtual assets in the form of transactions.
 
 ## Acknowledgment
 
-Credits go to [WG - User-Managed Access][6].
+&emsp;This work has benefited from the valuable discussions with Eve Maler, founder of WG-UMA [8]; and Alec Laws, chair of WG-UMA [8]. Both gave feedback that improved this paper’s content. Last but not least, the UMA Work Group archives [9, 10] serve as a source of comprehensive information on authorization-related topics — many thanks to all involved.
 
-[1]: https://en.wikipedia.org/wiki/User-Managed_Access
-[2]: https://datatracker.ietf.org/doc/html/rfc6749
-[3]: https://www.rfc-editor.org/rfc/rfc8693.html
-[4]: https://docs.kantarainitiative.org/uma/wg/rec-oauth-uma-federated-authz-2.0.html
-[5]: https://kantarainitiative.org/confluence/display/uma/UMA+Roadmap+for+2016
-[6]: https://kantarainitiative.org/confluence/display/uma/Home
+## References
+
+<p class="references">
+[1]&nbsp;E. Maler, M. Machulak, J. Richer, and T. Hardjono, “User-Managed Access (UMA) 2.0 Grant for OAuth 2.0 Authorization,” Internet Engineering Task Force (2019), https://datatracker.ietf.org/doc/draftmaler-oauth-umagrant-00.<br>
+[2]&nbsp;E. Maler, M. Machulak, J. Richer, and T. Hardjono, “Federated Authorization for User-Managed Access (UMA) 2.0,” Internet Engineering Task Force (2019), https://datatracker.ietf.org/doc/draftmaler-oauth-umagrant-00.<br>
+[3]&nbsp;M. Jones, A. Nadalin, B. Campbell, J. Bradley, C. Mortimore, “OAuth 2.0 Token Exchange,” RFC 8693 (2020), https://rfc-editor.org/rfc/rfc8693.txt.<br>
+[4]&nbsp;E. D. Hardt, “The OAuth 2.0 Authorization Framework,” IETF RFC 6749 (Informational), 2012, http://tools.ietf.org/html/rfc6749.<br>
+[5]&nbsp;OpenID specifications at “OpenID Foundation,” 2022, https://openid.net/developers/specs/.<br>
+[6]&nbsp;“UMA telecon 2016-03-31” https://kantarainitiative.org/confluence/display/uma/UMA+telecon+2016-03-31<br>
+[7]&nbsp;National Institute of Standards and Technology, “FIPS PUB 196: Entity Authentication Using Public Key Cryptography,” 1997. [Online]. Available: https://csrc.nist.gov/csrc/media/publications/fips/196/archive/1997-02-18/documents/fips196.pdf.<br>
+[8]&nbsp;“User-Managed Access” Work Group at “Kantara Initiative” https://kantarainitiative.org/confluence/display/uma/Home.<br>
+[9]&nbsp;“The WG-UMA Archives” https://kantarainitiative.org/pipermail/wg-uma/.<br>
+[10]&nbsp;“Kantara Initiative User Managed Access WG” https://groups.google.com/g/kantara-initiative-uma-wg.<br>
+</p>
