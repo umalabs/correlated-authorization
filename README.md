@@ -8,7 +8,7 @@
 </p>
 <br>
 <p class="abstract">
-&emsp;<strong><em>Abstract</em></strong>—<em>Correlated&nbsp;authorization</em> is a dual-authority authorization protocol built on top of User-Managed Access (UMA) [1, 2] and OAuth 2.0 Token Exchange [3] protocols that allows users (resource owners) to delegate access to other users (requesting parties) across security domain boundaries. The requesting party is responsible for creating the request, while the resource owner approves this request either when it is online or by creating a relationship-oriented policy. The resource owner and the requesting party may belong to different security domains administered by the respective authorities.</p>
+&emsp;<strong><em>Abstract</em></strong>—<em>Correlated&nbsp;authorization</em> is a dual-authority authorization protocol built on top of User-Managed Access (UMA) [1, 2] and OAuth 2.0 Token Exchange [3] protocols that allows users (resource owners) to delegate access to other users (requesting parties) across security domain boundaries. The requesting party is responsible for creating the request, while the resource owner approves this request either when it is online or by creating a relationship-driven policy. The resource owner and the requesting party may belong to different security domains administered by the respective authorities.</p>
 <p class="abstract">
 &emsp;This concept uses a permission ticket issued by the resource owner's authorization server as a correlation handle that binds the requesting party's claims to the authorization process. An email address is used as the unique requesting party identifier for cross-domain access control. The intrinsic challenge-response authentication protocol elevates trust between the resource owner's authorization server and the requesting party's authorization server, which also acts as the identity provider.
 </p>
@@ -40,7 +40,7 @@ UMA uses a special jargon. For the sake of brevity of this paper, the following 
 Fig.&nbsp;1.&emsp;Relationships between UMA wide ecosystem entities
 </p>
 
-The UMA wide ecosystem concept uses relationship-oriented policies to drive automated dual-authority authorization assessment and token issuance. The relationship-oriented policies incorporate user-to-user (U2U) relationships and user-to-resource (U2R) relationships.
+The UMA wide ecosystem concept uses relationship-driven policies to drive automated dual-authority authorization assessment and token issuance. The relationship-driven policies incorporate user-to-user (U2U) relationships and user-to-resource (U2R) relationships.
 
 ## IV. Challenge-Response Authentication Concept
 
