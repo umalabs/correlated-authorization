@@ -1,6 +1,6 @@
 <!-- @import "style.less" -->
 
-# Correlated Authorization — Draft
+# Correlated Authorization—Draft
 
 <p class="author">
     Igor Zboran<br>
@@ -8,7 +8,9 @@
 </p>
 <br>
 <p class="abstract">
-&emsp;<strong><em>Abstract</em></strong>—<em>Correlated&nbsp;authorization</em> is a dual-authority authorization protocol built on top of User-Managed Access (UMA) [1, 2] and OAuth 2.0 Token Exchange [3] protocols that allows users (resource owners) to delegate access to other users (requesting parties) across security domain boundaries. The requesting party is responsible for creating the request, while the resource owner approves this request either when it is online or by creating a relationship-oriented policy. The resource owner and the requesting party may belong to different security domains administered by the respective authorities. This concept uses a permission ticket issued by the resource owner's authorization server as a correlation handle that binds the requesting party's claims to the authorization process. An email address is used as the unique requesting party identifier for cross-domain access control. The intrinsic challenge-response authentication protocol elevates trust between the resource owner's authorization server and the requesting party's authorization server, which also acts as the identity provider.
+&emsp;<strong><em>Abstract</em></strong>—<em>Correlated&nbsp;authorization</em> is a dual-authority authorization protocol built on top of User-Managed Access (UMA) [1, 2] and OAuth 2.0 Token Exchange [3] protocols that allows users (resource owners) to delegate access to other users (requesting parties) across security domain boundaries. The requesting party is responsible for creating the request, while the resource owner approves this request either when it is online or by creating a relationship-oriented policy. The resource owner and the requesting party may belong to different security domains administered by the respective authorities.</p>
+<p class="abstract">
+&emsp;This concept uses a permission ticket issued by the resource owner's authorization server as a correlation handle that binds the requesting party's claims to the authorization process. An email address is used as the unique requesting party identifier for cross-domain access control. The intrinsic challenge-response authentication protocol elevates trust between the resource owner's authorization server and the requesting party's authorization server, which also acts as the identity provider.
 </p>
 
 ## I. Introduction
@@ -17,7 +19,7 @@
 
 ## II. Motivation
 
-&emsp;<em>Correlated&nbsp;authorization</em> is an attempt to revive UMA WG's original idea – UMA wide ecosystem [6], when the resource owner and requesting party might "know each other" in the real world, but the resource owner's authorization server has no pre-established trust with the requesting party or any of their identity/claims providers – in other words, when the resource owner's authorization server and requesting party's identity provider don't know each other.
+&emsp;<em>Correlated&nbsp;authorization</em> is an attempt to revive UMA WG's original idea—UMA wide ecosystem [6], when the resource owner and requesting party might "know each other" in the real world, but the resource owner's authorization server has no pre-established trust with the requesting party or any of their identity/claims providers—in other words, when the resource owner's authorization server and requesting party's identity provider don't know each other.
 
 ## III. UMA Wide Ecosystem Concept
 
@@ -78,44 +80,45 @@ Prerequisites:
 * The AS-RqP also acts as RqP's Identity Provider.
 * The client is registered at the AS-RqP as a public or confidential client and acts as a Relying Party in a RqP's Identity Provider in order to obtain an access token with user claims.
 * The client should be registered at the AS-RO as a public or confidential client; in case of immediate access, the client does not have to be registered at the AS-RO.
-* The RO has set up the RS and registers its 'RS API' resource at the AS-RO according to the UMA Federated Authorization [2] specification.
+* The RO has set up the RS and registers his 'RS API' resource at the AS-RO according to the UMA Federated Authorization [2] specification.
 
 Steps:
 
 1. The RqP directs the client to access the 'RS API' resource with no access token.
-2. The RS requests a permission ticket. <dl><dt></dt><dd>The AS generates a permission ticket itself and the bound permission token<sup>2</sup> (bound to the permission ticket via token hash), which contains these claims:&nbsp;{issuer,&nbsp;ts,&nbsp;ticket_hash,&nbsp;rs_uri} where  
--&nbsp;ticket is a random NONCE  
+2. The RS requests a permission ticket. <dl><dt></dt><dd>The AS generates the permission ticket itself (ticket is a random NONCE) and the permission token<sup>2</sup>, which is bound to the permission ticket through a permission ticket hash. The permission token contains these claims:&nbsp;{issuer,&nbsp;ts,&nbsp;rs_uri,&nbsp;resource_name_hash,&nbsp;permission_ticket_hash} where  
 -&nbsp;issuer is the URI that identifies who issues the permission token  
 -&nbsp;ts is the timestamp of when the permission ticket was created  
--&nbsp;ticket_hash</em>&nbsp;=&nbsp;Base64URL-Encode(SHA256(ticket))  
--&nbsp;rs_uri is the URI that identifies the resource server</dd></dl>
-3. The AS returns the permission ticket.
-4. Without an access token, the RS will return HTTP code 401 (Unauthorized) with the permission ticket.
-5. The client requests a claims token by presenting the <em>access&nbsp;token&nbsp;with&nbsp;user&nbsp;claims</em> and permission token (token exchange request). <dl><dt></dt><dd>{grant_type&nbsp;=&nbsp;token-exchange,
+-&nbsp;rs_uri is the URI that identifies the resource server  
+-&nbsp;resource_name_hash</em>&nbsp;=&nbsp;Base64URL-Encode(SHA256(resource_name))  
+-&nbsp;permission_ticket_hash</em>&nbsp;=&nbsp;Base64URL-Encode(SHA256(permission_ticket))</dd></dl>
+3. The AS returns the permission ticket and the permission token.
+4. Without an access token, the RS will return HTTP code 401 (Unauthorized) with the permission ticket and the permission token.
+5. The client requests a claims token by presenting the access token with user claims, permission token and resource name (token exchange request). <dl><dt></dt><dd>{grant_type&nbsp;=&nbsp;token-exchange,
 &nbsp;resource&nbsp;=&nbsp;"RS API",
-&nbsp;scope&nbsp;=&nbsp;permission_token,
+&nbsp;scope&nbsp;=&nbsp;permission_token resource_name,
 &nbsp;subject_token&nbsp;=&nbsp;access_token_with_user_claims,
 &nbsp;subject_token_type&nbsp;=&nbsp;urn:ietf:params:oauth:token-type:access_token,
 &nbsp;requested_token_type&nbsp;=&nbsp;urn:ietf:params:oauth:token-type:jwt}<br>
 The AS-RqP performs an authorization assessment
--&nbsp;verify permission_token
--&nbsp;evaluate issuer, ts and rs_uri<br>
-The AS-RqP generates a claim token, which contains these claims:&nbsp;{user_claims,&nbsp;ticket_hash} where
+-&nbsp;1.&nbsp;verify permission_token
+-&nbsp;2.&nbsp;compare resource_name_hash vs. Base64URL-Encode(SHA256(resource_name))
+-&nbsp;3.&nbsp;evaluate issuer, ts, rs_uri, resource_name<br>
+The AS-RqP generates the claim token, which contains these claims:&nbsp;{user_claims,&nbsp;permission_ticket_hash} where
 -&nbsp;user_claims are extracted from access_token_with_user_claims
--&nbsp;ticket_hash is extracted from permission_token</dd></dl>
-6. The AS-RqP returns the claims token.
+-&nbsp;permission_ticket_hash is extracted from permission_token</dd></dl>
+6. After an authorization assessment, it is positive, the AS-RqP returns the claims token.
 7. At the AS-RO the client requests an RPT by presenting the claims token and the permission ticket. <dl><dt></dt><dd>{grant_type = uma-ticket,
 &nbsp;pushed_claims = claims_token}<br>
 The AS-RO performs an authorization assessment
-&nbsp;1.&nbsp;verify ticket
+&nbsp;1.&nbsp;verify permission_ticket
 &nbsp;2.&nbsp;extract user_claims from claims_token
 &nbsp;3.&nbsp;select email_address claim
 &nbsp;4.&nbsp;bootstrap discovery of AS-RqP config url from email address via WebFinger;
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if this doesn't work, build well-known url using domain part of email_address
 &nbsp;5.&nbsp;verify claims_token signature
 &nbsp;6.&nbsp;evaluate resource = "RS API"
-&nbsp;7.&nbsp;extract ticket_hash scope from claims_token
-&nbsp;8.&nbsp;compare ticket_hash vs. Base64URL-Encode(SHA256(ticket))
+&nbsp;7.&nbsp;extract permission_ticket_hash scope from claims_token
+&nbsp;8.&nbsp;compare permission_ticket_hash vs. Base64URL-Encode(SHA256(permission_ticket))
 &nbsp;9.&nbsp;evaluate user_claims</dd></dl>
 8. After an authorization assessment, it is positive, the AS-RO returns RPT.
 9. With the valid RPT the client tries to access the 'RS API'.
@@ -175,7 +178,7 @@ Fig.&nbsp;6.&emsp;Combined federation scenario
 
 ## Acknowledgment
 
-&emsp;This work has benefited from the valuable discussions with Eve Maler, founder of WG-UMA [8]; and Alec Laws, chair of WG-UMA [8]. Both gave feedback that improved this paper’s content. Last but not least, the UMA Work Group archives [9, 10] serve as a source of comprehensive information on authorization-related topics — many thanks to all involved.
+&emsp;This work has benefited from the valuable discussions with Eve Maler, founder of WG-UMA [8]; and Alec Laws, chair of WG-UMA [8]. Both gave feedback that improved this paper’s content. Last but not least, the UMA Work Group archives [9, 10] serve as a source of comprehensive information on authorization-related topics—many thanks to all involved.
 
 ## References
 
