@@ -63,7 +63,9 @@ Fig.&nbsp;2.&emsp;Unilateral entity authentication protocol
 
 #### *UMA Profile*
 
-&emsp;The sequence diagram illustrated in Figure&nbsp;3 represents a profile of the UMA protocol and is in full compliance with the UMA 2.0 specification.
+&emsp;The sequence diagram illustrated in Figure&nbsp;3 represents a profile of the UMA protocol and is in full compliance with the UMA 2.0 specification<sub><sup><span class="fn">Unlike the UMA specification, the <em>correlated&nbsp;authorization</em> protocol allows the use of the UMA grant with or without client authentication or identification. Whether or not to allow unauthenticated or unidentified clients are policy decisions that are at the discretion of the authorization server.</span><sup></sub>.
+<br>
+<br>
 
 ![Sequence Diagram – UMA](./images/correlated-authorization.png)
 
@@ -83,7 +85,7 @@ Prerequisites:
 Steps:
 
 1. The RqP directs the client to access the 'RS API' resource with no access token.
-2. The RS requests a permission ticket. <dl><dt></dt><dd>The AS generates the permission ticket itself (ticket is a random NONCE) and the permission token, which is bound to the permission ticket through a permission ticket hash. The permission token contains these claims:&nbsp;{issuer,&nbsp;ts,&nbsp;rs_uri,&nbsp;resource_name_hash,&nbsp;permission_ticket_hash} where  
+2. The RS requests a permission ticket. <dl><dt></dt><dd>The AS generates the permission ticket itself (ticket is a random NONCE) and the permission token<sub><sup><span class="fn"> The permission token is not mentioned in the UMA specification. A detailed description of the permission token format is out of scope of this paper.</span><sup></sub>, which is bound to the permission ticket through a permission ticket hash. The permission token contains these claims:&nbsp;{issuer,&nbsp;ts,&nbsp;rs_uri,&nbsp;resource_name_hash,&nbsp;permission_ticket_hash} where  
 -&nbsp;issuer is the URI that identifies who issues the permission token  
 -&nbsp;ts is the timestamp of when the permission ticket was created  
 -&nbsp;rs_uri is the URI that identifies the resource server  
