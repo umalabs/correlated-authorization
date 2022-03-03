@@ -57,21 +57,19 @@ Fig.&nbsp;2.&emsp;Unilateral entity authentication protocol
 ## V. Sequence Diagrams
 
 &emsp;The following sequence diagrams describe the mechanism of the <em>correlated&nbsp;authorization</em> protocol, which relies on the token exchange extension of OAuth2, where an access token is used to obtain a claims token from the Security Token Service (STS) endpoint.
+<br>
+<br>
+<br>
 
 #### *UMA Profile*
 
-&emsp;The sequence diagram illustrated in Figure&nbsp;3 represents a profile of the UMA protocol and is in full compliance with the UMA 2.0 specification.<sup>1</sup>
+&emsp;The sequence diagram illustrated in Figure&nbsp;3 represents a profile of the UMA protocol and is in full compliance with the UMA 2.0 specification.
 
 ![Sequence Diagram – UMA](./images/correlated-authorization.png)
 
 <p class="figure">
 Fig.&nbsp;3.&emsp;<em>Correlated&nbsp;authorization</em> sequence diagram
 </p>
-   
----
-<p class="note">
-<sup>1</sup>Unlike the UMA specification, the <em>correlated&nbsp;authorization</em> protocol allows the use of the UMA grant with or without client authentication or identification. Whether or not to allow unauthenticated or unidentified clients are policy decisions that are at the discretion of the authorization server.
-<p/>
 
 Prerequisites:
 
@@ -85,7 +83,7 @@ Prerequisites:
 Steps:
 
 1. The RqP directs the client to access the 'RS API' resource with no access token.
-2. The RS requests a permission ticket. <dl><dt></dt><dd>The AS generates the permission ticket itself (ticket is a random NONCE) and the permission token<sup>2</sup>, which is bound to the permission ticket through a permission ticket hash. The permission token contains these claims:&nbsp;{issuer,&nbsp;ts,&nbsp;rs_uri,&nbsp;resource_name_hash,&nbsp;permission_ticket_hash} where  
+2. The RS requests a permission ticket. <dl><dt></dt><dd>The AS generates the permission ticket itself (ticket is a random NONCE) and the permission token, which is bound to the permission ticket through a permission ticket hash. The permission token contains these claims:&nbsp;{issuer,&nbsp;ts,&nbsp;rs_uri,&nbsp;resource_name_hash,&nbsp;permission_ticket_hash} where  
 -&nbsp;issuer is the URI that identifies who issues the permission token  
 -&nbsp;ts is the timestamp of when the permission ticket was created  
 -&nbsp;rs_uri is the URI that identifies the resource server  
@@ -124,11 +122,6 @@ The AS-RO performs an authorization assessment
 9. With the valid RPT the client tries to access the 'RS API'.
 10. The RS validates the RPT, it is valid, the RS allow access the protected 'RS API' resource.
 
----
-<p class="note">
-<sup>2</sup>The permission token is not mentioned in the UMA specification. A detailed description of the permission token format is out of scope of this paper.
-</p>
-
 ## VI. Authority Boundaries, Interactions and Scenarios
 
 &emsp;The <em>correlated&nbsp;authorization</em> protocol allows us to indirectly (through the client) link identity providers with authorization services governed by different authorities that are not required to share information or collaborate.
@@ -137,7 +130,7 @@ The AS-RO performs an authorization assessment
 
 #### *A. Identity Federation Scenario*
 
-&emsp;The scenario illustrated in Figure&nbsp;4 allows access a single authorization service through multiple identity providers. The client falls under the governance of the resource owner's respective authority.
+&emsp;The scenario illustrated in Figure&nbsp;4 allows you to link a single authorization service to multiple identity providers. The client falls under the governance of the resource owner's respective authority.
 
 ![Scenario-1](./images/authority-boundaries-scenario-1.png)
 
@@ -147,7 +140,7 @@ Fig.&nbsp;4.&emsp;Identity federation scenario
 
 #### *B. Federated Authorization Scenario*
 
-&emsp;The federated authorization scenario illustrated in Figure&nbsp;5 shows the use of a single identity provider with multiple authorization services. The client falls under the governance of the requesting party's respective authority.
+&emsp;The federated authorization scenario illustrated in Figure&nbsp;5 allows you to link a single identity provider to multiple authorization services. The client falls under the governance of the requesting party's respective authority.
 
 ![Scenario-2](./images/authority-boundaries-scenario-2.png)
 
@@ -157,7 +150,7 @@ Fig.&nbsp;5.&emsp;Federated authorization scenario
 
 #### *C. Combined Federation Scenario*
 
-&emsp;As the name suggests, the scenario illustrated in Figure&nbsp;6 allows access multiple authorization services through multiple identity providers. The client falls under the governance of a third-party authority.
+&emsp;As the name suggests, the scenario illustrated in Figure&nbsp;6 allows multiple authorization services to be linked to multiple identity providers. The client falls under the governance of a third-party authority.
 
 ![Scenario-3](./images/authority-boundaries-scenario-3.png)
 

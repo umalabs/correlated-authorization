@@ -1,5 +1,27 @@
 .markdown-preview.markdown-preview {
 
+    // @page {
+    //     @bottom { content: flow(footer) }
+    // }
+    // footer { -prince-flow: static(footer, start) }
+
+    @page {
+        @footnotes {
+            margin-top: 8pt;
+            border-top: solid black thin;
+            margin-left: 0.6em;
+        }
+    }
+
+    .fn {
+        float: footnote;
+        counter-increment: footnote;
+        footnote-style-position: outside;
+        page-break-inside: auto;
+        font-size: 80%;
+        margin-top: 2pt;
+    }
+
     // custom prince pdf export style
     &.prince {
         column-count: 2;
