@@ -54,9 +54,9 @@ Fig.&nbsp;2.&emsp;Unilateral entity authentication protocol
 
 &emsp;The ticket represents a random challenge and the signed ticket hash represents the response. The hash of the ticket has to be there in order not to reveal the ticket to the authenticator.
 
-## V. Sequence Diagrams
+## V. Sequence Diagram
 
-&emsp;The following sequence diagrams describe the mechanism of the <em>correlated&nbsp;authorization</em> protocol, which relies on the token exchange extension of OAuth2, where an access token is used to obtain a claims token from the Security Token Service (STS) endpoint.
+&emsp;The following sequence diagram describes the mechanism of the <em>correlated&nbsp;authorization</em> protocol, which relies on the token exchange extension of OAuth2, where an access token is used to obtain a claims token from the Security Token Service (STS) endpoint.
 <br>
 <br>
 <br>
