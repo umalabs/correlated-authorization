@@ -8,9 +8,9 @@
 </p>
 <br>
 <p class="abstract">
-&emsp;<strong><em>Abstract</em></strong>—<em>Correlated&nbsp;authorization</em> is a dual-authority authorization protocol built on top of User-Managed Access (UMA) [1, 2] and OAuth 2.0 Token Exchange [3] protocols that allows users (resource owners) to delegate access to other users (requesting parties) across security domain boundaries. The requesting party is responsible for creating the request, while the resource owner approves this request either when it is online or by creating a relationship-driven policy. The resource owner and the requesting party may belong to different security domains administered by the respective authorities.</p>
+&emsp;<strong><em>Abstract</em></strong>—<em>Correlated&nbsp;authorization</em> is a dual-authority authorization protocol built on top of User-Managed Access (UMA) [1, 2] and OAuth 2.0 Token Exchange [3] protocols that allows users (resource owners) to delegate access to other users (requesting parties) across security domain boundaries. The requesting party is responsible for creating the request, while the resource owner approves this request either when it is online or by creating a policy. The resource owner and the requesting party may belong to different security domains administered by the respective authorities.</p>
 <p class="abstract">
-&emsp;This concept uses a permission ticket issued by the resource owner's authorization server as a correlation handle that binds the requesting party's claims to the authorization process. An email address is used as the unique requesting party identifier for cross-domain access control. The intrinsic challenge-response authentication protocol elevates trust between the resource owner's authorization server and the requesting party's authorization server, which also acts as the identity provider.
+&emsp;This concept uses a permission ticket issued by the resource owner's authorization server as a correlation handle that binds the requesting party's claims to the authorization process. An email address is used as the unique requesting party identifier for cross-domain access control. The challenge-response authentication protocol is used to authenticate the requesting party to the resource owner's authorization server. Trust between the resource owner's authorization server and the requesting party's authorization server is elevated by the push-pull mechanism.
 </p>
 
 ## I. Introduction
@@ -34,7 +34,7 @@ UMA uses a special jargon. For the sake of brevity of this paper, the following 
 * RqP - Requesting Party
 * RPT - Requesting Party Token
 
-![UMA Wide Ecosystem](./images/uma-wide-ecosystem.png)
+![UMA Wide Ecosystem](./images/uma-wide-ecosystem.svg)
 
 <p class="figure">
 Fig.&nbsp;1.&emsp;Relationships between UMA wide ecosystem entities
@@ -42,24 +42,25 @@ Fig.&nbsp;1.&emsp;Relationships between UMA wide ecosystem entities
 
 The UMA wide ecosystem concept uses relationship-driven policies to drive automated dual-authority authorization assessment and token issuance. The relationship-driven policies incorporate user-to-user (U2U) relationships and user-to-resource (U2R) relationships.
 
-## IV. Challenge-Response Authentication Concept
+## IV. Challenge-Response Authentication Protocol
 
-&emsp;The unilateral entity authentication protocol [7] illustrated in Figure&nbsp;2 elevates trust between the resource owner's authoritative domain and requesting party's authoritative domain.
+&emsp;Figure&nbsp;2 shows the unilateral entity authentication protocol [7] adapted for the <em>correlated&nbsp;authorization</em> concept by which the claimant authenticates his identity to the verifier.
 
-![Challenge-Response Authentication](./images/challenge-response-authentication.png)
+![Challenge-Response Authentication](./images/challenge-response-authentication.svg)
 
 <p class="figure">
 Fig.&nbsp;2.&emsp;Unilateral entity authentication protocol
 </p>
 
-&emsp;The ticket represents a random challenge and the signed ticket hash represents the response. The hash of the ticket has to be there in order not to reveal the ticket to the authenticator.
+&emsp;Successful completion of steps means that the claimant has authenticated itself to the verifier. The ticket represents the random challenge, and the signed ticket hash represents the response. Ticket hash is used here to ensure that the actual value of the ticket is not disclosed to the authenticator.
 
-## V. Sequence Diagram
+## V. Push-Pull Trust Elevation
+
+The link to the shared resource should have a unique random name that is delivered to the requesting party through a trusted channel, e.g. email. After receiving the resource link, the requesting party's authorization server must have the policy set correctly, either by the user or automatically by the agent. Only then can the requesting party can download the resource from the resource server. Such a push-pull mechanism elevates trust between the resource owner's authoritative domain and requesting party's authoritative domain.
+
+## VI. Sequence Diagram
 
 &emsp;The following sequence diagram describes the mechanism of the <em>correlated&nbsp;authorization</em> protocol, which relies on the token exchange extension of OAuth2, where an access token is used to obtain a claims token from the Security Token Service (STS) endpoint.
-<br>
-<br>
-<br>
 
 #### *UMA Profile*
 
@@ -67,7 +68,7 @@ Fig.&nbsp;2.&emsp;Unilateral entity authentication protocol
 <br>
 <br>
 
-![Sequence Diagram – UMA](./images/correlated-authorization.png)
+![Sequence Diagram – UMA](./images/correlated-authorization.svg)
 
 <p class="figure">
 Fig.&nbsp;3.&emsp;<em>Correlated&nbsp;authorization</em> sequence diagram
@@ -124,7 +125,7 @@ The AS-RO performs an authorization assessment
 9. With the valid RPT the client tries to access the 'RS API'.
 10. The RS validates the RPT, it is valid, the RS allow access the protected 'RS API' resource.
 
-## VI. Authority Boundaries, Interactions and Scenarios
+## VII. Authority Boundaries, Interactions and Scenarios
 
 &emsp;The <em>correlated&nbsp;authorization</em> protocol allows us to indirectly (through the client) link identity providers with authorization services governed by different authorities that are not required to share information or collaborate.
 
@@ -134,7 +135,7 @@ The AS-RO performs an authorization assessment
 
 &emsp;The scenario illustrated in Figure&nbsp;4 allows you to link a single authorization service to multiple identity providers. The client falls under the governance of the resource owner's respective authority.
 
-![Scenario-1](./images/authority-boundaries-scenario-1.png)
+![Scenario-1](./images/authority-boundaries-scenario-1.svg)
 
 <p class="figure">
 Fig.&nbsp;4.&emsp;Identity federation scenario
@@ -144,7 +145,7 @@ Fig.&nbsp;4.&emsp;Identity federation scenario
 
 &emsp;The federated authorization scenario illustrated in Figure&nbsp;5 allows you to link a single identity provider to multiple authorization services. The client falls under the governance of the requesting party's respective authority.
 
-![Scenario-2](./images/authority-boundaries-scenario-2.png)
+![Scenario-2](./images/authority-boundaries-scenario-2.svg)
 
 <p class="figure">
 Fig.&nbsp;5.&emsp;Federated authorization scenario
@@ -154,17 +155,17 @@ Fig.&nbsp;5.&emsp;Federated authorization scenario
 
 &emsp;As the name suggests, the scenario illustrated in Figure&nbsp;6 allows multiple authorization services to be linked to multiple identity providers. The client falls under the governance of a third-party authority.
 
-![Scenario-3](./images/authority-boundaries-scenario-3.png)
+![Scenario-3](./images/authority-boundaries-scenario-3.svg)
 
 <p class="figure">
 Fig.&nbsp;6.&emsp;Combined federation scenario
 </p>
 
-## VII. Use Cases
+## VIII. Use Cases
 
-&emsp;Healthcare and enterprise cross-domain services e.g. email, file sharing, instant messaging, tele-conferencing. Also, Fintech and Telco services.
+&emsp;Healthcare and enterprise cross-domain services e.g., email, file sharing, instant messaging, tele-conferencing. Also, Fintech and Telco services.
 
-## VIII. Future Work
+## IX. Conclusion and Future Work
 
 1.&nbsp;Consider an authentication protocol, where RS/AS acts as an external authoritative attribute/claims provider.
 2.&nbsp;Employ the DPoP to bind RPT to the client.
