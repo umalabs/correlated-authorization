@@ -8,9 +8,12 @@
 </p>
 <br>
 <p class="abstract">
-&emsp;<strong><em>Abstract</em></strong>—<em>Correlated&nbsp;authorization</em> is a dual-authority authorization protocol built on top of User-Managed Access (UMA) [1, 2] and OAuth 2.0 Token Exchange [3] protocols that allows users (resource owners) to delegate access to other users (requesting parties) across security domain boundaries. The requesting party is responsible for creating the request, while the resource owner approves this request either when it is online or by creating a policy. The resource owner and the requesting party may belong to different security domains administered by the respective authorities.</p>
+&emsp;<strong><em>Abstract</em></strong>—<em>Correlated&nbsp;authorization</em> is used to build trust between security domains during the conveyance of user information from the identity provider to the authorization server.
+</p>
 <p class="abstract">
-&emsp;This concept uses a permission ticket issued by the resource owner's authorization server as a correlation handle that binds the requesting party's claims to the authorization process. An email address is used as the unique requesting party identifier for cross-domain access control. The challenge-response authentication protocol is used to authenticate the requesting party to the resource owner's authorization server. Trust between the resource owner's authorization server and the requesting party's authorization server is elevated by the push-pull mechanism.
+&emsp;This paper introduces <em>correlated&nbsp;authorization</em> as a dual-authority trust framework built on top of User-Managed Access (UMA) [1, 2] and OAuth 2.0 Token Exchange [3] protocols that allows users (resource owners) to delegate access to other users (requesting parties) across security domain boundaries. The requesting party is responsible for creating the request, while the resource owner approves this request either when it is online or by creating a policy. The resource owner and the requesting party may belong to different security domains administered by the respective authorities.</p>
+<p class="abstract">
+&emsp;The proposed concept uses a permission ticket issued by the resource owner's authorization server as a correlation handle that binds the requesting party's claims to the authorization process. An email address is used as the unique requesting party identifier. The requesting party authenticates to the resource owner's authorization server using a challenge-response authentication protocol, while the push-pull mechanism elevates trust between the respective authorities.
 </p>
 
 ## I. Introduction
@@ -44,7 +47,7 @@ The UMA wide ecosystem concept uses relationship-driven policies to drive automa
 
 ## IV. Challenge-Response Authentication Protocol
 
-&emsp;Figure&nbsp;2 shows the unilateral entity authentication protocol [7] adapted for the <em>correlated&nbsp;authorization</em> concept by which the claimant authenticates his identity to the verifier.
+&emsp;Figure&nbsp;2 shows the unilateral entity authentication protocol [7] adapted for the <em>correlated&nbsp;authorization</em> framework that links an authenticator with the verifier through the client, and allows the claimant to convey identity information to the verifier.
 
 ![Challenge-Response Authentication](./images/challenge-response-authentication.svg)
 
@@ -56,15 +59,15 @@ Fig.&nbsp;2.&emsp;Unilateral entity authentication protocol
 
 ## V. Push-Pull Trust Elevation
 
-The link to the shared resource should have a unique random name that is delivered to the requesting party through a trusted channel, e.g. email. After receiving the resource link, the requesting party's authorization server must have the policy set correctly, either by the user or automatically by the agent. Only then can the requesting party can download the resource from the resource server. Such a push-pull mechanism elevates trust between the resource owner's authoritative domain and requesting party's authoritative domain.
+The link to the shared resource should have a unique random name that is delivered to the requesting party through a trusted channel, e.g. email. After receiving the resource link, the requesting party's authorization server must set the policy correctly, either by the user or automatically by the agent. Only then can the requesting party download the resource from the resource server. Such a push-pull mechanism elevates trust between the resource owner's authoritative domain and requesting party's authoritative domain.
 
 ## VI. Sequence Diagram
 
-&emsp;The following sequence diagram describes the mechanism of the <em>correlated&nbsp;authorization</em> protocol, which relies on the token exchange extension of OAuth2, where an access token is used to obtain a claims token from the Security Token Service (STS) endpoint.
+&emsp;The following sequence diagram describes the mechanism and privacy policies of the <em>correlated&nbsp;authorization</em> framework, which relies on the token exchange extension of OAuth2, where an access token is used to obtain a claims token from the Security Token Service (STS) endpoint.
 
 #### *UMA Profile*
 
-&emsp;The sequence diagram illustrated in Figure&nbsp;3 represents a profile of the UMA protocol and is in full compliance with the UMA 2.0 specification<sub><sup><span class="fn">Unlike the UMA specification, the <em>correlated&nbsp;authorization</em> protocol allows the use of the UMA grant with or without client authentication or identification. Whether or not to allow unauthenticated or unidentified clients are policy decisions that are at the discretion of the authorization server.</span><sup></sub>.
+&emsp;The sequence diagram illustrated in Figure&nbsp;3 represents a profile of the UMA protocol and is in full compliance with the UMA 2.0 specification<sub><sup><span class="fn">Unlike the UMA specification, the <em>correlated&nbsp;authorization</em> framework allows the use of the UMA grant with or without client authentication or identification. Whether or not to allow unauthenticated or unidentified clients are policy decisions that are at the discretion of the authorization server.</span><sup></sub>.
 <br>
 <br>
 
@@ -127,7 +130,7 @@ The AS-RO performs an authorization assessment
 
 ## VII. Authority Boundaries, Interactions and Scenarios
 
-&emsp;The <em>correlated&nbsp;authorization</em> protocol allows us to indirectly (through the client) link identity providers with authorization services governed by different authorities that are not required to share information or collaborate.
+&emsp;The <em>correlated&nbsp;authorization</em> framework allows us to indirectly (through the client) link identity providers with authorization services governed by different authorities that are not required to share information or collaborate.
 
 &emsp;The following scenarios demonstrate a system of trust between two authorities that allows the conveyance of identity information from identity providers to authorization services across security domain boundaries.
 
@@ -169,7 +172,7 @@ Fig.&nbsp;6.&emsp;Combined federation scenario
 
 1.&nbsp;Consider an authentication protocol, where RS/AS acts as an external authoritative attribute/claims provider.
 2.&nbsp;Employ the DPoP to bind RPT to the client.
-3.&nbsp;Describe how the resource owner can use the <em>correlated&nbsp;authorization</em> protocol.
+3.&nbsp;Describe how the resource owner can use the <em>correlated&nbsp;authorization</em> framework.
 4.&nbsp;Consider using the <em>correlated&nbsp;authorization</em> mechanism to transfer digital/virtual assets in the form of transactions.
 
 ## Acknowledgment
