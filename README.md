@@ -6,7 +6,7 @@
     Igor Zboran<br>
     izboran@gmail.com
 </p>
-<br>
+
 <p class="abstract">
 &emsp;<strong><em>Abstract</em></strong>—<em>Correlated&nbsp;authorization</em> is used to build trust between security domains during the conveyance of user information from the identity provider to the authorization server.
 </p>
@@ -15,10 +15,13 @@
 <p class="abstract">
 &emsp;The proposed concept uses a permission ticket issued by the resource owner's authorization server as a correlation handle that binds the requesting party's claims to the authorization process. An email address is used as the unique requesting party identifier. The requesting party authenticates to the resource owner's authorization server using a challenge-response authentication protocol, while the push-pull mechanism elevates trust between the respective authorities.
 </p>
+<p class="abstract">
+&emsp;Given these capabilities, <em>correlated&nbsp;authorization</em> is becoming an essential enabler of email infrastructure modernization.
+</p>
 
 ## I. Introduction
 
-&emsp;With the growing popularity of protocols based on the OAuth 2.0 [4] specification, there is a need for an interoperable standard that specifies how to convey information about the user from an identity provider to an authorization server, especially across security domain boundaries. The problem is that such a system is difficult to design because OAuth2 [4], OIDC [5] and UMA are single-authority protocols. This draft profiles and combines the OAuth2 and UMA protocols into a dual-authority protocol, which not only meets the needs of interoperability, but also elevates trust between mutually unknown parties.
+&emsp;With the growing popularity of protocols based on the OAuth 2.0 [4] specification, there is a need for an interoperable standard that specifies how to convey information about the user from an identity provider to an authorization server, especially across security domain boundaries. The problem is that such a system is difficult to design because OAuth2 [4], OIDC [5] and UMA are single-authority protocols. This draft profiles and combines the OAuth2 and UMA protocols into a dual-authority framework, which not only meets the needs of interoperability, but also elevates trust between mutually unknown parties.
 
 ## II. Motivation
 
@@ -57,13 +60,9 @@ Fig.&nbsp;2.&emsp;Unilateral entity authentication protocol
 
 &emsp;Successful completion of steps means that the claimant has authenticated itself to the verifier. The ticket represents the random challenge, and the signed ticket hash represents the response. Ticket hash is used here to ensure that the actual value of the ticket is not disclosed to the authenticator.
 
-## V. Push-Pull Trust Elevation
+## V. Sequence Diagram
 
-The link to the shared resource should have a unique random name that is delivered to the requesting party through a trusted channel, e.g. email. After receiving the resource link, the requesting party's authorization server must set the policy correctly, either by the user or automatically by the agent. Only then can the requesting party download the resource from the resource server. Such a push-pull mechanism elevates trust between the resource owner's authoritative domain and requesting party's authoritative domain.
-
-## VI. Sequence Diagram
-
-&emsp;The following sequence diagram describes the mechanism and privacy policies of the <em>correlated&nbsp;authorization</em> framework, which relies on the token exchange extension of OAuth2, where an access token is used to obtain a claims token from the Security Token Service (STS) endpoint.
+&emsp;The following sequence diagram describes the mechanism and policies of the <em>correlated&nbsp;authorization</em> framework, which utilizes the UMA protocol with the token exchange extension of OAuth2, where an access token is used to obtain a claims token from the Security Token Service (STS) endpoint.
 
 #### *UMA Profile*
 
@@ -127,6 +126,10 @@ The AS-RO performs an authorization assessment
 8. After an authorization assessment, it is positive, the AS-RO returns RPT.
 9. With the valid RPT the client tries to access the 'RS API'.
 10. The RS validates the RPT, it is valid, the RS allow access the protected 'RS API' resource.
+
+## VI. Push-Pull Trust Elevation
+
+The link to the shared resource should have a unique random name that is delivered to the requesting party through a trusted channel, e.g. email. After receiving the resource link, the requesting party's authorization server must set the policy correctly, either by the user or automatically by the agent. Only then can the requesting party download the resource from the resource server. Such a push-pull mechanism elevates trust between the resource owner's authoritative domain and requesting party's authoritative domain.
 
 ## VII. Authority Boundaries, Interactions and Scenarios
 
