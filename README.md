@@ -66,11 +66,11 @@ Fig.&nbsp;2.&emsp;Unilateral entity authentication protocol
 
 #### *UMA Profile*
 
-&emsp;The sequence diagram illustrated in Figure&nbsp;3 represents a profile of the UMA protocol and is in full compliance with the UMA 2.0 specification<sub><sup><span class="fn">Unlike the UMA specification, the <em>correlated&nbsp;authorization</em> framework allows the use of the UMA grant with or without client authentication or identification. Whether or not to allow unauthenticated or unidentified clients are policy decisions that are at the discretion of the authorization server.</span><sup></sub>.
+&emsp;The sequence diagram<sub><sup><span class="fn">A more detailed diagram is shown on the last page.</span><sup></sub> illustrated in Figure&nbsp;3 represents a profile of the UMA protocol and is in full compliance with the UMA 2.0 specification<sub><sup><span class="fn">Unlike the UMA specification, the <em>correlated&nbsp;authorization</em> framework allows the use of the UMA grant with or without client authentication or identification. Whether or not to allow unauthenticated or unidentified clients are policy decisions that are at the discretion of the authorization server.</span><sup></sub>.
 <br>
 <br>
 
-![Sequence Diagram – UMA](./images/correlated-authorization.svg)
+![Sequence Diagram](./images/correlated-authorization.svg)
 
 <p class="figure">
 Fig.&nbsp;3.&emsp;<em>Correlated&nbsp;authorization</em> sequence diagram
@@ -132,9 +132,7 @@ The link to the shared resource should have a unique random name that is deliver
 
 ## VII. Authority Boundaries, Interactions and Scenarios
 
-&emsp;The <em>correlated&nbsp;authorization</em> framework allows us to indirectly (through the client) link identity providers with authorization services governed by different authorities that are not required to share information or collaborate.
-
-&emsp;The following scenarios demonstrate a system of trust between two authorities that allows the conveyance of identity information from identity providers to authorization services across security domain boundaries.
+&emsp;The <em>correlated&nbsp;authorization</em> framework allows us to indirectly (through the client) link identity providers with authorization services governed by different authorities that are not required to share information or collaborate. The following scenarios demonstrate a system of trust between two authorities that allows the conveyance of identity information from identity providers to authorization services across security domain boundaries.
 
 #### *A. Identity Federation Scenario*
 
@@ -198,3 +196,7 @@ A prototype implementation of the proposed framework, working as a proof of conc
 [10]&nbsp;“The WG-UMA Archives” https://kantarainitiative.org/pipermail/wg-uma/.<br>
 [11]&nbsp;“Kantara Initiative User Managed Access WG” https://groups.google.com/g/kantara-initiative-uma-wg.<br>
 </p>
+
+<div class="diagram">
+<img src=./images/correlated-authorization-full.svg alt="Sequence Diagram – full">
+</div>

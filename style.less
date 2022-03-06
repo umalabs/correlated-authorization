@@ -87,13 +87,25 @@
             font-size: 0.60rem;
             line-height: 1.2;
         }
-        .references {
-            font-size: 0.60rem;
-            line-height: 1.2;
-        }
         .note {
             font-size: 0.60rem;
             line-height: 1.2;
+        }
+        .references {
+            font-size: 0.60rem;
+            line-height: 1.2;
+            page-break-after: always;
+        }
+        .diagram {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            transform: rotate(-90deg) translateY(100%);
+            transform-origin:bottom left;
+            height: 100vw;
+            width: 100vh;
+            margin:0;
+            overflow:hidden;
         }
     }
 }
