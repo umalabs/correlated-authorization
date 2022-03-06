@@ -116,8 +116,7 @@ The AS-RO performs an authorization assessment
 &nbsp;1.&nbsp;verify permission_ticket
 &nbsp;2.&nbsp;extract user_claims from claims_token
 &nbsp;3.&nbsp;select email_address claim
-&nbsp;4.&nbsp;bootstrap discovery of AS-RqP config url from email address via WebFinger;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if this doesn't work, build well-known url using domain part of email_address
+&nbsp;4.&nbsp;bootstrap discovery of AS-RqP config url from email address via WebFinger; if this doesn't work, build well-known url using domain part of email_address
 &nbsp;5.&nbsp;verify claims_token signature
 &nbsp;6.&nbsp;evaluate resource = "RS API"
 &nbsp;7.&nbsp;extract permission_ticket_hash scope from claims_token
@@ -169,18 +168,20 @@ Fig.&nbsp;6.&emsp;Combined federation scenario
 
 ## VIII. Use Cases
 
-&emsp;Healthcare and enterprise cross-domain services e.g., email, file sharing, instant messaging, tele-conferencing. Also, Fintech and Telco services.
+&emsp;Healthcare and enterprise cross-domain systems e.g., email, file sharing, instant messaging, tele-conferencing. Also, Fintech and Telco services.
 
 ## IX. Conclusion and Future Work
 
-1.&nbsp;Consider an authentication protocol, where RS/AS acts as an external authoritative attribute/claims provider.
-2.&nbsp;Employ the DPoP to bind RPT to the client.
-3.&nbsp;Describe how the resource owner can use the <em>correlated&nbsp;authorization</em> framework.
-4.&nbsp;Consider using the <em>correlated&nbsp;authorization</em> mechanism to transfer digital/virtual assets in the form of transactions.
+The UMA philosophy of the resource owner and the requesting party projected onto the <em>correlated&nbsp;authorization</em> trust framework, fully overlaps with the philosophy of the sender and recipient of the mail system. In fact, the <em>correlated&nbsp;authorization</em> concept has been designed with the Authorization-Enhanced Mail System [8] in mind. The following are potential future R&D areas:
+
+1. Elaborate relationship-driven policies—user-to-user and user-to-resource relationships.
+2. Provide more details on the push-pull mechanism.
+
+A prototype implementation of the proposed framework, working as a proof of concept, would be interesting to build.
 
 ## Acknowledgment
 
-&emsp;This work has benefited from the valuable discussions with Eve Maler, founder of WG-UMA [8]; and Alec Laws, chair of WG-UMA [8]. Both gave feedback that improved this paper’s content. Last but not least, the UMA Work Group archives [9, 10] serve as a source of comprehensive information on authorization-related topics—many thanks to all involved.
+&emsp;This work has benefited from the valuable discussions with Eve Maler, founder of WG-UMA [9]; and Alec Laws, chair of WG-UMA [9]. Both gave feedback that improved this paper’s content. Last but not least, the UMA Work Group archives [10, 11] serve as a source of comprehensive information on authorization-related topics—many thanks to all involved.
 
 ## References
 
@@ -192,7 +193,8 @@ Fig.&nbsp;6.&emsp;Combined federation scenario
 [5]&nbsp;OpenID specifications at “OpenID Foundation,” 2022, https://openid.net/developers/specs/.<br>
 [6]&nbsp;“UMA telecon 2016-03-31” https://kantarainitiative.org/confluence/display/uma/UMA+telecon+2016-03-31<br>
 [7]&nbsp;National Institute of Standards and Technology, “FIPS PUB 196: Entity Authentication Using Public Key Cryptography,” 1997. [Online]. Available: https://csrc.nist.gov/csrc/media/publications/fips/196/archive/1997-02-18/documents/fips196.pdf.<br>
-[8]&nbsp;“User-Managed Access” Work Group at “Kantara Initiative” https://kantarainitiative.org/confluence/display/uma/Home.<br>
-[9]&nbsp;“The WG-UMA Archives” https://kantarainitiative.org/pipermail/wg-uma/.<br>
-[10]&nbsp;“Kantara Initiative User Managed Access WG” https://groups.google.com/g/kantara-initiative-uma-wg.<br>
+[8]&nbsp;I. Zboran “Authorization-Enhanced Mail System” GitHub repository https://github.com/umalabs/authorization-enhanced-mail-system.<br>
+[9]&nbsp;“User-Managed Access” Work Group at “Kantara Initiative” https://kantarainitiative.org/confluence/display/uma/Home.<br>
+[10]&nbsp;“The WG-UMA Archives” https://kantarainitiative.org/pipermail/wg-uma/.<br>
+[11]&nbsp;“Kantara Initiative User Managed Access WG” https://groups.google.com/g/kantara-initiative-uma-wg.<br>
 </p>
