@@ -11,7 +11,7 @@
 &emsp;<strong><em>Abstract</em></strong>—<em>Correlated&nbsp;authorization</em> is used to build trust between security domains during the conveyance of user information from the identity provider to the authorization server.
 </p>
 <p class="abstract">
-&emsp;This paper introduces <em>correlated&nbsp;authorization</em> as a dual-authority trust framework built on top of User-Managed Access (UMA) [1, 2] and OAuth 2.0 Token Exchange [3] protocols that allows users (resource owners) to delegate access to other users (requesting parties) across security domain boundaries. The requesting party is responsible for creating the request, while the resource owner approves this request either when it is online or by creating a policy. The resource owner and the requesting party may belong to different security domains administered by the respective authorities.</p>
+&emsp;This paper introduces <em>correlated&nbsp;authorization</em> as a dual-authority mail trust framework built on top of User-Managed Access (UMA) [1, 2] and OAuth 2.0 Token Exchange [3] protocols that allows users (resource owners) to delegate access to other users (requesting parties) across security domain boundaries. The requesting party is responsible for creating the request, while the resource owner approves this request either when it is online or by creating a policy. The resource owner and the requesting party may belong to different security domains administered by the respective authorities.</p>
 <p class="abstract">
 &emsp;The proposed concept uses a permission ticket issued by the resource owner's authorization server as a correlation handle that binds the requesting party's claims to the authorization process. An email address is used as the unique requesting party identifier. The requesting party authenticates to the resource owner's authorization server using a challenge-response authentication protocol, while the push-pull mechanism elevates trust between the respective authorities.
 </p>
@@ -170,9 +170,9 @@ Fig.&nbsp;6.&emsp;Combined federation scenario
 
 ## IX. Conclusion and Future Work
 
-The UMA philosophy of the resource owner and the requesting party projected onto the <em>correlated&nbsp;authorization</em> trust framework, fully overlaps with the philosophy of the sender and recipient of the mail system. In fact, the <em>correlated&nbsp;authorization</em> concept has been designed with the Authorization-Enhanced Mail System [8] in mind. The following are potential future R&D areas:
+The UMA philosophy of the resource owner and the requesting party projected onto the <em>correlated&nbsp;authorization</em> trust framework, matches the philosophy of the sender and recipient of the mail system. In fact, the <em>correlated&nbsp;authorization</em> concept has been designed with the Authorization-Enhanced Mail System [8] in mind. The following are potential future R&D areas:
 
-1. Elaborate relationship-driven policies—user-to-user and user-to-resource relationships.
+1. Define relationship-driven policies—user-to-user and user-to-resource relationships.
 2. Provide more details on the push-pull mechanism.
 
 A prototype implementation of the proposed framework, working as a proof of concept, would be interesting to build.
