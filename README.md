@@ -166,7 +166,7 @@ Fig.&nbsp;6.&emsp;Combined federation scenario
 
 ## VIII. Use Cases
 
-&emsp;Healthcare and enterprise cross-domain systems e.g., email, file sharing, instant messaging, tele-conferencing. Also, Fintech and Telco services.
+&emsp;Secure cross-domain data exchange systems. In particular, Authorization-Enhanced Mail System [8]. Furthermore, file sharing, instant messaging, teleconferencing. Also, Healthcare systems, Fintech and Telco services.
 
 ## IX. Conclusion and Future Work
 
