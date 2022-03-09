@@ -83,11 +83,11 @@ Prerequisites:
 * The AS-RqP also acts as RqP's Identity Provider.
 * The client is registered at the AS-RqP as a public or confidential client and acts as a Relying Party in a RqP's Identity Provider in order to obtain an access token with user claims.
 * The client should be registered at the AS-RO as a public or confidential client; in case of immediate access, the client does not have to be registered at the AS-RO.
-* The RO has set up the RS and registers his 'RS API' resource at the AS-RO according to the UMA Federated Authorization [2] specification.
+* The RO has set up the RS and registers his resource at the AS-RO to get his resource_uri according to the UMA Federated Authorization [2] specification.
 
 Steps:
 
-1. The RqP directs the client to access the 'RS API' resource with no access token.
+1. The RqP directs the client to access the resource_uri with no access token.
 2. The RS requests a permission ticket. <dl><dt></dt><dd>The AS generates the permission ticket itself (ticket is a random NONCE) and the permission token<sub><sup><span class="fn"> The permission token is not mentioned in the UMA specification. A detailed description of the permission token format is out of scope of this paper.</span><sup></sub>, which is bound to the permission ticket through a permission ticket hash. The permission token contains these claims:&nbsp;{issuer,&nbsp;ts,&nbsp;rs_uri,&nbsp;resource_uri_hash,&nbsp;permission_ticket_hash} where  
 -&nbsp;issuer is the URI that identifies who issues the permission token  
 -&nbsp;ts is the timestamp of when the permission ticket was created  
@@ -97,15 +97,16 @@ Steps:
 3. The AS returns the permission ticket and the permission token.
 4. Without an access token, the RS will return HTTP code 401 (Unauthorized) with the permission ticket and the permission token.
 5. The client requests a claims token by presenting the access token with user claims, permission token and resource uri (token exchange request). <dl><dt></dt><dd>{grant_type&nbsp;=&nbsp;token-exchange,
-&nbsp;resource&nbsp;=&nbsp;"RS API",
-&nbsp;scope&nbsp;=&nbsp;permission_token resource_uri,
+&nbsp;resource&nbsp;=&nbsp;resource_uri,
+&nbsp;scope&nbsp;=&nbsp;permission_token
 &nbsp;subject_token&nbsp;=&nbsp;access_token_with_user_claims,
 &nbsp;subject_token_type&nbsp;=&nbsp;urn:ietf:params:oauth:token-type:access_token,
 &nbsp;requested_token_type&nbsp;=&nbsp;urn:ietf:params:oauth:token-type:jwt}<br>
 The AS-RqP performs an authorization assessment
--&nbsp;1.&nbsp;verify permission_token
--&nbsp;2.&nbsp;compare resource_uri_hash vs. Base64URL-Encode(SHA256(resource_uri))
--&nbsp;3.&nbsp;evaluate issuer, ts, audience, resource_uri<br>
+-&nbsp;1.&nbsp;verify permission_token signature
+-&nbsp;2.&nbsp;extract resource_uri_hash claim from permission_token
+-&nbsp;3.&nbsp;compare resource_uri_hash vs. Base64URL-Encode(SHA256(resource_uri))
+-&nbsp;4.&nbsp;evaluate issuer, ts, audience, resource_uri<br>
 The AS-RqP generates the claim token, which contains these claims:&nbsp;{user_claims,&nbsp;permission_ticket_hash} where
 -&nbsp;user_claims are extracted from access_token_with_user_claims
 -&nbsp;permission_ticket_hash is extracted from permission_token</dd></dl>
@@ -118,13 +119,13 @@ The AS-RO performs an authorization assessment
 &nbsp;3.&nbsp;select email_address claim
 &nbsp;4.&nbsp;bootstrap discovery of AS-RqP config url from email address via WebFinger; if this doesn't work, build well-known url using domain part of email_address
 &nbsp;5.&nbsp;verify claims_token signature
-&nbsp;6.&nbsp;evaluate resource = "RS API"
-&nbsp;7.&nbsp;extract permission_ticket_hash scope from claims_token
+&nbsp;6.&nbsp;evaluate resource_uri
+&nbsp;7.&nbsp;extract permission_ticket_hash claim from claims_token
 &nbsp;8.&nbsp;compare permission_ticket_hash vs. Base64URL-Encode(SHA256(permission_ticket))
 &nbsp;9.&nbsp;evaluate user_claims</dd></dl>
 8. After an authorization assessment, it is positive, the AS-RO returns RPT.
-9. With the valid RPT the client tries to access the 'RS API'.
-10. The RS validates the RPT, it is valid, the RS allow access the protected 'RS API' resource.
+9. With the valid RPT the client tries to access the resource_uri.
+10. The RS validates the RPT, it is valid, the RS allow access the protected resource.
 
 ## VI. Push-Pull Trust Elevation
 
