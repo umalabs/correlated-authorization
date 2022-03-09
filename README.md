@@ -88,24 +88,24 @@ Prerequisites:
 Steps:
 
 1. The RqP directs the client to access the 'RS API' resource with no access token.
-2. The RS requests a permission ticket. <dl><dt></dt><dd>The AS generates the permission ticket itself (ticket is a random NONCE) and the permission token<sub><sup><span class="fn"> The permission token is not mentioned in the UMA specification. A detailed description of the permission token format is out of scope of this paper.</span><sup></sub>, which is bound to the permission ticket through a permission ticket hash. The permission token contains these claims:&nbsp;{issuer,&nbsp;ts,&nbsp;rs_uri,&nbsp;resource_name_hash,&nbsp;permission_ticket_hash} where  
+2. The RS requests a permission ticket. <dl><dt></dt><dd>The AS generates the permission ticket itself (ticket is a random NONCE) and the permission token<sub><sup><span class="fn"> The permission token is not mentioned in the UMA specification. A detailed description of the permission token format is out of scope of this paper.</span><sup></sub>, which is bound to the permission ticket through a permission ticket hash. The permission token contains these claims:&nbsp;{issuer,&nbsp;ts,&nbsp;rs_uri,&nbsp;resource_uri_hash,&nbsp;permission_ticket_hash} where  
 -&nbsp;issuer is the URI that identifies who issues the permission token  
 -&nbsp;ts is the timestamp of when the permission ticket was created  
--&nbsp;rs_uri is the URI that identifies the resource server  
--&nbsp;resource_name_hash</em>&nbsp;=&nbsp;Base64URL-Encode(SHA256(resource_name))  
+-&nbsp;audience is the URI that identifies the resource server  
+-&nbsp;resource_uri_hash</em>&nbsp;=&nbsp;Base64URL-Encode(SHA256(resource_uri))  
 -&nbsp;permission_ticket_hash</em>&nbsp;=&nbsp;Base64URL-Encode(SHA256(permission_ticket))</dd></dl>
 3. The AS returns the permission ticket and the permission token.
 4. Without an access token, the RS will return HTTP code 401 (Unauthorized) with the permission ticket and the permission token.
-5. The client requests a claims token by presenting the access token with user claims, permission token and resource name (token exchange request). <dl><dt></dt><dd>{grant_type&nbsp;=&nbsp;token-exchange,
+5. The client requests a claims token by presenting the access token with user claims, permission token and resource uri (token exchange request). <dl><dt></dt><dd>{grant_type&nbsp;=&nbsp;token-exchange,
 &nbsp;resource&nbsp;=&nbsp;"RS API",
-&nbsp;scope&nbsp;=&nbsp;permission_token resource_name,
+&nbsp;scope&nbsp;=&nbsp;permission_token resource_uri,
 &nbsp;subject_token&nbsp;=&nbsp;access_token_with_user_claims,
 &nbsp;subject_token_type&nbsp;=&nbsp;urn:ietf:params:oauth:token-type:access_token,
 &nbsp;requested_token_type&nbsp;=&nbsp;urn:ietf:params:oauth:token-type:jwt}<br>
 The AS-RqP performs an authorization assessment
 -&nbsp;1.&nbsp;verify permission_token
--&nbsp;2.&nbsp;compare resource_name_hash vs. Base64URL-Encode(SHA256(resource_name))
--&nbsp;3.&nbsp;evaluate issuer, ts, rs_uri, resource_name<br>
+-&nbsp;2.&nbsp;compare resource_uri_hash vs. Base64URL-Encode(SHA256(resource_uri))
+-&nbsp;3.&nbsp;evaluate issuer, ts, audience, resource_uri<br>
 The AS-RqP generates the claim token, which contains these claims:&nbsp;{user_claims,&nbsp;permission_ticket_hash} where
 -&nbsp;user_claims are extracted from access_token_with_user_claims
 -&nbsp;permission_ticket_hash is extracted from permission_token</dd></dl>

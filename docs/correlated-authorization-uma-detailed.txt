@@ -10,12 +10,12 @@ note over Client:Client:\n• is registered at AS-RqP as a public or confidentia
 note over RS:RO has set up RS and registers his 'RS API' resource at AS-RO
 RS<-Client:1. Request 'RS API' resource with no access token
 RS->AS-RO:2. Request a permission ticket
-note over AS-RO: AS-RO generates the permission ticket itself (ticket is a random NONCE) and the permission token,\nwhich is bound to the permission ticket through a permission ticket hash.\nThe permission token contains these claims:\n{issuer, ts, rs_uri, resource_name_hash, permission_ticket_hash}\nwhere\nissuer is the URI that identifies who issues the permission token\nts is the timestamp of when the permission ticket was created\nrs_uri is the URI that identifies the resource server\nresource_name_hash = Base64URL-Encode(SHA256(resource_name))\npermission_ticket_hash = Base64URL-Encode(SHA256(permission_ticket))
+note over AS-RO: AS-RO generates the permission ticket itself (ticket is a random NONCE) and the permission token,\nwhich is bound to the permission ticket through a permission ticket hash.\nThe permission token contains these claims:\n{issuer, ts, audience, resource_uri_hash, permission_ticket_hash}\nwhere\nissuer is the URI that identifies who issues the permission token\nts is the timestamp of when the permission ticket was created\naudience is the URI that identifies the resource server\nresource_uri_hash = Base64URL-Encode(SHA256(resource_uri))\npermission_ticket_hash = Base64URL-Encode(SHA256(permission_ticket))
 RS<-AS-RO:3. Return the permission ticket and the permission token
 RS->Client:4. Return 401 with the permission ticket and the permission token
-AS-RqP<-Client:5. Request a claims token (token exchange request)\n    {grant_type = token-exchange,\n     resource = "RS API",\n     scope = permission_token resource_name,\n     subject_token = access_token_with_user_claims,\n     subject_token_type = urn:ietf:params:oauth:token-type:access_token,\n     requested_token_type = urn:ietf:params:oauth:token-type:jwt}
+AS-RqP<-Client:5. Request a claims token (token exchange request)\n    {grant_type = token-exchange,\n     resource = "RS API",\n     scope = permission_token resource_uri,\n     subject_token = access_token_with_user_claims,\n     subject_token_type = urn:ietf:params:oauth:token-type:access_token,\n     requested_token_type = urn:ietf:params:oauth:token-type:jwt}
 group Authorization assessment
-note over AS-RqP:1. verify permission_token\n2. compare resource_name_hash vs. Base64URL-Encode(SHA256(resource_name))\n3. evaluate issuer, ts, rs_uri, resource_name
+note over AS-RqP:1. verify permission_token\n2. compare resource_uri_hash vs. Base64URL-Encode(SHA256(resource_uri))\n3. evaluate issuer, ts, audience, resource_uri
 end
 note over AS-RqP:AS-RqP generates the claim token, which contains these claims:\n{user_claims, permission_ticket_hash}\nwhere\nuser_claims are extracted from access_token_with_user_claims\npermission_ticket_hash is extracted from permission_token
 Client<-AS-RqP:6. Return claims token\n    {claims_token}
