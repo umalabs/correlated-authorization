@@ -129,7 +129,8 @@ The AS-RO performs an authorization assessment
 
 ## VI. Push-Pull Trust Elevation
 
-The link to the shared resource should have a unique random name that is delivered to the requesting party through a trusted channel, e.g. email. After receiving the resource link, the requesting party's authorization server must set the policy correctly, either by the user or automatically by the agent. Only then can the requesting party download the resource from the resource server. Such a push-pull mechanism elevates trust between the resource owner's authoritative domain and requesting party's authoritative domain.
+It is recommended to use a push-pull mechanism to increase trust. It means that the resource owner first sends a link<sub><sup><span class="fn"> The link to the shared resources should have a unique random name and it may be delivered to the requesting party through any trusted channel, e.g., standard mail system.</span><sup></sub> to their shared resources to the requesting party. To do this, the requesting party must have its resource box registered at its authorization server, and needs to have its resource box accessible in the form of a well-known resource_uri e.g., mailto:john.doe<span>@</span>example<span>.</span>com for anyone. Here, the requesting party also acts as the resource owner of his resource box. After receiving the resource link, the requesting party's authorization server must set the policy correctly, either by the requesting party itself or automatically by the agent. Only then can the requesting party download the resources from the resource owner's resource server. Such a push-pull mechanism elevates trust between the resource owner's authoritative domain and requesting party's authoritative domain.
+<br>
 
 ## VII. Authority Boundaries, Interactions and Scenarios
 
