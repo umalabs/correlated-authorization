@@ -134,11 +134,11 @@ It is recommended to use a push-pull mechanism to increase trust. It means that 
 
 ## VII. Authority Boundaries, Interactions and Scenarios
 
-&emsp;The <em>correlated authorization</em> framework allows us to indirectly (through the client) link identity providers with authorization services governed by different authorities that are not required to share information or collaborate. The following scenarios demonstrate a system of trust between two authorities that allows the conveyance of identity information from identity providers to authorization services across security domain boundaries.
+&emsp;The <em>correlated authorization</em> framework allows us to indirectly (through the client) link identity providers with authorization servers governed by different authorities that are not required to share information or collaborate. The following scenarios demonstrate a system of trust between two authorities that allows the conveyance of identity information from identity providers to authorization servers across security domain boundaries.
 
 #### *A. Identity Federation Scenario*
 
-&emsp;The scenario illustrated in Figure&nbsp;4 allows you to link a single authorization service to multiple identity providers. The client falls under the governance of the resource owner's respective authority.
+&emsp;The scenario illustrated in Figure&nbsp;4 allows you to link a single authorization server to multiple identity providers. The client falls under the governance of the resource owner's respective authority.
 
 ![Scenario-1](./images/authority-boundaries-scenario-1.svg)
 
@@ -146,25 +146,31 @@ It is recommended to use a push-pull mechanism to increase trust. It means that 
 Fig.&nbsp;4.&emsp;Identity federation scenario
 </p>
 
-#### *B. Federated Authorization Scenario*
+Third-party identity providers.
 
-&emsp;The federated authorization scenario illustrated in Figure&nbsp;5 allows you to link a single identity provider to multiple authorization services. The client falls under the governance of the requesting party's respective authority.
+#### *B. Data Federation Scenario*
+
+&emsp;The data federation scenario illustrated in Figure&nbsp;5 allows you to link a single identity provider to multiple authorization servers. The client falls under the governance of the requesting party's respective authority.
 
 ![Scenario-2](./images/authority-boundaries-scenario-2.svg)
 
 <p class="figure">
-Fig.&nbsp;5.&emsp;Federated authorization scenario
+Fig.&nbsp;5.&emsp;Data federation scenario
 </p>
+
+Third-party authorization servers.
 
 #### *C. Combined Federation Scenario*
 
-&emsp;As the name suggests, the scenario illustrated in Figure&nbsp;6 allows multiple authorization services to be linked to multiple identity providers. The client falls under the governance of a third-party authority.
+&emsp;As the name suggests, the scenario illustrated in Figure&nbsp;6 allows multiple authorization servers to be linked to multiple identity providers. The client does not fall under the governance of the resource owner's respective authority nor the requesting party's respective authority.
 
 ![Scenario-3](./images/authority-boundaries-scenario-3.svg)
 
 <p class="figure">
 Fig.&nbsp;6.&emsp;Combined federation scenario
 </p>
+
+Third-party identity providers and third-party authorization servers.
 
 ## VIII. Use Cases
 
