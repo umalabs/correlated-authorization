@@ -129,12 +129,12 @@ The AS-RO performs an authorization assessment
 
 ## VI. Push-Pull Trust Elevation
 
-It is recommended to use a push-pull mechanism to increase trust. It means that the resource owner first sends a link<sub><sup><span class="fn"> The link to the shared resources should have a unique random name and it may be delivered to the requesting party through any trusted channel, e.g., standard mail system.</span><sup></sub> to their shared resources to the requesting party. To do this, the requesting party must have its resource box registered at its authorization server, and needs to have its resource box accessible in the form of a well-known resource_uri e.g., mailto:john.doe<span>@</span>example<span>.</span>com for anyone. Here, the requesting party also acts as the resource owner of his resource box. After receiving the resource link, the requesting party's authorization server must set the policy correctly, either by the requesting party itself or automatically by the agent. Only then can the requesting party download the resources from the resource owner's resource server. Such a push-pull mechanism elevates trust between the resource owner's authoritative domain and requesting party's authoritative domain.
+It is recommended to use a push-pull mechanism to increase trust. It means that the resource owner first sends a link<sub><sup><span class="fn"> The link to the shared resources should have a unique random name and it may be delivered to the requesting party through any trusted channel, e.g., standard mail system.</span><sup></sub> to their shared resources to the requesting party. To do this, the requesting party must have its resource server registered at its authorization server, and needs to have its resource server accessible in the form of a well-known resource_uri e.g., mailto:john.doe<span>@</span>example<span>.</span>com for anyone. Here, the requesting party also acts as the resource owner of his resource server. After receiving the resource link, the requesting party's authorization server must set the policy correctly, either by the requesting party itself or automatically by the agent. Only then can the requesting party download the resources from the resource owner's resource server. Such a push-pull mechanism elevates trust between the resource owner's authoritative domain and requesting party's authoritative domain.
 <br>
 
 ## VII. Authority Boundaries, Interactions and Scenarios
 
-&emsp;The <em>correlated authorization</em> framework allows us to indirectly (through the client) link identity providers with authorization servers governed by different authorities that are not required to share information or collaborate. The following scenarios demonstrate a system of trust between two authorities that allows the conveyance of identity information from identity providers to authorization servers across security domain boundaries.
+&emsp;The <em>correlated authorization</em> framework allows us to indirectly (through the client) link identity providers with authorization servers governed by different authorities that are not required to share information or collaborate. The following scenarios demonstrate a system of trust between multiple authorities that allows the conveyance of identity information from identity providers to authorization servers across security domain boundaries.
 
 #### *A. Identity Federation Scenario*
 
@@ -146,7 +146,7 @@ It is recommended to use a push-pull mechanism to increase trust. It means that 
 Fig.&nbsp;4.&emsp;Identity federation scenario
 </p>
 
-Third-party identity providers.
+&emsp;The identity federation with many-to-one topology uses third-party identity providers. The requesting party can operate across resource servers govern by single resource owner's respective authority. The push-pull trust elevation mechanism is not applicable in this scenario.
 
 #### *B. Data Federation Scenario*
 
@@ -158,19 +158,19 @@ Third-party identity providers.
 Fig.&nbsp;5.&emsp;Data federation scenario
 </p>
 
-Third-party authorization servers.
+&emsp;The data federation with one-to-many topology uses third-party authorization servers. The requesting party can operate across many resource servers, each of which is governed by a different respective authority of resource owners.
 
-#### *C. Combined Federation Scenario*
+#### *C. Mesh Federation Scenario*
 
 &emsp;As the name suggests, the scenario illustrated in Figure&nbsp;6 allows multiple authorization servers to be linked to multiple identity providers. The client does not fall under the governance of the resource owner's respective authority nor the requesting party's respective authority.
 
 ![Scenario-3](./images/authority-boundaries-scenario-3.svg)
 
 <p class="figure">
-Fig.&nbsp;6.&emsp;Combined federation scenario
+Fig.&nbsp;6.&emsp;Mesh federation scenario
 </p>
 
-Third-party identity providers and third-party authorization servers.
+&emsp;The mesh federation with many-to-many topology uses third-party identity providers and third-party authorization servers. The requesting party can operate across many resource servers govern by many resource owners' respective authorities.
 
 ## VIII. Use Cases
 
@@ -178,12 +178,12 @@ Third-party identity providers and third-party authorization servers.
 
 ## IX. Conclusion and Future Work
 
-The UMA philosophy of the resource owner and the requesting party projected onto the <em>correlated authorization</em> trust framework, matches the philosophy of the sender and recipient of the mail system. In fact, the <em>correlated authorization</em> concept has been designed with the Authorization-Enhanced Mail System [8] in mind. The following are potential future R&D areas:
+&emsp;The UMA philosophy of the resource owner and the requesting party projected onto the <em>correlated authorization</em> trust framework, matches the philosophy of the sender and recipient of the mail system. In fact, the <em>correlated authorization</em> concept has been designed with the Authorization-Enhanced Mail System [8] in mind. The following are potential future R&D areas:
 
 1. Define relationship-driven policies—user-to-user and user-to-resource relationships.
 2. Provide more details on the push-pull mechanism.
 
-A prototype implementation of the proposed framework, working as a proof of concept, would be interesting to build.
+&emsp;A prototype implementation of the proposed framework, working as a proof of concept, would be interesting to build.
 
 ## Acknowledgment
 
