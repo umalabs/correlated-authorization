@@ -11,9 +11,9 @@
 &emsp;<strong><em>Abstract</em></strong>—<em>Correlated authorization</em> is used to build trust between security domains during the conveyance of user information from the identity provider to the authorization server.
 </p>
 <p class="abstract">
-&emsp;This paper introduces <em>correlated authorization</em> as a dual-authority mail trust framework built on top of User-Managed Access (UMA) [1, 2] and OAuth 2.0 Token Exchange [3] protocols that allows users (resource owners) to delegate access to other users (requesting parties) across security domain boundaries. The requesting party is responsible for creating the request, while the resource owner approves this request either when it is online or by creating a policy. The resource owner and the requesting party may belong to different security domains administered by the respective authorities.</p>
+&emsp;This paper introduces <em>correlated authorization</em> as a dual-authority mail trust framework built on top of User-Managed Access (UMA) [1, 2] and OAuth 2.0 [3] protocols that allows users (resource owners) to delegate access to other users (requesting parties) across security domain boundaries. The requesting party is responsible for creating the request, while the resource owner approves this request either when it is online or by creating a policy. The resource owner and the requesting party may belong to different security domains administered by the respective authorities.</p>
 <p class="abstract">
-&emsp;The proposed concept uses a permission ticket issued by the resource owner's authorization server as a correlation handle that binds the requesting party's claims to the authorization process. An email address is used as the unique requesting party identifier. The requesting party authenticates to the resource owner's authorization server using a challenge-response authentication protocol, while the push-pull mechanism elevates trust between the respective authorities.
+&emsp;The proposed concept uses a permission ticket issued by the resource owner's authorization server as a correlation handle that binds the requesting party's claims to the authorization process. An email address is used as the unique requesting party identifier. The requesting party authenticates to the resource owner's authorization server using a challenge-response authentication protocol, while the push-pull mechanism elevates trust between the respective authorities. On the requesting party side, <em>correlated authorization</em> uses the token exchange extension of OAuth 2.0 protocol [4] as a counterpart to the UMA protocol.
 </p>
 <p class="abstract">
 &emsp;Given these capabilities, <em>correlated authorization</em> is becoming an essential enabler of email infrastructure modernization.
@@ -21,7 +21,7 @@
 
 ## I. Introduction
 
-&emsp;With the growing popularity of protocols based on the OAuth 2.0 [4] specification, there is a need for an interoperable standard that specifies how to convey information about the user from an identity provider to an authorization server, especially across security domain boundaries. The problem is that such a system is difficult to design because OAuth2 [4], OIDC [5] and UMA are single-authority protocols. This draft profiles and combines the OAuth2 and UMA protocols into a dual-authority framework, which not only meets the needs of interoperability, but also elevates trust between mutually unknown parties.
+&emsp;With the growing popularity of protocols based on the OAuth 2.0 [3] specification, there is a need for an interoperable standard that specifies how to convey information about the user from an identity provider to an authorization server, especially across security domain boundaries. The problem is that such a system is difficult to design because OAuth 2.0 [3], OIDC [5] and UMA are single-authority protocols. This draft profiles and combines the OAuth 2.0 and UMA protocols into a dual-authority framework, which not only meets the needs of interoperability, but also elevates trust between mutually unknown parties.
 
 ## II. Motivation
 
@@ -62,13 +62,11 @@ Fig.&nbsp;2.&emsp;Unilateral entity authentication protocol
 
 ## V. Sequence Diagram
 
-&emsp;The following sequence diagram describes the mechanism and policies of the <em>correlated authorization</em> framework, which utilizes the UMA protocol with the token exchange extension of OAuth2, where an access token is used to obtain a claims token from the Security Token Service (STS) endpoint.
+&emsp;The following sequence diagram describes the mechanism and policies of the <em>correlated authorization</em> framework, which utilizes the UMA protocol with the token exchange extension of OAuth 2.0 [4], where an access token is used to obtain a claims token from the Security Token Service (STS) endpoint.
 
 #### *UMA Profile*
 
 &emsp;The sequence diagram<sub><sup><span class="fn">A more detailed diagram is shown on the last page.</span><sup></sub> illustrated in Figure&nbsp;3 represents a profile of the UMA protocol and is in full compliance with the UMA 2.0 specification<sub><sup><span class="fn">Unlike the UMA specification, the <em>correlated authorization</em> framework allows the use of the UMA grant with or without client authentication or identification. Whether or not to allow unauthenticated or unidentified clients are policy decisions that are at the discretion of the authorization server.</span><sup></sub>.
-<br>
-<br>
 
 ![Sequence Diagram](./images/correlated-authorization.svg)
 
@@ -78,7 +76,7 @@ Fig.&nbsp;3.&emsp;<em>Correlated authorization</em> sequence diagram
 
 Prerequisites:
 
-* The AS-RqP supports the OAuth 2.0 Token Exchange [3] extension of OAuth2.
+* The AS-RqP supports the OAuth 2.0 Token Exchange [4] extension of OAuth 2.0.
 * The AS-RqP publishes its metadata on a URL /.well-known/oauth-authorization-server (alternatively on /.well-known/openid-configuration).
 * The AS-RqP also acts as RqP's Identity Provider.
 * The client is registered at the AS-RqP as a public or confidential client and acts as a Relying Party in a RqP's Identity Provider in order to obtain an access token with user claims.
@@ -130,7 +128,6 @@ The AS-RO performs an authorization assessment
 ## VI. Push-Pull Trust Elevation
 
 It is recommended to use a push-pull mechanism to increase trust. It means that the resource owner first sends a link<sub><sup><span class="fn"> The link to the shared resources should have a unique random name and it may be delivered to the requesting party through any trusted channel, e.g., standard mail system.</span><sup></sub> to their shared resources to the requesting party. To do this, the requesting party must have its resource server registered at its authorization server, and needs to have its resource server accessible in the form of a well-known resource_uri e.g., mailto:john.doe<span>@</span>example<span>.</span>com for anyone. Here, the requesting party also acts as the resource owner of his resource server. After receiving the resource link, the requesting party's authorization server must set the policy correctly, either by the requesting party itself or automatically by the agent. Only then can the requesting party download the resources from the resource owner's resource server. Such a push-pull mechanism elevates trust between the resource owner's authoritative domain and requesting party's authoritative domain.
-<br>
 
 ## VII. Authority Boundaries, Interactions and Scenarios
 
@@ -194,8 +191,8 @@ Fig.&nbsp;6.&emsp;Mesh federation scenario
 <p class="references">
 [1]&nbsp;E. Maler, M. Machulak, J. Richer, and T. Hardjono, “User-Managed Access (UMA) 2.0 Grant for OAuth 2.0 Authorization,” Internet Engineering Task Force (2019), https://datatracker.ietf.org/doc/draftmaler-oauth-umagrant-00.<br>
 [2]&nbsp;E. Maler, M. Machulak, J. Richer, and T. Hardjono, “Federated Authorization for User-Managed Access (UMA) 2.0,” Internet Engineering Task Force (2019), https://datatracker.ietf.org/doc/draftmaler-oauth-umagrant-00.<br>
-[3]&nbsp;M. Jones, A. Nadalin, B. Campbell, J. Bradley, C. Mortimore, “OAuth 2.0 Token Exchange,” RFC 8693 (2020), https://rfc-editor.org/rfc/rfc8693.txt.<br>
-[4]&nbsp;E. D. Hardt, “The OAuth 2.0 Authorization Framework,” IETF RFC 6749 (Informational), 2012, http://tools.ietf.org/html/rfc6749.<br>
+[3]&nbsp;E. D. Hardt, “The OAuth 2.0 Authorization Framework,” IETF RFC 6749 (Informational), 2012, http://tools.ietf.org/html/rfc6749.<br>
+[4]&nbsp;M. Jones, A. Nadalin, B. Campbell, J. Bradley, C. Mortimore, “OAuth 2.0 Token Exchange,” RFC 8693 (2020), https://rfc-editor.org/rfc/rfc8693.txt.<br>
 [5]&nbsp;OpenID specifications at “OpenID Foundation,” 2022, https://openid.net/developers/specs/.<br>
 [6]&nbsp;“UMA telecon 2016-03-31” https://kantarainitiative.org/confluence/display/uma/UMA+telecon+2016-03-31<br>
 [7]&nbsp;National Institute of Standards and Technology, “FIPS PUB 196: Entity Authentication Using Public Key Cryptography,” 1997. [Online]. Available: https://csrc.nist.gov/csrc/media/publications/fips/196/archive/1997-02-18/documents/fips196.pdf.<br>
