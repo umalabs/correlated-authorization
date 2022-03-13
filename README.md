@@ -129,9 +129,13 @@ The AS-RO performs an authorization assessment
 
 &emsp;It is recommended to use a push-pull mechanism to increase trust. It means that the resource owner first sends a link<sub><sup><span class="fn"> In general, the link to shared resources may be transfered to the requesting party through any trusted channel, e.g., using store-and-forward systems such as the mail system that uses the push—fire-and-forget Simple Mail Transfer Protocol (SMTP). In any case, the shared resource uri should contain a random string.</span><sup></sub> to their shared resources to the requesting party. To do this, the requesting party must have its resource server registered at its authorization server, and needs to have its resource server accessible in the form of a well-known resource_uri e.g., mailto:john.doe<span>@</span>example<span>.</span>com for anyone. Here, the requesting party also acts as the resource owner of his resource server. After receiving the resource link, the requesting party's authorization server must set the policy correctly, either by the requesting party itself or automatically by the agent. Only then can the requesting party download the resources from the resource owner's resource server. Such a push-pull mechanism elevates trust between the resource owner's authoritative domain and requesting party's authoritative domain.
 
+## VII. Compatibility with Mail System
+
+&emsp;The <em>correlated authorization</em> push-pull communications mechanism forms the basis of a specific network topology that allows nodes to be organized in such a way that push data transfer can use a different route than pull data transfer. In other words, the sender can push a uri of its email resources—which may reside on any sender's resource server—to the recipient's mailbox, where in the follow-up operation, the recipient downloads the email resources to any of its resource servers.
+
 &emsp;Generally speaking, the push-pull trust elevation mechanism can utilize existing email infrastructure, or a new secure web-based communication infrastructure needs to be built based on <em>correlated authorization</em> itself. The new-built infrastructure should mirror existing email infrastructure.
 
-## VII. Authority Boundaries, Interactions and Scenarios
+## VIII. Authority Boundaries, Interactions and Scenarios
 
 &emsp;The <em>correlated authorization</em> framework allows us to indirectly (through the client) link identity providers with authorization servers governed by different authorities that are not required to share information or collaborate. The following scenarios demonstrate a system of trust between multiple authorities that allows the conveyance of identity information from identity providers to authorization servers across security domain boundaries.
 
@@ -171,11 +175,11 @@ Fig.&nbsp;6.&emsp;Mesh federation scenario
 
 &emsp;The mesh federation with many-to-many topology uses third-party identity providers and third-party authorization servers. The requesting party can operate across many resource servers govern by many resource owners' respective authorities.
 
-## VIII. Use Cases
+## IX. Use Cases
 
 &emsp;Secure cross-domain data exchange systems. In particular, Authorization-Enhanced Mail System [8]. Furthermore, file sharing, instant messaging, teleconferencing. Also, Healthcare systems, Fintech and Telco services.
 
-## IX. Conclusion and Future Work
+## X. Conclusion and Future Work
 
 &emsp;The UMA philosophy of the resource owner and the requesting party projected onto the <em>correlated authorization</em> trust framework, matches the philosophy of the sender and recipient of the mail system. In fact, the <em>correlated authorization</em> concept has been designed with the Authorization-Enhanced Mail System [8] in mind. The following are potential future R&D areas:
 
