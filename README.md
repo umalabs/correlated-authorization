@@ -203,7 +203,7 @@ Fig.&nbsp;6.&emsp;Mesh federation scenario
 [5]&nbsp;OpenID specifications at “OpenID Foundation,” 2022, https://openid.net/developers/specs/.<br>
 [6]&nbsp;“UMA telecon 2016-03-31” https://kantarainitiative.org/confluence/display/uma/UMA+telecon+2016-03-31<br>
 [7]&nbsp;National Institute of Standards and Technology, “FIPS PUB 196: Entity Authentication Using Public Key Cryptography,” 1997. [Online]. Available: https://csrc.nist.gov/csrc/media/publications/fips/196/archive/1997-02-18/documents/fips196.pdf.<br>
-[8]&nbsp;I. Zboran “Authorization-Enhanced Mail System” GitHub repository https://github.com/umalabs/authorization-enhanced-mail-system.<br>
+[8]&nbsp;I. Zboran “Authorization-Enhanced Mail System” GitHub repository https://github.com/umalabs/authorization-enhanced-mail-system/raw/main/Authorization-Enhanced_Mail_System.pdf.<br>
 [9]&nbsp;“User-Managed Access” Work Group at “Kantara Initiative” https://kantarainitiative.org/confluence/display/uma/Home.<br>
 [10]&nbsp;“The WG-UMA Archives” https://kantarainitiative.org/pipermail/wg-uma/.<br>
 [11]&nbsp;“Kantara Initiative User Managed Access WG” https://groups.google.com/g/kantara-initiative-uma-wg.<br>
