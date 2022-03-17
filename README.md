@@ -186,6 +186,7 @@ Fig.&nbsp;6.&emsp;Mesh federation scenario
 
 1. Define relationship-driven policies—user-to-user and user-to-resource relationships.
 2. Provide more details on the push-pull mechanism.
+3. Explore other ways of data origin authenticity (WebFinger, DKIM). Use the DKIM signed email in a claims token as an expedient way to convey some asserted attributes about the sender (alternatively, after forwarding, about the recipient also).
 
 &emsp;A prototype implementation of the proposed framework, working as a proof of concept, would be interesting to build.
 
