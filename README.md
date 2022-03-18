@@ -85,7 +85,7 @@ Prerequisites:
 
 Steps:
 
-1. The RqP directs the client to access the resource_uri with no access token.
+1. The RqP directs the client to access the resource_uri e.g., to get or post data, with no access token.
 2. The RS requests a permission ticket. <dl><dt></dt><dd>The AS generates the permission ticket itself (ticket is a random NONCE) and the permission token<sub><sup><span class="fn"> The permission token is not mentioned in the UMA specification. A detailed description of the permission token format is out of scope of this paper.</span><sup></sub>, which is bound to the permission ticket through a permission ticket hash. The permission token contains these claims:&nbsp;{issuer,&nbsp;ts,&nbsp;rs_uri,&nbsp;resource_uri_hash,&nbsp;permission_ticket_hash} where  
 -&nbsp;issuer is the URI that identifies who issues the permission token  
 -&nbsp;ts is the timestamp of when the permission ticket was created  
@@ -122,7 +122,7 @@ The AS-RO performs an authorization assessment
 &nbsp;8.&nbsp;compare permission_ticket_hash vs. Base64URL-Encode(SHA256(permission_ticket))
 &nbsp;9.&nbsp;evaluate user_claims</dd></dl>
 8. After an authorization assessment, it is positive, the AS-RO returns RPT.
-9. With the valid RPT the client tries to access the resource_uri.
+9. With the valid RPT the client tries to access the resource_uri e.g., to get or post data.
 10. The RS validates the RPT, it is valid, the RS allow access the protected resource.
 
 ## VI. Push-Pull Trust Elevation
