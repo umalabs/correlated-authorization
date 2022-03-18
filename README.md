@@ -8,15 +8,15 @@
 </p>
 
 <p class="abstract">
-&emsp;<strong><em>Abstract</em></strong>—<em>Correlated authorization</em> is used to build trust between security domains during the conveyance of user information from the identity provider to the authorization server.
+&emsp;<strong><em>Abstract</em></strong>—Correlated Authorization is used to build trust between security domains during the conveyance of user information from the identity provider to the authorization server.
 </p>
 <p class="abstract">
-&emsp;This paper introduces <em>correlated authorization</em> as a dual-authority mail trust framework built on top of User-Managed Access (UMA) [1, 2] and OAuth 2.0 [3] protocols that allows users (resource owners) to delegate access to other users (requesting parties) across security domain boundaries. The requesting party is responsible for creating the request, while the resource owner approves this request either when it is online or by creating a policy. The resource owner and the requesting party may belong to different security domains administered by the respective authorities.</p>
+&emsp;This paper introduces Correlated Authorization as a dual-authority mail trust framework built on top of User-Managed Access (UMA) [1, 2] and OAuth 2.0 [3] protocols that allows users (resource owners) to delegate access to other users (requesting parties) across security domain boundaries. The requesting party is responsible for creating the request, while the resource owner approves this request either when it is online or by creating a policy. The resource owner and the requesting party may belong to different security domains administered by the respective authorities.</p>
 <p class="abstract">
-&emsp;The proposed concept uses a permission ticket issued by the resource owner's authorization server as a correlation handle that binds the requesting party's claims to the authorization process. An email address is used as the unique requesting party identifier. The requesting party authenticates to the resource owner's authorization server using a challenge-response authentication protocol, while the push-pull mechanism elevates trust between the respective authorities. On the requesting party side, <em>correlated authorization</em> uses the token exchange extension of OAuth 2.0 protocol [4] as a counterpart to the UMA protocol.
+&emsp;The proposed concept uses a permission ticket issued by the resource owner's authorization server as a correlation handle that binds the requesting party's claims to the authorization process. An email address is used as the unique requesting party identifier. The requesting party authenticates to the resource owner's authorization server using a challenge-response authentication protocol, while the push-pull mechanism elevates trust between the respective authorities. On the requesting party side, Correlated Authorization uses the token exchange extension of OAuth 2.0 protocol [4] as a counterpart to the UMA protocol.
 </p>
 <p class="abstract">
-&emsp;Given these capabilities, <em>correlated authorization</em> is becoming an essential enabler of email infrastructure modernization.
+&emsp;Given these capabilities, Correlated Authorization is becoming an essential enabler of email infrastructure modernization.
 </p>
 
 ## I. Introduction
@@ -25,7 +25,7 @@
 
 ## II. Motivation
 
-&emsp;<em>Correlated authorization</em> is an attempt to revive UMA WG's original idea—UMA wide ecosystem [6], when the resource owner and requesting party might "know each other" in the real world, but the resource owner's authorization server has no pre-established trust with the requesting party or any of their identity/claims providers—in other words, when the resource owner's authorization server and requesting party's identity provider don't know each other.
+&emsp;Correlated Authorization is an attempt to revive UMA WG's original idea—UMA wide ecosystem [6], when the resource owner and requesting party might "know each other" in the real world, but the resource owner's authorization server has no pre-established trust with the requesting party or any of their identity/claims providers—in other words, when the resource owner's authorization server and requesting party's identity provider don't know each other.
 
 ## III. UMA Wide Ecosystem Concept
 
@@ -50,7 +50,7 @@ The UMA wide ecosystem concept uses relationship-driven policies to drive automa
 
 ## IV. Challenge-Response Authentication Protocol
 
-&emsp;Figure&nbsp;2 shows the unilateral entity authentication protocol [7] adapted for the <em>correlated authorization</em> framework that links an authenticator with the verifier through the client, and allows the claimant to convey identity information to the verifier.
+&emsp;Figure&nbsp;2 shows the unilateral entity authentication protocol [7] adapted for the Correlated Authorization framework that links an authenticator with the verifier through the client, and allows the claimant to convey identity information to the verifier.
 
 ![Challenge-Response Authentication](./images/challenge-response-authentication.svg)
 
@@ -62,16 +62,16 @@ Fig.&nbsp;2.&emsp;Unilateral entity authentication protocol
 
 ## V. Sequence Diagram
 
-&emsp;The following sequence diagram describes the mechanism and policies of the <em>correlated authorization</em> framework, which utilizes the UMA protocol with the token exchange extension of OAuth 2.0 [4], where an access token is used to obtain a claims token from the Security Token Service (STS) endpoint.
+&emsp;The following sequence diagram describes the mechanism and policies of the Correlated Authorization framework, which utilizes the UMA protocol with the token exchange extension of OAuth 2.0 [4], where an access token is used to obtain a claims token from the Security Token Service (STS) endpoint.
 
 #### *UMA Profile*
 
-&emsp;The sequence diagram<sub><sup><span class="fn">A more detailed diagram is shown on the last page.</span><sup></sub> illustrated in Figure&nbsp;3 represents a profile of the UMA protocol and is in full compliance with the UMA 2.0 specification<sub><sup><span class="fn">Unlike the UMA specification, the <em>correlated authorization</em> framework allows the use of the UMA grant with or without client authentication or identification. Whether or not to allow unauthenticated or unidentified clients are policy decisions that are at the discretion of the authorization server.</span><sup></sub>.
+&emsp;The sequence diagram<sub><sup><span class="fn">A more detailed diagram is shown on the last page.</span><sup></sub> illustrated in Figure&nbsp;3 represents a profile of the UMA protocol and is in full compliance with the UMA 2.0 specification<sub><sup><span class="fn">Unlike the UMA specification, the Correlated Authorization framework allows the use of the UMA grant with or without client authentication or identification. Whether or not to allow unauthenticated or unidentified clients are policy decisions that are at the discretion of the authorization server.</span><sup></sub>.
 
 ![Sequence Diagram](./images/correlated-authorization.svg)
 
 <p class="figure">
-Fig.&nbsp;3.&emsp;<em>Correlated authorization</em> sequence diagram
+Fig.&nbsp;3.&emsp;Correlated Authorization sequence diagram
 </p>
 
 Prerequisites:
@@ -132,13 +132,13 @@ The AS-RO performs an authorization assessment
 
 ## VII. Compatibility with Mail System
 
-&emsp;The <em>correlated authorization</em> push-pull communications mechanism forms the basis of a specific network topology that allows nodes to be organized in such a way that push data transfer can use a different route than pull data transfer. In other words, the sender can push a uri of its email resources—which may reside on any sender's resource server—to the recipient's mailbox, where in the follow-up operation, the recipient downloads the email resources to any of its resource servers. What exactly this means is described in detail in the paper Authorization-Enhanced Mail System [8].
+&emsp;The Correlated Authorization push-pull communications mechanism forms the basis of a specific network topology that allows nodes to be organized in such a way that push data transfer can use a different route than pull data transfer. In other words, the sender can push a uri of its email resources—which may reside on any sender's resource server—to the recipient's mailbox, where in the follow-up operation, the recipient downloads the email resources to any of its resource servers. What exactly this means is described in detail in the paper Authorization-Enhanced Mail System [8].
 
-&emsp;Generally speaking, the push-pull trust elevation mechanism can utilize existing email infrastructure, or a new secure web-based communication infrastructure needs to be built based on <em>correlated authorization</em> itself. The new-built infrastructure should mirror existing email infrastructure.
+&emsp;Generally speaking, the push-pull trust elevation mechanism can utilize existing email infrastructure, or a new secure web-based communication infrastructure needs to be built based on Correlated Authorization itself. The new-built infrastructure should mirror existing email infrastructure.
 
 ## VIII. Authority Boundaries, Interactions and Scenarios
 
-&emsp;The <em>correlated authorization</em> framework allows us to indirectly (through the client) link identity providers with authorization servers governed by different authorities that are not required to share information or collaborate. The following scenarios demonstrate a system of trust between multiple authorities that allows the conveyance of identity information from identity providers to authorization servers across security domain boundaries.
+&emsp;The Correlated Authorization framework allows us to indirectly (through the client) link identity providers with authorization servers governed by different authorities that are not required to share information or collaborate. The following scenarios demonstrate a system of trust between multiple authorities that allows the conveyance of identity information from identity providers to authorization servers across security domain boundaries.
 
 #### *A. Identity Federation Scenario*
 
@@ -182,7 +182,7 @@ Fig.&nbsp;6.&emsp;Mesh federation scenario
 
 ## X. Conclusion and Future Work
 
-&emsp;The UMA philosophy of the resource owner and the requesting party projected onto the <em>correlated authorization</em> trust framework, matches the philosophy of the sender and recipient of the mail system. In fact, the <em>correlated authorization</em> concept has been designed with the Authorization-Enhanced Mail System [8] in mind. The following are potential future R&D areas:
+&emsp;The UMA philosophy of the resource owner and the requesting party projected onto the Correlated Authorization trust framework, matches the philosophy of the sender and recipient of the mail system. In fact, the Correlated Authorization concept has been designed with the Authorization-Enhanced Mail System [8] in mind. The following are potential future R&D areas:
 
 1. Define relationship-driven policies—user-to-user and user-to-resource relationships.
 2. Provide more details on the push-pull mechanism.
