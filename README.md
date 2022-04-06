@@ -8,7 +8,7 @@
 </p>
 
 <p class="abstract">
-&emsp;<strong><em>Abstract</em></strong>—Provenance of identity and data credibility are fundamental to the cybersecurity of the Internet as a whole. As business boundaries are redrawn, it is becoming increasingly clear that a flexible, multi-domain authorization mechanism is needed.
+&emsp;<strong><em>Abstract</em></strong>—Provenance of data is fundamental to the cybersecurity of the Internet as a whole. As business boundaries are redrawn, it is becoming increasingly clear that a flexible, multi-domain authorization mechanism is needed.
 </p>
 <p class="abstract">
 &emsp;This paper introduces Correlated Authorization as a dual-authority trust framework built on top of User-Managed Access (UMA) [1, 2] and OAuth 2.0 [3, 4] protocols that allow users (resource owners) to delegate access to other users (requesting parties) across security domain boundaries. The requesting party is responsible for creating the request, while the resource owner approves this request either when it is online or by creating a policy. The resource owner and the requesting party may belong to different security domains administered by the respective authorities.</p>
