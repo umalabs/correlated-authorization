@@ -61,9 +61,17 @@ Fig.&nbsp;2.&emsp;Unilateral entity authentication protocol
 
 &emsp;The following sequence diagram describes the mechanism and policies of the Correlated Authorization framework, which utilizes the UMA protocol with the token exchange extension of OAuth 2.0 [4], where an access token is used to obtain a claims token from the Security Token Service (STS) endpoint.
 
-#### *UMA Profile*
+#### *A. UMA Profile*
 
 &emsp;The sequence diagram (a detailed diagram is shown on the last page) illustrated in Figure&nbsp;3 represents a profile of the UMA protocol and is in full compliance with the UMA 2.0 specification. Unlike the UMA specification, the Correlated Authorization framework allows the use of the UMA grant with or without client authentication or identification. Whether or not to allow unauthenticated or unidentified clients are policy decisions that are at the discretion of the authorization server.
+
+#### *B. Resource Description*
+
+&emsp;The Correlated Authorization framework extends the Resource Description definition [8] and adds a *hash* parameter to the resource description that contains the hash value of the contents of the registered resource set.
+
+#### *C. Separation of Responsibility and Authority*
+
+&emsp;The Correlated Authorization framework extends the definition of the Separation of Responsibility and Authority [9] to allow to configure policy conditions by the RS on behalf of its user. 
 
 ![Sequence Diagram](./images/correlated-authorization.svg)
 
@@ -78,7 +86,8 @@ Prerequisites:
 * The AS-RqP also acts as RqP's Identity Provider.
 * The client is registered at the AS-RqP as a public or confidential client and acts as a Relying Party in an RqP's Identity Provider in order to obtain an access token with user claims.
 * The client should be registered at the AS-RO as a public or confidential client; in case of immediate access, the client does not have to be registered at the AS-RO.
-* The RO has set up the RS and registers his resource at the AS-RO to get his resource_uri according to the UMA Federated Authorization [2] specification.
+* The RO has set up the RS and registers his resource at the AS-RO to get his resource_uri according to the UMA Federated Authorization [2] specification and the Resource Description extension.
+* The RO sets policies to the resource sets with the authorization server to indicate who can access the resources. 
 
 Steps:
 
@@ -135,7 +144,7 @@ In general, the link to shared resources may be transferred to the requesting pa
 
 ## VII. Compatibility with Mail System
 
-&emsp;The Correlated Authorization push-pull communications mechanism forms the basis of a specific network topology that allows nodes to be organized in such a way that push data transfer can use a different route than pull data transfer. In other words, the sender can push a URI of its email resources—which may reside on any sender's resource server—to the recipient's mailbox, where in the follow-up operation, the recipient downloads the email resources to any of its resource servers. What exactly this means is described in detail in the paper Authorization-Enhanced Mail System [8].
+&emsp;The Correlated Authorization push-pull communications mechanism forms the basis of a specific network topology that allows nodes to be organized in such a way that push data transfer can use a different route than pull data transfer. In other words, the sender can push a URI of its email resources—which may reside on any sender's resource server—to the recipient's mailbox, where in the follow-up operation, the recipient downloads the email resources to any of its resource servers. What exactly this means is described in detail in the paper Authorization-Enhanced Mail System [10].
 
 &emsp;Generally speaking, the push-pull trust elevation mechanism can utilize existing email infrastructure, or a new secure web-based communication infrastructure needs to be built based on Correlated Authorization itself. The new-built infrastructure should mirror existing email infrastructure.
 
@@ -181,11 +190,11 @@ Fig.&nbsp;6.&emsp;Mesh federation scenario
 
 ## IX. Use Cases
 
-&emsp;Secure cross-domain data exchange systems. In particular, Authorization-Enhanced Mail System [8]. Furthermore, file sharing, instant messaging, teleconferencing. Also, Healthcare systems, Fintech, and Telco services.
+&emsp;Secure cross-domain data exchange systems. In particular, Authorization-Enhanced Mail System [9]. Furthermore, file sharing, instant messaging, teleconferencing. Also, Healthcare systems, Fintech, and Telco services.
 
 ## X. Conclusion and Future Work
 
-&emsp;The UMA philosophy of the resource owner and the requesting party projected onto the Correlated Authorization trust framework matches the philosophy of the sender and recipient of the mail system. In fact, the Correlated Authorization concept has been designed with the Authorization-Enhanced Mail System [8] in mind. The following are potential future R&D areas:
+&emsp;The UMA philosophy of the resource owner and the requesting party projected onto the Correlated Authorization trust framework matches the philosophy of the sender and recipient of the mail system. In fact, the Correlated Authorization concept has been designed with the Authorization-Enhanced Mail System [10] in mind. The following are potential future R&D areas:
 
 1. Define relationship-driven policies—user-to-user and user-to-resource relationships.
 2. Provide more details on the push-pull mechanism.
@@ -195,7 +204,7 @@ Fig.&nbsp;6.&emsp;Mesh federation scenario
 
 ## Acknowledgment
 
-&emsp;This work has benefited from the valuable discussions with Eve Maler, founder of WG-UMA [9], and Alec Laws, chair of WG-UMA [9]. Both gave feedback that improved this paper's content. Last but not least, the UMA Work Group archives [10, 11] serve as a source of comprehensive information on authorization-related topics—many thanks to all involved.
+&emsp;This work has benefited from the valuable discussions with Eve Maler, founder of WG-UMA [11], and Alec Laws, chair of WG-UMA [11]. Both gave feedback that improved this paper's content. Last but not least, the UMA Work Group archives [12, 13] serve as a source of comprehensive information on authorization-related topics—many thanks to all involved.
 
 ## References
 
@@ -207,10 +216,12 @@ Fig.&nbsp;6.&emsp;Mesh federation scenario
 [5]&nbsp;OpenID specifications at "OpenID Foundation," 2022, https://openid.net/developers/specs/.<br>
 [6]&nbsp;"UMA telecon 2016-03-31," https://kantarainitiative.org/confluence/display/uma/UMA+telecon+2016-03-31<br>
 [7]&nbsp;National Institute of Standards and Technology, "FIPS PUB 196: Entity Authentication Using Public Key Cryptography," 1997. [Online]. Available: https://csrc.nist.gov/csrc/media/publications/fips/196/archive/1997-02-18/documents/fips196.pdf.<br>
-[8]&nbsp;I. Zboran "Authorization-Enhanced Mail System," GitHub repository, March 2022, https://github.com/umalabs/authorization-enhanced-mail-system/releases/download/v0.1/Authorization-Enhanced_Mail_System.pdf.<br>
-[9]&nbsp;"User-Managed Access" Work Group at "Kantara Initiative," https://kantarainitiative.org/confluence/display/uma/Home.<br>
-[10]&nbsp;"The WG-UMA Archives," https://kantarainitiative.org/pipermail/wg-uma/.<br>
-[11]&nbsp;"Kantara Initiative User-Managed Access WG," https://groups.google.com/g/kantara-initiative-uma-wg.<br>
+[8]&nbsp;E. Maler, M. Machulak, J. Richer, and T. Hardjono, "Federated Authorization for User-Managed Access (UMA) 2.0, Resource Description" Internet Engineering Task Force (2019), https://docs.kantarainitiative.org/uma/wg/rec-oauth-uma-federated-authz-2.0.html#resource-set-desc.<br>
+[9]&nbsp;E. Maler, M. Machulak, J. Richer, and T. Hardjono, "Federated Authorization for User-Managed Access (UMA) 2.0,  Separation of Responsibility and Authority" Internet Engineering Task Force (2019), https://docs.kantarainitiative.org/uma/wg/rec-oauth-uma-federated-authz-2.0.html#fed-authz.<br>
+[10]&nbsp;I. Zboran "Authorization-Enhanced Mail System," GitHub repository, March 2022, https://github.com/umalabs/authorization-enhanced-mail-system/releases/download/v0.1/Authorization-Enhanced_Mail_System.pdf.<br>
+[11]&nbsp;"User-Managed Access" Work Group at "Kantara Initiative," https://kantarainitiative.org/confluence/display/uma/Home.<br>
+[12]&nbsp;"The WG-UMA Archives," https://kantarainitiative.org/pipermail/wg-uma/.<br>
+[13]&nbsp;"Kantara Initiative User-Managed Access WG," https://groups.google.com/g/kantara-initiative-uma-wg.<br>
 </p>
 
 <div class="diagram">
