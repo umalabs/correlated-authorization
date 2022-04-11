@@ -21,5 +21,7 @@ group Authorization assessment
 note over AS-RO:RqP-related evaluation
 end
 Client<-AS-RO:8.
-RS<-Client:9.
-RS->Client:10.
+Client->Client:9.
+RS<-Client:10.
+RS->Client:11.
+Client->Client:12.

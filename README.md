@@ -132,12 +132,13 @@ The AS-RO performs an authorization assessment
 &nbsp;7.&nbsp;extract permission_ticket_hash claim from claims_token
 &nbsp;8.&nbsp;compare permission_ticket_hash vs. Base64URL-Encode(SHA256(permission_ticket))
 &nbsp;9.&nbsp;evaluate user_claims</dd></dl>
-8. After an authorization assessment, it is positive, the AS-RO returns RPT. If applicable, RPT is in the form of JWT with resource provenance and resource authenticity claims e.g.:
--&nbsp;email_address the email address of resource owner
--&nbsp;hash the hash value of the contents of the requested resource set<br>
-9. With the valid RPT the client tries to access the resource_uri e.g., to get or post data.
-10. The RS validates the RPT; it is valid, the RS allows access to the protected resource.
-11. If applicable, the client can verify the resource provenance and authenticity.
+8. After an authorization assessment, it is positive, the AS-RO returns RPT. The RPT is in the form of JWT with resource provenance and resource authenticity claims e.g.:
+-&nbsp;*email_address* the RO's email address
+-&nbsp;*hash* the hash value of the contents of the requested resource set<br>
+9. Verify the resource provenance against the *email_address* value from the RPT claims.
+10. With the valid RPT the client tries to access the resource_uri e.g., to get or post data.
+11. The RS validates the RPT; it is valid, the RS allows access to the protected resource.
+12. The client can validate the requested data against the *hash* value from the RPT claims to verify data authenticity (applicable for the *get* request).
 
 ## VI. Push-Pull Trust Elevation
 
