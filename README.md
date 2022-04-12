@@ -8,7 +8,7 @@
 </p>
 
 <p class="abstract">
-&emsp;<strong><em>Abstract</em></strong>—Trustworthiness of data—determined by its provenance and authenticity—is fundamental to the cybersecurity of the Internet as a whole. As business boundaries are redrawn, it is becoming increasingly clear that a flexible, trust framework is needed to support the digital economy.
+&emsp;<strong><em>Abstract</em></strong>—Trustworthiness of data—determined by its provenance—is fundamental to the cybersecurity of the Internet as a whole. As business boundaries are redrawn, it is becoming increasingly clear that a flexible, trust framework is needed to support the digital economy.
 </p>
 <p class="abstract">
 &emsp;This paper introduces Correlated Authorization as a dual-authority trust framework built on top of User-Managed Access (UMA) [1, 2] and OAuth 2.0 [3, 4] protocols that allow users (resource owners) to delegate access to other users (requesting parties) across security domain boundaries. The requesting party is responsible for creating the request, while the resource owner approves this request either when it is online or by creating a policy. The resource owner and the requesting party may belong to different security domains administered by the respective authorities.</p>
@@ -67,7 +67,7 @@ Fig.&nbsp;2.&emsp;Unilateral entity authentication protocol
 
 #### *B. Resource Description*
 
-&emsp;The Correlated Authorization framework extends the Resource Description definition [8] and adds a *hash* parameter to the resource description that contains the hash value of the contents of the registered resource set.
+&emsp;The Correlated Authorization framework extends the Resource Description definition [8] and adds an optional *hash* parameter to the resource description that contains the hash value of the contents of the registered resource set.
 
 #### *C. Separation of Responsibility and Authority*
 
@@ -132,13 +132,13 @@ The AS-RO performs an authorization assessment
 &nbsp;7.&nbsp;extract permission_ticket_hash claim from claims_token
 &nbsp;8.&nbsp;compare permission_ticket_hash vs. Base64URL-Encode(SHA256(permission_ticket))
 &nbsp;9.&nbsp;evaluate user_claims</dd></dl>
-8. After an authorization assessment, it is positive, the AS-RO returns RPT. The RPT is in the form of JWT with resource provenance and resource authenticity claims e.g.:
+8. After an authorization assessment, it is positive, the AS-RO returns RPT. The RPT is in the form of JWT with the required resource provenance claims and optional resource authenticity claims e.g.:
 -&nbsp;*email_address* the RO's email address
 -&nbsp;*hash* the hash value of the contents of the requested resource set<br>
 9. Verify the resource provenance against the *email_address* value from the RPT claims.
 10. With the valid RPT the client tries to access the resource_uri e.g., to get or post data.
 11. The RS validates the RPT; it is valid, the RS allows access to the protected resource.
-12. The client can validate the requested data against the *hash* value from the RPT claims to verify data authenticity (applicable for the *get* request).
+12. If applicable, the client can validate the requested data against the *hash* value from the RPT claims to verify data authenticity.
 
 ## VI. Push-Pull Trust Elevation
 
