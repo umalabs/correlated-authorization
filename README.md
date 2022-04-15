@@ -70,9 +70,13 @@ Fig.&nbsp;2.&emsp;Unilateral entity authentication protocol
 
 #### *B. Resource Description*
 
-&emsp;The Correlated Authorization framework extends the Resource Description definition [8] and adds an optional *hash* parameter to the resource description that contains the hash value of the contents of the registered resource set.
+&emsp;The Correlated Authorization framework extends the Resource Description definition [8] and allows to use optional parameters in the resource description.
 
-#### *C. Separation of Responsibility and Authority*
+#### *C. Managing Resources*
+
+&emsp;The way the resource owner manages its resources with the client is out of scope of this document.
+
+#### *D. Separation of Responsibility and Authority*
 
 &emsp;The Correlated Authorization framework extends the definition of the Separation of Responsibility and Authority [9] to allow to configure policy conditions by the RS on behalf of its user. 
 
