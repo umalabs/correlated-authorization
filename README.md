@@ -96,11 +96,12 @@ Steps:
 
 1. The RqP directs the client to access the resource_uri, e.g. to get or post data, with no access token.
 2. The RS requests a permission ticket. <dl><dt></dt><dd>The AS generates the permission ticket itself (ticket is a random NONCE) and the permission token, which is bound to the permission ticket through a permission ticket hash. The permission token contains these claims:<br>
-{issuer,&nbsp;ts,&nbsp;rs_uri,&nbsp;resource_uri_hash,&nbsp;permission_ticket_hash}<br>
+{issuer,&nbsp;ts,&nbsp;audience,&nbsp;email_address,&nbsp;resource_uri_hash,&nbsp;permission_ticket_hash}<br>
 where<br>
 -&nbsp;issuer is the URI that identifies who issues the permission token  
 -&nbsp;ts is the timestamp of when the permission ticket was created  
 -&nbsp;audience is the URI that identifies the resource server  
+-&nbsp;email_address is the email address of the resource owner  
 -&nbsp;resource_uri_hash</em>&nbsp;=&nbsp;Base64URL-Encode(SHA256(resource_uri))  
 -&nbsp;permission_ticket_hash</em>&nbsp;=&nbsp;Base64URL-Encode(SHA256(permission_ticket))<br>
 The permission token is not mentioned in the UMA specification. A detailed description of the permission token format is out of the scope of this paper.</dd></dl>
@@ -116,7 +117,7 @@ The AS-RqP performs an authorization assessment
 &nbsp;1.&nbsp;verify permission_token signature
 &nbsp;2.&nbsp;extract resource_uri_hash claim from permission_token
 &nbsp;3.&nbsp;compare resource_uri_hash vs. Base64URL-Encode(SHA256(resource_uri))
-&nbsp;4.&nbsp;evaluate issuer, ts, audience, resource_uri<br>
+&nbsp;4.&nbsp;evaluate provenance of the resource URI using issuer, ts, audience, email_address, resource_uri claims<br>
 The AS-RqP generates the claim token, which contains these claims:<br>
 {user_claims,&nbsp;permission_ticket_hash}<br>
 where<br>
@@ -135,13 +136,9 @@ The AS-RO performs an authorization assessment
 &nbsp;7.&nbsp;extract permission_ticket_hash claim from claims_token
 &nbsp;8.&nbsp;compare permission_ticket_hash vs. Base64URL-Encode(SHA256(permission_ticket))
 &nbsp;9.&nbsp;evaluate user_claims</dd></dl>
-8. After an authorization assessment, it is positive, the AS-RO returns RPT. The RPT is in the form of JWT with the required resource provenance claims and optional resource authenticity claims e.g.:
--&nbsp;*email_address* the RO's email address
--&nbsp;*hash* the hash value of the contents of the requested resource set<br>
-9. Verify the resource provenance against the *email_address* value from the RPT claims.
-10. With the valid RPT the client tries to access the resource_uri e.g., to get or post data.
-11. The RS validates the RPT; it is valid, the RS allows access to the protected resource.
-12. If applicable, the client can validate the requested data against the *hash* value from the RPT claims to verify data authenticity.
+8. After an authorization assessment, it is positive, the AS-RO returns RPT.
+9. With the valid RPT the client tries to access the resource_uri to get or post data.
+10. The RS validates the RPT; it is valid, the RS allows access to the protected resource.
 
 ## VI. Push-Pull Trust Elevation
 
