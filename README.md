@@ -226,12 +226,12 @@ Fig.&nbsp;6.&emsp;Mesh federation scenario
 
 <div class="diagram">
 <h2>Appendix A.</h2>
-<img src=./images/correlated-authorization-uma-profile-detail.svg alt="Sequence Diagram – UMA profile">
+<img src=./images/correlated-authorization-uma-profile-detail.svg alt="Sequence Diagram – UMA Profile">
 </div>
 
 <br>
 
 <div class="diagram">
 <h2>Appendix B.</h2>
-<img src=./images/correlated-authorization-jwt-profile-detail.svg alt="Sequence Diagram – JWT profile">
+<img src=./images/correlated-authorization-jwt-assertion-profile-detail.svg alt="Sequence Diagram – JWT Assertion Profile">
 </div>
