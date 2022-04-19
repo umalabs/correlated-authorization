@@ -68,10 +68,6 @@ Fig.&nbsp;2.&emsp;Unilateral entity authentication protocol
 
 &emsp;The sequence diagram (see Appendix A for a detailed diagram) illustrated in Figure&nbsp;3 represents a profile of the UMA protocol and is in full compliance with the UMA 2.0 specification. Unlike the UMA specification, the Correlated Authorization framework allows the use of the UMA grant with or without client authentication or identification. Whether or not to allow unauthenticated or unidentified clients are policy decisions that are at the discretion of the authorization server.
 
-#### *B. JWT Profile*
-
-&emsp;If the client cannot be registered at the AS-RO, consider the authorization flow listed in Appendix B. This flow should only be used for immediate one-time access.
-
 ![Sequence Diagram](./images/correlated-authorization-uma-profile.svg)
 
 <p class="figure">
@@ -135,6 +131,10 @@ The AS-RO performs an authorization assessment
 8. After an authorization assessment, it is positive, the AS-RO returns RPT.
 9. With the valid RPT the client tries to access the resource_uri to get or post data.
 10. The RS validates the RPT; it is valid, the RS allows access to the protected resource.
+
+#### *B. JWT Profile*
+
+&emsp;If the client cannot be registered at the AS-RO, consider the authorization flow listed in Appendix B. The JWT profile should only be used for immediate one-time access.
 
 ## VI. Push-Pull Trust Elevation
 
