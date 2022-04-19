@@ -6,7 +6,7 @@ participant "AuthZ Server – Resource Owner (AS-RO)" as AS-RO
 bottomparticipants
 
 note over AS-RqP:AS-RqP:\n• supports the token exchange extension of OAuth2\n• publishes its metadata on a URL /.well-known/oauth-authorization-server\n• also acts as RqP's Identity Provider
-note over Client:Client:\n• is registered at AS-RqP as a public or confidential client\n• acts as a Relying Party in a RqP's Identity Provider in order to obtain an an access_token_with_user_claims\n• should be registered at AS-RO as a public or confidential client; in case of immediate access,\n   the client does not have to be registered at AS-RO
+note over Client:Client:\n• is registered at AS-RqP as a public or confidential client\n• acts as a Relying Party in a RqP's Identity Provider in order to obtain an an access_token_with_user_claims\n• is registered at AS-RO as a public or confidential client
 note over RS:RO has set up RS and registers his resource at AS-RO to get resource_uri and sets policies\nto the resource sets with the authorization server to indicate who can access the resources.
 RS<-Client:1. Send HTTP request to resource_uri with no access token
 RS->AS-RO:2. Request a permission ticket

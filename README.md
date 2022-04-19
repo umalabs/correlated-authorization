@@ -66,21 +66,13 @@ Fig.&nbsp;2.&emsp;Unilateral entity authentication protocol
 
 #### *A. UMA Profile*
 
-&emsp;The sequence diagram (a detailed diagram is shown on the last page) illustrated in Figure&nbsp;3 represents a profile of the UMA protocol and is in full compliance with the UMA 2.0 specification. Unlike the UMA specification, the Correlated Authorization framework allows the use of the UMA grant with or without client authentication or identification. Whether or not to allow unauthenticated or unidentified clients are policy decisions that are at the discretion of the authorization server.
+&emsp;The sequence diagram (see Appendix A for a detailed diagram) illustrated in Figure&nbsp;3 represents a profile of the UMA protocol and is in full compliance with the UMA 2.0 specification. Unlike the UMA specification, the Correlated Authorization framework allows the use of the UMA grant with or without client authentication or identification. Whether or not to allow unauthenticated or unidentified clients are policy decisions that are at the discretion of the authorization server.
 
-#### *B. Resource Description*
+#### *B. JWT Profile*
 
-&emsp;The Correlated Authorization framework extends the Resource Description definition [8] and allows to use optional parameters in the resource description.
+&emsp;If the client cannot be registered at the AS-RO, consider the authorization flow listed in Appendix B. This flow should only be used for immediate one-time access.
 
-#### *C. Managing Resources*
-
-&emsp;The way the resource owner manages its resources with the client is out of scope of this document.
-
-#### *D. Separation of Responsibility and Authority*
-
-&emsp;The Correlated Authorization framework extends the definition of the Separation of Responsibility and Authority [9] to allow to configure policy conditions by the RS on behalf of its user. 
-
-![Sequence Diagram](./images/correlated-authorization.svg)
+![Sequence Diagram](./images/correlated-authorization-uma-profile.svg)
 
 <p class="figure">
 Fig.&nbsp;3.&emsp;Correlated Authorization sequence diagram
@@ -92,7 +84,7 @@ Prerequisites:
 * The AS-RqP publishes its metadata on a URL /.well-known/oauth-authorization-server (alternatively on /.well-known/openid-configuration).
 * The AS-RqP also acts as RqP's Identity Provider.
 * The client is registered at the AS-RqP as a public or confidential client and acts as a Relying Party in an RqP's Identity Provider in order to obtain an access token with user claims.
-* The client should be registered at the AS-RO as a public or confidential client; in case of immediate access, the client does not have to be registered at the AS-RO.
+* The client should be registered at the AS-RO as a public or confidential client.
 * The RO has set up the RS and registers his resource at the AS-RO to get his resource_uri according to the UMA Federated Authorization [2] specification and the Resource Description extension.
 * The RO sets policies to the resource sets with the authorization server to indicate who can access the resources. 
 
@@ -233,5 +225,13 @@ Fig.&nbsp;6.&emsp;Mesh federation scenario
 </p>
 
 <div class="diagram">
-<img src=./images/correlated-authorization-full.svg alt="Sequence Diagram – full">
+<h2>Appendix A.</h2>
+<img src=./images/correlated-authorization-uma-profile-detail.svg alt="Sequence Diagram – UMA profile">
+</div>
+
+<br>
+
+<div class="diagram">
+<h2>Appendix B.</h2>
+<img src=./images/correlated-authorization-jwt-profile-detail.svg alt="Sequence Diagram – JWT profile">
 </div>
