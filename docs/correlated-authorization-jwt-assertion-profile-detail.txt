@@ -6,7 +6,7 @@ participant "AuthZ Server – Resource Owner (AS-RO)" as AS-RO
 bottomparticipants
 
 note over AS-RqP:AS-RqP:\n• supports the token exchange extension of OAuth2\n• publishes its metadata on a URL /.well-known/oauth-authorization-server\n• also acts as RqP's Identity Provider
-note over Client:Client:\n• is registered at AS-RqP as a public or confidential client\n• acts as a Relying Party in a RqP's Identity Provider in order to obtain an an access_token_with_user_claims\n• is registered at AS-RO as a public or confidential client
+note over Client:Client:\n• is registered at AS-RqP as a public or confidential client\n• acts as a Relying Party in a RqP's Identity Provider in order to obtain an an access_token_with_user_claims
 note over RS:RO has set up RS and registers his resource at AS-RO to get resource_uri and sets policies\nto the resource sets with the authorization server to indicate who can access the resources.
 RS<-Client:1. Send HTTP request to resource_uri with no access token
 RS->AS-RO:2. Request a permission ticket\n{PAT}
@@ -18,12 +18,12 @@ group Authorization assessment
 note over AS-RqP:1. verify permission_token signature\n2. extract resource_uri_hash claim from permission_token\n3. compare resource_uri_hash vs. Base64URL-Encode(SHA256(resource_uri))\n4. evaluate provenance of the resource URI using issuer, ts, audience, email_address, resource_uri claims
 end
 note over AS-RqP:AS-RqP generates the claim token, which contains these claims:\n{user_claims, permission_ticket_hash}\nwhere\nuser_claims are extracted from access_token_with_user_claims\npermission_ticket_hash is extracted from permission_token
-Client<-AS-RqP:6. Return claims token\n    {claims_token}
+Client<-AS-RqP:6. Return JWT claims\n    {claims_token}
 
-Client->AS-RO:7. Request a Requesting Party Token (RPT)\n    {grant_type = uma-ticket,\n     ticket = ticket,\n     pushed_claims = claims_token}
+Client->RS:7. Send HTTP request to resource_uri\n    {assertion = claims_token,\n     scope = ticket}
+RS->AS-RO:8. Request to introspect \n{PAT,\n claims_tokem,\n ticket}
 group Authorization assessment
 note over AS-RO:1. verify permission_ticket\n2. extract user_claims from claims_token\n3. select email_address claim\n4. bootstrap discovery of AS-RqP config url from email address via WebFinger;\n    if this doesn't work, build well-known url using domain part of email_address\n5. verify claims_token signature\n6. evaluate resource_uri\n7. extract permission_ticket_hash claim from claims_token\n8. compare permission_ticket_hash vs. Base64URL-Encode(SHA256(permission_ticket))\n9. evaluate user_claims
 end
-Client<-AS-RO:8. Return RPT\n    {RPT}
-RS<-Client:9. Send HTTP request to resource_uri\n    {RPT}
+RS<-AS-RO:9. Return introspection object
 RS->Client:10. Return HTTP response typically with 200, 201 status code

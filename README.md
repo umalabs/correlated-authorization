@@ -38,6 +38,7 @@ UMA uses special jargon. For the sake of brevity of this paper, the following li
 * RS - Resource Server
 * RO - Resource Owner
 * RqP - Requesting Party
+* PAT - Protection API Access Token
 * RPT - Requesting Party Token
 
 ![UMA Wide Ecosystem](./images/uma-wide-ecosystem.svg)
@@ -87,7 +88,7 @@ Prerequisites:
 Steps:
 
 1. The RqP directs the client to access the resource_uri, e.g. to get or post data, with no access token.
-2. The RS requests a permission ticket. <dl><dt></dt><dd>The AS generates the permission ticket itself (ticket is a random NONCE) and the permission token, which is bound to the permission ticket through a permission ticket hash. The permission token contains these claims:<br>
+2. Using a valid PAT the RS requests a permission ticket. <dl><dt></dt><dd>The AS generates the permission ticket itself (ticket is a random NONCE) and the permission token, which is bound to the permission ticket through a permission ticket hash. The permission token contains these claims:<br>
 {issuer,&nbsp;ts,&nbsp;audience,&nbsp;email_address,&nbsp;resource_uri_hash,&nbsp;permission_ticket_hash}<br>
 where<br>
 -&nbsp;issuer is the URI that identifies who issues the permission token  
@@ -117,7 +118,7 @@ where<br>
 -&nbsp;permission_ticket_hash is extracted from permission_token</dd></dl>
 6. After an authorization assessment, it is positive, the AS-RqP returns the claims token.
 7. At the AS-RO the client requests an RPT by presenting the claims token and the permission ticket. <dl><dt></dt><dd>{grant_type = uma-ticket,
-&nbsp;pushed_claims = claims_token}<br>
+&nbsp;ticket = ticket,&nbsp;pushed_claims = claims_token}<br>
 The AS-RO performs an authorization assessment
 &nbsp;1.&nbsp;verify permission_ticket
 &nbsp;2.&nbsp;extract user_claims from claims_token
@@ -134,7 +135,7 @@ The AS-RO performs an authorization assessment
 
 #### *B. JWT Assertion Profile*
 
-&emsp;If the client cannot be registered at the AS-RO, consider the authorization flow listed in Appendix B. This flow uses the JWT Assertion Profile [8], and should only be used for immediate one-time access.
+&emsp;If the client cannot be registered at the AS-RO, consider the authorization flow listed in Appendix B. This flow uses the JWT Assertion Profile [8], and may only be used for immediate one-time access.
 
 ## VI. Push-Pull Trust Elevation
 
