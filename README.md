@@ -72,7 +72,7 @@ Fig.&nbsp;2.&emsp;Unilateral entity authentication protocol
 ![Sequence Diagram](./images/correlated-authorization-uma-profile.svg)
 
 <p class="figure">
-Fig.&nbsp;3.&emsp;Correlated Authorization sequence diagram
+Fig.&nbsp;3.&emsp;Correlated Authorization sequence diagram — UMA profile
 </p>
 
 Prerequisites:
@@ -135,7 +135,13 @@ The AS-RO performs an authorization assessment
 
 #### *B. JWT Assertion Profile*
 
-&emsp;If the client cannot be registered at the AS-RO, consider the authorization flow listed in Appendix B. This flow uses the JWT Assertion Profile [8], and may only be used for immediate one-time access.
+&emsp;If the client cannot be registered at the AS-RO, consider the authorization flow illustrated in Figure&nbsp;4 (see Appendix B for a detailed diagram). This flow uses the JWT assertion profile [8], and may only be used for immediate one-time access.
+
+![Sequence Diagram](./images/correlated-authorization-jwt-assertion-profile.svg)
+
+<p class="figure">
+Fig.&nbsp;4.&emsp;Correlated Authorization sequence diagram — JWT assertion profile
+</p>
 
 ## VI. Push-Pull Trust Elevation
 
@@ -155,36 +161,36 @@ In general, the link to shared resources may be transferred to the requesting pa
 
 #### *A. Identity Federation Scenario*
 
-&emsp;The scenario illustrated in Figure&nbsp;4 allows you to link a single authorization server to multiple identity providers. The client falls under the governance of the resource owner's respective authority.
+&emsp;The scenario illustrated in Figure&nbsp;5 allows you to link a single authorization server to multiple identity providers. The client falls under the governance of the resource owner's respective authority.
 
 ![Scenario-1](./images/authority-boundaries-scenario-1.svg)
 
 <p class="figure">
-Fig.&nbsp;4.&emsp;Identity federation scenario
+Fig.&nbsp;5.&emsp;Identity federation scenario
 </p>
 
 &emsp;The identity federation with many-to-one topology uses third-party identity providers. The requesting party can operate across resource servers governed by a single resource owner's respective authority. The push-pull trust elevation mechanism is not applicable in this scenario.
 
 #### *B. Data Federation Scenario*
 
-&emsp;The data federation scenario illustrated in Figure&nbsp;5 allows you to link a single identity provider to multiple authorization servers. The client falls under the governance of the requesting party's respective authority.
+&emsp;The data federation scenario illustrated in Figure&nbsp;6 allows you to link a single identity provider to multiple authorization servers. The client falls under the governance of the requesting party's respective authority.
 
 ![Scenario-2](./images/authority-boundaries-scenario-2.svg)
 
 <p class="figure">
-Fig.&nbsp;5.&emsp;Data federation scenario
+Fig.&nbsp;6.&emsp;Data federation scenario
 </p>
 
 &emsp;The data federation with one-to-many topology uses third-party authorization servers. The requesting party can operate across many resource servers, each of which is governed by a different respective authority of resource owners.
 
 #### *C. Mesh Federation Scenario*
 
-&emsp;As the name suggests, the scenario illustrated in Figure&nbsp;6 allows multiple authorization servers to be linked to multiple identity providers. The client does not fall under the governance of the resource owner's respective authority nor the requesting party's respective authority.
+&emsp;As the name suggests, the scenario illustrated in Figure&nbsp;7 allows multiple authorization servers to be linked to multiple identity providers. The client does not fall under the governance of the resource owner's respective authority nor the requesting party's respective authority.
 
 ![Scenario-3](./images/authority-boundaries-scenario-3.svg)
 
 <p class="figure">
-Fig.&nbsp;6.&emsp;Mesh federation scenario
+Fig.&nbsp;7.&emsp;Mesh federation scenario
 </p>
 
 &emsp;The mesh federation with many-to-many topology uses third-party identity providers and third-party authorization servers. The requesting party can operate across many resource servers governed by many resource owners' respective authorities.
@@ -227,12 +233,12 @@ Fig.&nbsp;6.&emsp;Mesh federation scenario
 
 <div class="diagram">
 <h2>Appendix A.</h2>
-<img src=./images/correlated-authorization-uma-profile-detail.svg alt="Sequence Diagram – UMA Profile">
+<img src=./images/correlated-authorization-uma-profile-detail.svg alt="Sequence Diagram – UMA profile">
 </div>
 
 <br>
 
 <div class="diagram">
 <h2>Appendix B.</h2>
-<img src=./images/correlated-authorization-jwt-assertion-profile-detail.svg alt="Sequence Diagram – JWT Assertion Profile">
+<img src=./images/correlated-authorization-jwt-assertion-profile-detail.svg alt="Sequence Diagram – JWT assertion profile">
 </div>

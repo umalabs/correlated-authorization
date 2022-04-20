@@ -16,10 +16,10 @@ note over AS-RqP:Resource-related evaluation
 end
 Client<-AS-RqP:6.
 
-Client->AS-RO:7.
+Client->RS:7.
+RS->AS-RO:8.
 group Authorization assessment
 note over AS-RO:Identity-related evaluation
 end
-Client<-AS-RO:8.
-RS<-Client:9.
+RS<-AS-RO:9.
 RS->Client:10.
