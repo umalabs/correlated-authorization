@@ -63,7 +63,7 @@ Fig.&nbsp;2.&emsp;Unilateral entity authentication protocol
 
 ## V. Sequence Diagram
 
-&emsp;The following sequence diagram describes the mechanism and policies of the Correlated Authorization framework, which utilizes the UMA protocol with the token exchange extension of OAuth 2.0 [4], where an access token is used to obtain a claims token from the Security Token Service (STS) endpoint.
+&emsp;The following sequence diagram describes the mechanism and policies of the Correlated Authorization framework, which utilizes the UMA protocol with the token exchange extension of OAuth 2.0 [4], where an access token is used to obtain an identity claims token from the Security Token Service (STS) endpoint.
 
 #### *A. UMA Profile*
 
@@ -88,45 +88,45 @@ Prerequisites:
 Steps:
 
 1. The RqP directs the client to access the resource_uri, e.g. to get or post data, with no access token.
-2. Using a valid PAT the RS requests a permission ticket. <dl><dt></dt><dd>The AS generates the permission ticket itself (ticket is a random NONCE) and the permission token, which is bound to the permission ticket through a permission ticket hash. The permission token contains these claims:<br>
+2. Using a valid PAT the RS requests a permission ticket. <dl><dt></dt><dd>The AS generates the permission ticket itself (ticket is a random NONCE) and the resource claims token, which is bound to the permission ticket through a permission ticket hash. The resource claims token contains these claims:<br>
 {issuer,&nbsp;ts,&nbsp;audience,&nbsp;email_address,&nbsp;resource_uri_hash,&nbsp;permission_ticket_hash}<br>
 where<br>
--&nbsp;issuer is the URI that identifies who issues the permission token  
+-&nbsp;issuer is the URI that identifies who issues the resource claims token  
 -&nbsp;ts is the timestamp of when the permission ticket was created  
 -&nbsp;audience is the URI that identifies the resource server  
 -&nbsp;email_address is the email address of the resource owner  
 -&nbsp;resource_uri_hash</em>&nbsp;=&nbsp;Base64URL-Encode(SHA256(resource_uri))  
 -&nbsp;permission_ticket_hash</em>&nbsp;=&nbsp;Base64URL-Encode(SHA256(permission_ticket))<br>
-The permission token is not mentioned in the UMA specification. A detailed description of the permission token format is out of the scope of this paper.</dd></dl>
-3. The AS returns the permission ticket and the permission token.
-4. Without an access token, the RS will return HTTP code 401 (Unauthorized) with the permission ticket and the permission token.
-5. The client requests a claims token by presenting the access token with user claims, permission token, and resource URI (token exchange request). <dl><dt></dt><dd>{grant_type&nbsp;=&nbsp;token-exchange,
+The resource claims token is not mentioned in the UMA specification. A detailed description of the resource claims token format is out of the scope of this paper.</dd></dl>
+3. The AS returns the permission ticket and the resource claims token.
+4. Without an access token, the RS will return HTTP code 401 (Unauthorized) with the permission ticket and the resource claims token.
+5. The client requests an identity claims token by presenting the access token with user claims, resource claims token, and resource URI (token exchange request). <dl><dt></dt><dd>{grant_type&nbsp;=&nbsp;token-exchange,
 &nbsp;resource&nbsp;=&nbsp;resource_uri,
-&nbsp;scope&nbsp;=&nbsp;permission_token
+&nbsp;scope&nbsp;=&nbsp;resource_claims_token
 &nbsp;subject_token&nbsp;=&nbsp;access_token_with_user_claims,
 &nbsp;subject_token_type&nbsp;=&nbsp;urn:ietf:params:oauth:token-type:access_token,
 &nbsp;requested_token_type&nbsp;=&nbsp;urn:ietf:params:oauth:token-type:jwt}<br>
 The AS-RqP performs an authorization assessment
-&nbsp;1.&nbsp;verify permission_token signature
-&nbsp;2.&nbsp;extract resource_uri_hash claim from permission_token
+&nbsp;1.&nbsp;verify resource_claims_token signature
+&nbsp;2.&nbsp;extract resource_uri_hash claim from resource_claims_token
 &nbsp;3.&nbsp;compare resource_uri_hash vs. Base64URL-Encode(SHA256(resource_uri))
 &nbsp;4.&nbsp;evaluate provenance of the resource URI using issuer, ts, audience, email_address, resource_uri claims<br>
-The AS-RqP generates the claim token, which contains these claims:<br>
+The AS-RqP generates the identity claim token, which contains these claims:<br>
 {user_claims,&nbsp;permission_ticket_hash}<br>
 where<br>
 -&nbsp;user_claims are extracted from access_token_with_user_claims
--&nbsp;permission_ticket_hash is extracted from permission_token</dd></dl>
-6. After an authorization assessment, it is positive, the AS-RqP returns the claims token.
-7. At the AS-RO the client requests an RPT by presenting the claims token and the permission ticket. <dl><dt></dt><dd>{grant_type = uma-ticket,
-&nbsp;ticket = ticket,&nbsp;pushed_claims = claims_token}<br>
+-&nbsp;permission_ticket_hash is extracted from resource_claims_token</dd></dl>
+6. After an authorization assessment, it is positive, the AS-RqP returns the identity claims token.
+7. At the AS-RO the client requests an RPT by presenting the identity claims token and the permission ticket. <dl><dt></dt><dd>{grant_type = uma-ticket,
+&nbsp;ticket = ticket,&nbsp;claim_token = identity_claims_token}<br>
 The AS-RO performs an authorization assessment
 &nbsp;1.&nbsp;verify permission_ticket
-&nbsp;2.&nbsp;extract user_claims from claims_token
+&nbsp;2.&nbsp;extract user_claims from identity_claims_token
 &nbsp;3.&nbsp;select email_address claim
 &nbsp;4.&nbsp;bootstrap discovery of AS-RqP config url from email address via WebFinger; if this does not work, build well-known url using domain part of email_address
-&nbsp;5.&nbsp;verify claims_token signature
+&nbsp;5.&nbsp;verify identity_claims_token signature
 &nbsp;6.&nbsp;evaluate resource_uri
-&nbsp;7.&nbsp;extract permission_ticket_hash claim from claims_token
+&nbsp;7.&nbsp;extract permission_ticket_hash claim from identity_claims_token
 &nbsp;8.&nbsp;compare permission_ticket_hash vs. Base64URL-Encode(SHA256(permission_ticket))
 &nbsp;9.&nbsp;evaluate user_claims</dd></dl>
 8. After an authorization assessment, it is positive, the AS-RO returns RPT.
@@ -139,7 +139,7 @@ The AS-RO performs an authorization assessment
 
 ## VI. Push-Pull Trust Elevation
 
-&emsp;It is recommended to use a push-pull mechanism to increase trust. It means that the resource owner first sends a link to their shared resources to the requesting party. To do this, the requesting party must have its resource server registered at its authorization server, and needs to have its resource server accessible in the form of a well-known resource_uri, e.g., mailto:john.doe<span>@</span>example<span>.</span>com for anyone. Here, the requesting party also acts as the resource owner of his resource server. After receiving the resource link, the requesting party's authorization server must set the policy correctly, either by the requesting party itself or automatically by the agent. Only then can the requesting party download the resources from the resource owner's resource server. Such a push-pull mechanism elevates trust between the resource owner's authoritative domain and requesting party's authoritative domain. By placing untrusted resource servers on a blocklist, the requesting party's authorization server may refuse to issue the claims token that, having been exchanged for an access token, is used to gain access to the resource owner's resources.
+&emsp;It is recommended to use a push-pull mechanism to increase trust. It means that the resource owner first sends a link to their shared resources to the requesting party. To do this, the requesting party must have its resource server registered at its authorization server, and needs to have its resource server accessible in the form of a well-known resource_uri, e.g., mailto:john.doe<span>@</span>example<span>.</span>com for anyone. Here, the requesting party also acts as the resource owner of his resource server. After receiving the resource link, the requesting party's authorization server must set the policy correctly, either by the requesting party itself or automatically by the agent. Only then can the requesting party download the resources from the resource owner's resource server. Such a push-pull mechanism elevates trust between the resource owner's authoritative domain and requesting party's authoritative domain. By placing untrusted resource servers on a blocklist, the requesting party's authorization server may refuse to issue the identity claims token that, having been exchanged for an access token, is used to gain access to the resource owner's resources.
 
 In general, the link to shared resources may be transferred to the requesting party through any trusted channel, e.g., using store-and-forward systems such as the mail system that uses the push—fire-and-forget Simple Mail Transfer Protocol (SMTP). In any case, the shared resource URI should contain a random string.
 
