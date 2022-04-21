@@ -88,7 +88,7 @@ Prerequisites:
 Steps:
 
 1. The RqP directs the client to access the resource_uri, e.g. to get or post data, with no access token.
-2. Using a valid PAT the RS requests a permission ticket. <dl><dt></dt><dd>The AS generates the permission ticket itself (ticket is a random NONCE) and the resource claims token, which is bound to the permission ticket through a permission ticket hash. The resource claims token contains these claims:<br>
+2. Using a valid PAT the RS requests a permission ticket and resource claims token. <dl><dt></dt><dd>The AS generates the permission ticket itself (ticket is a random NONCE) and resource claims token, which is bound to the permission ticket through a permission ticket hash. The resource claims token contains these claims:<br>
 {issuer,&nbsp;ts,&nbsp;audience,&nbsp;email_address,&nbsp;resource_uri_hash,&nbsp;permission_ticket_hash}<br>
 where<br>
 -&nbsp;issuer is the URI that identifies who issues the resource claims token  
@@ -98,8 +98,8 @@ where<br>
 -&nbsp;resource_uri_hash</em>&nbsp;=&nbsp;Base64URL-Encode(SHA256(resource_uri))  
 -&nbsp;permission_ticket_hash</em>&nbsp;=&nbsp;Base64URL-Encode(SHA256(permission_ticket))<br>
 The resource claims token is not mentioned in the UMA specification. A detailed description of the resource claims token format is out of the scope of this paper.</dd></dl>
-3. The AS returns the permission ticket and the resource claims token.
-4. Without an access token, the RS will return HTTP code 401 (Unauthorized) with the permission ticket and the resource claims token.
+3. The AS returns the permission ticket and resource claims token.
+4. Without an access token, the RS will return HTTP code 401 (Unauthorized) with the permission ticket and resource claims token.
 5. The client requests an identity claims token by presenting the access token with user claims, resource claims token, and resource URI (token exchange request). <dl><dt></dt><dd>{grant_type&nbsp;=&nbsp;token-exchange,
 &nbsp;resource&nbsp;=&nbsp;resource_uri,
 &nbsp;scope&nbsp;=&nbsp;resource_claims_token
