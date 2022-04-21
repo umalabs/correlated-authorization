@@ -9,10 +9,10 @@ note over AS-RqP:AS-RqP:\n• supports the token exchange extension of OAuth2\n�
 note over Client:Client:\n• is registered at AS-RqP as a public or confidential client\n• acts as a Relying Party in a RqP's Identity Provider in order to obtain an an access_token_with_user_claims\n• is registered at AS-RO as a public or confidential client
 note over RS:RO has set up RS and registers his resource at AS-RO to get resource_uri and sets policies\nto the resource sets with the authorization server to indicate who can access the resources.
 RS<-Client:1. Send HTTP request to resource_uri with no access token
-RS->AS-RO:2. Request a permission ticket\n{PAT}
+RS->AS-RO:2. Request a permission ticket and resource claims token\n{PAT}
 note over AS-RO: AS-RO generates the permission ticket itself (ticket is a random NONCE) and the resource claims token,\nwhich is bound to the permission ticket through a permission ticket hash.\nThe resource claims token contains these claims:\n{issuer, ts, audience, email_address, resource_uri_hash, permission_ticket_hash}\nwhere\nissuer is the URI that identifies who issues the resource claims token\nts is the timestamp of when the permission ticket was created\naudience is the URI that identifies the resource server\nemail_address is the email address of the resource owner\nresource_uri_hash = Base64URL-Encode(SHA256(resource_uri))\npermission_ticket_hash = Base64URL-Encode(SHA256(permission_ticket))
-RS<-AS-RO:3. Return the permission ticket and the resource claims token
-RS->Client:4. Return 401 with the permission ticket and the resource claims token
+RS<-AS-RO:3. Return the permission ticket and resource claims token
+RS->Client:4. Return 401 with the permission ticket and resource claims token
 AS-RqP<-Client:5. Request an identity claims token (token exchange request)\n    {grant_type = token-exchange,\n     resource = resource_uri,\n     scope = resource_claims_token,\n     subject_token = access_token_with_user_claims,\n     subject_token_type = urn:ietf:params:oauth:token-type:access_token,\n     requested_token_type = urn:ietf:params:oauth:token-type:jwt}
 group Authorization assessment
 note over AS-RqP:1. verify resource_claims_token signature\n2. extract resource_uri_hash claim from resource_claims_token\n3. compare resource_uri_hash vs. Base64URL-Encode(SHA256(resource_uri))\n4. evaluate provenance of the resource URI using issuer, ts, audience, email_address, resource_uri claims
