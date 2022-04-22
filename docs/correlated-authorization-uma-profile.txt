@@ -11,13 +11,13 @@ note over AS-RO:Create the permission ticket and\nthe permission token
 RS<-AS-RO:3.
 RS->Client:4.
 AS-RqP<-Client:5.
-group Authorization assessment
+group Trust assessment
 note over AS-RqP:Resource-related evaluation
 end
 Client<-AS-RqP:6.
 
 Client->AS-RO:7.
-group Authorization assessment
+group Trust assessment
 note over AS-RO:Identity-related evaluation
 end
 Client<-AS-RO:8.

@@ -47,7 +47,7 @@ UMA uses special jargon. For the sake of brevity of this paper, the following li
 Fig.&nbsp;1.&emsp;Relationships between UMA wide ecosystem entities
 </p>
 
-The UMA wide ecosystem concept uses relationship-driven policies to drive automated dual-authority authorization assessment and token issuance. The relationship-driven policies incorporate user-to-user (U2U) relationships and user-to-resource (U2R) relationships.
+The UMA wide ecosystem concept uses relationship-driven policies to drive automated dual-authority trust assessment and token issuance. The relationship-driven policies incorporate user-to-user (U2U) relationships and user-to-resource (U2R) relationships.
 
 ## IV. Challenge-Response Authentication Protocol
 
@@ -106,7 +106,7 @@ The resource claims token is not mentioned in the UMA specification. A detailed 
 &nbsp;subject_token&nbsp;=&nbsp;access_token_with_user_claims,
 &nbsp;subject_token_type&nbsp;=&nbsp;urn:ietf:params:oauth:token-type:access_token,
 &nbsp;requested_token_type&nbsp;=&nbsp;urn:ietf:params:oauth:token-type:jwt}<br>
-The AS-RqP performs an authorization assessment
+The AS-RqP performs a trust assessment
 &nbsp;1.&nbsp;verify resource_claims_token signature
 &nbsp;2.&nbsp;extract resource_uri_hash claim from resource_claims_token
 &nbsp;3.&nbsp;compare resource_uri_hash vs. Base64URL-Encode(SHA256(resource_uri))
@@ -116,10 +116,10 @@ The AS-RqP generates the identity claim token, which contains these claims:<br>
 where<br>
 -&nbsp;user_claims are extracted from access_token_with_user_claims
 -&nbsp;permission_ticket_hash is extracted from resource_claims_token</dd></dl>
-6. After an authorization assessment, it is positive, the AS-RqP returns the identity claims token.
+6. After a trust assessment, it is positive, the AS-RqP returns the identity claims token.
 7. At the AS-RO the client requests an RPT by presenting the identity claims token and the permission ticket. <dl><dt></dt><dd>{grant_type = uma-ticket,
 &nbsp;ticket = ticket,&nbsp;claim_token = identity_claims_token}<br>
-The AS-RO performs an authorization assessment
+The AS-RO performs a trust assessment
 &nbsp;1.&nbsp;verify permission_ticket
 &nbsp;2.&nbsp;extract user_claims from identity_claims_token
 &nbsp;3.&nbsp;select email_address claim
@@ -129,7 +129,7 @@ The AS-RO performs an authorization assessment
 &nbsp;7.&nbsp;extract permission_ticket_hash claim from identity_claims_token
 &nbsp;8.&nbsp;compare permission_ticket_hash vs. Base64URL-Encode(SHA256(permission_ticket))
 &nbsp;9.&nbsp;evaluate user_claims</dd></dl>
-8. After an authorization assessment, it is positive, the AS-RO returns RPT.
+8. After a trust assessment, it is positive, the AS-RO returns RPT.
 9. With the valid RPT the client tries to access the resource_uri to get or post data.
 10. The RS validates the RPT; it is valid, the RS allows access to the protected resource.
 
@@ -142,6 +142,14 @@ The AS-RO performs an authorization assessment
 <p class="figure">
 Fig.&nbsp;4.&emsp;Correlated Authorization sequence diagram — JWT assertion profile
 </p>
+
+Prerequisites:
+
+TBD
+
+Steps:
+
+TBD
 
 ## VI. Push-Pull Trust Elevation
 
