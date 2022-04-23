@@ -106,11 +106,13 @@ The resource claims token is not mentioned in the UMA specification. A detailed 
 &nbsp;subject_token&nbsp;=&nbsp;access_token_with_user_claims,
 &nbsp;subject_token_type&nbsp;=&nbsp;urn:ietf:params:oauth:token-type:access_token,
 &nbsp;requested_token_type&nbsp;=&nbsp;urn:ietf:params:oauth:token-type:jwt}<br>
-The AS-RqP performs a trust assessment
-&nbsp;1.&nbsp;verify resource_claims_token signature
-&nbsp;2.&nbsp;extract resource_uri_hash claim from resource_claims_token
-&nbsp;3.&nbsp;compare resource_uri_hash vs. Base64URL-Encode(SHA256(resource_uri))
-&nbsp;4.&nbsp;evaluate provenance of the resource URI using issuer, ts, audience, email_address, resource_uri claims<br>
+The AS-RqP performs a trust assessment by evaluating the resource URI provenance/ownership
+&nbsp;1.&nbsp;select the email_address claim from resource_claims_token
+&nbsp;2.&nbsp;bootstrap discovery of AS-RO url from email address via WebFinger; if this does not work, build well-known url using domain part of email_address
+&nbsp;3.&nbsp;compare AS-RO url with the iss claim from resource_claims_token
+&nbsp;4.&nbsp;verify the resource_claims_token signature
+&nbsp;5.&nbsp;extract resource_uri_hash claim from resource_claims_token
+&nbsp;6.&nbsp;compare resource_uri_hash vs. Base64URL-Encode(SHA256(resource_uri))<br>
 The AS-RqP generates the identity claim token, which contains these claims:<br>
 {user_claims,&nbsp;permission_ticket_hash}<br>
 where<br>
@@ -119,16 +121,15 @@ where<br>
 6. After a trust assessment, it is positive, the AS-RqP returns the identity claims token.
 7. At the AS-RO the client requests an RPT by presenting the identity claims token and the permission ticket. <dl><dt></dt><dd>{grant_type = uma-ticket,
 &nbsp;ticket = ticket,&nbsp;claim_token = identity_claims_token}<br>
-The AS-RO performs a trust assessment
-&nbsp;1.&nbsp;verify permission_ticket
+The AS-RO performs a trust assessment by evaluating the RqP identity provenance/ownership
+&nbsp;1.&nbsp;verify the permission_ticket
 &nbsp;2.&nbsp;extract user_claims from identity_claims_token
-&nbsp;3.&nbsp;select email_address claim
-&nbsp;4.&nbsp;bootstrap discovery of AS-RqP config url from email address via WebFinger; if this does not work, build well-known url using domain part of email_address
-&nbsp;5.&nbsp;verify identity_claims_token signature
-&nbsp;6.&nbsp;evaluate resource_uri
+&nbsp;3.&nbsp;select the email_address claim from user_claims
+&nbsp;4.&nbsp;bootstrap discovery of AS-RqP url from email address via WebFinger; if this does not work, build well-known url using domain part of email_address
+&nbsp;5.&nbsp;compare AS-RO url with the iss claim from resource_claims_token
+&nbsp;6.&nbsp;verify the identity_claims_token signature
 &nbsp;7.&nbsp;extract permission_ticket_hash claim from identity_claims_token
-&nbsp;8.&nbsp;compare permission_ticket_hash vs. Base64URL-Encode(SHA256(permission_ticket))
-&nbsp;9.&nbsp;evaluate user_claims</dd></dl>
+&nbsp;8.&nbsp;compare permission_ticket_hash vs. Base64URL-Encode(SHA256(permission_ticket))</dd></dl>
 8. After a trust assessment, it is positive, the AS-RO returns RPT.
 9. With the valid RPT the client tries to access the resource_uri to get or post data.
 10. The RS validates the RPT; it is valid, the RS allows access to the protected resource.
