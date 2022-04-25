@@ -138,7 +138,7 @@ The AS-RO performs a trust assessment by evaluating the RqP identity provenance/
 
 #### *B. JWT Assertion Profile*
 
-&emsp;If the client cannot be registered at the AS-RO, consider the authorization flow illustrated in Figure&nbsp;4 (see Appendix B for a detailed diagram). This flow uses the JWT assertion profile [8], and may only be used for immediate one-time access.
+&emsp;If the client cannot be registered at the AS-RO, consider the authorization flow illustrated in Figure&nbsp;4 (see Appendix B for a detailed diagram). This flow uses the holder-of-key assertion [8, 9] where the ticket is used as a key, which is in possession of the client. The JWT assertion profile may only be used for immediate one-time access.
 
 ![Sequence Diagram](./images/correlated-authorization-jwt-assertion-profile.svg)
 
@@ -208,7 +208,7 @@ Fig.&nbsp;7.&emsp;Mesh federation scenario
 
 ## IX. Use Cases
 
-&emsp;Secure cross-domain data exchange systems. In particular, Authorization-Enhanced Mail System [9]. Furthermore, file sharing, instant messaging, teleconferencing. Also, Healthcare systems, Fintech, and Telco services.
+&emsp;Secure cross-domain data exchange systems. In particular, Authorization-Enhanced Mail System [10]. Furthermore, file sharing, instant messaging, teleconferencing. Also, Healthcare systems, Fintech, and Telco services.
 
 ## X. Conclusion and Future Work
 
@@ -234,8 +234,8 @@ Fig.&nbsp;7.&emsp;Mesh federation scenario
 [5]&nbsp;OpenID specifications at "OpenID Foundation," 2022, https://openid.net/developers/specs/.<br>
 [6]&nbsp;"UMA telecon 2016-03-31," https://kantarainitiative.org/confluence/display/uma/UMA+telecon+2016-03-31<br>
 [7]&nbsp;National Institute of Standards and Technology, "FIPS PUB 196: Entity Authentication Using Public Key Cryptography," 1997. [Online]. Available: https://csrc.nist.gov/csrc/media/publications/fips/196/archive/1997-02-18/documents/fips196.pdf.<br>
-[8]&nbsp;Jones, M., Campbell, B., and C. Mortimore, "JSON Web Token (JWT) Profile for OAuth 2.0 Client Authentication and Authorization Grants", RFC 7523, DOI 10.17487/RFC7523, May 2015, https://www.rfc-editor.org/info/rfc7523.<br>
-[9]&nbsp;E. Maler, M. Machulak, J. Richer, and T. Hardjono, "Federated Authorization for User-Managed Access (UMA) 2.0,  Separation of Responsibility and Authority" Internet Engineering Task Force (2019), https://docs.kantarainitiative.org/uma/wg/rec-oauth-uma-federated-authz-2.0.html#fed-authz.<br>
+[8]&nbsp;Campbell, B., Mortimore, C., Jones, M., and Y. Goland, "Assertion Framework for OAuth 2.0 Client Authentication and Authorization Grants", RFC 7521, DOI 10.17487/RFC7521, May 2015, http://www.rfc-editor.org/info/rfc7521.<br>
+[9]&nbsp;Jones, M., Campbell, B., and C. Mortimore, "JSON Web Token (JWT) Profile for OAuth 2.0 Client Authentication and Authorization Grants", RFC 7523, DOI 10.17487/RFC7523, May 2015, https://www.rfc-editor.org/info/rfc7523.<br>
 [10]&nbsp;I. Zboran "Authorization-Enhanced Mail System," GitHub repository, March 2022, https://github.com/umalabs/authorization-enhanced-mail-system/releases/download/v0.1/Authorization-Enhanced_Mail_System.pdf.<br>
 [11]&nbsp;"User-Managed Access" Work Group at "Kantara Initiative," https://kantarainitiative.org/confluence/display/uma/Home.<br>
 [12]&nbsp;"The WG-UMA Archives," https://kantarainitiative.org/pipermail/wg-uma/.<br>
