@@ -138,7 +138,7 @@ The AS-RO performs a trust assessment by evaluating the RqP identity provenance/
 
 #### *B. JWT Assertion Profile*
 
-&emsp;If the client cannot be registered at the AS-RO, consider the authorization flow illustrated in Figure&nbsp;4 (see Appendix B for a detailed diagram). This flow uses the holder-of-key assertion [8, 9] where the ticket is used as a key, which is in possession of the client. The JWT assertion profile may only be used for immediate one-time access.
+&emsp;If the client cannot be registered at the AS-RO, consider the authorization flow illustrated in Figure&nbsp;4 (see Appendix B for a detailed diagram). This flow uses the holder-of-key assertion [8, 9] where the ticket—referenced in assertion—is used as a key, which is in possession of the client. The JWT assertion profile may only be used for immediate one-time access.
 
 ![Sequence Diagram](./images/correlated-authorization-jwt-assertion-profile.svg)
 
