@@ -114,8 +114,9 @@ The AS-RqP performs a trust assessment by evaluating the resource URI provenance
 &nbsp;5.&nbsp;extract resource_uri_hash claim from resource_claims_token
 &nbsp;6.&nbsp;compare resource_uri_hash vs. Base64URL-Encode(SHA256(resource_uri))<br>
 The AS-RqP generates the identity claim token, which contains these claims:<br>
-{user_claims,&nbsp;permission_ticket_hash}<br>
+{audience, user_claims,&nbsp;permission_ticket_hash}<br>
 where<br>
+-&nbsp;audience&nbsp;=&nbsp;the iss claim value extracted from resource_claims_token
 -&nbsp;user_claims are extracted from access_token_with_user_claims
 -&nbsp;permission_ticket_hash is extracted from resource_claims_token</dd></dl>
 6. After a trust assessment, it is positive, the AS-RqP returns the identity claims token.
@@ -123,13 +124,14 @@ where<br>
 &nbsp;ticket = ticket,&nbsp;claim_token = identity_claims_token}<br>
 The AS-RO performs a trust assessment by evaluating the RqP identity provenance/ownership
 &nbsp;1.&nbsp;verify the permission_ticket
-&nbsp;2.&nbsp;extract user_claims from identity_claims_token
-&nbsp;3.&nbsp;select the email_address claim from user_claims
-&nbsp;4.&nbsp;bootstrap discovery of AS-RqP url from email address via WebFinger; if this does not work, build well-known url using domain part of email_address
-&nbsp;5.&nbsp;compare AS-RO url with the iss claim from resource_claims_token
-&nbsp;6.&nbsp;verify the identity_claims_token signature
-&nbsp;7.&nbsp;extract permission_ticket_hash claim from identity_claims_token
-&nbsp;8.&nbsp;compare permission_ticket_hash vs. Base64URL-Encode(SHA256(permission_ticket))</dd></dl>
+&nbsp;2.&nbsp;verify the audience claim from identity_claims_token
+&nbsp;3.&nbsp;extract user_claims from identity_claims_token
+&nbsp;4.&nbsp;select the email_address claim from user_claims
+&nbsp;5.&nbsp;bootstrap discovery of AS-RqP url from email address via WebFinger; if this does not work, build well-known url using domain part of email_address
+&nbsp;6.&nbsp;compare AS-RO url with the iss claim from resource_claims_token
+&nbsp;7.&nbsp;verify the identity_claims_token signature
+&nbsp;8.&nbsp;extract permission_ticket_hash claim from identity_claims_token
+&nbsp;9.&nbsp;compare permission_ticket_hash vs. Base64URL-Encode(SHA256(permission_ticket))</dd></dl>
 8. After a trust assessment, it is positive, the AS-RO returns RPT.
 9. With the valid RPT the client tries to access the resource_uri to get or post data.
 10. The RS validates the RPT; it is valid, the RS allows access to the protected resource.
