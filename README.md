@@ -247,7 +247,7 @@ Fig.&nbsp;7.&emsp;Mesh federation scenario
 <img src=./images/correlated-authorization-uma-profile-detail.svg alt="Sequence Diagram – UMA profile">
 </div>
 
-<!-->
+<!--
 <br>
 
 <div class="diagram">
