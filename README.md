@@ -11,7 +11,7 @@
 &emsp;<strong><em>Abstract</em></strong>—Trustworthiness of data—determined by its provenance—is fundamental to the cybersecurity of the Internet as a whole. As business boundaries are redrawn, it is becoming increasingly clear that a flexible, trust framework is needed to support the digital economy.
 </p>
 <p class="abstract">
-&emsp;This paper introduces Correlated Authorization as a dual-authority trust framework built on top of User-Managed Access (UMA) [1, 2] and OAuth 2.0 [3, 4] protocols that allow users (resource owners) to delegate access to other users (requesting parties) across security domain boundaries. The requesting party is responsible for creating the request, while the resource owner approves this request either when it is online or by creating a policy. The resource owner and the requesting party may belong to different security domains administered by the respective authorities.</p>
+&emsp;This paper introduces Correlated Authorization as a dual-authority trust framework built on top of User-Managed Access (UMA) [1, 2] and OAuth 2.0 [3, 4] protocols that allow users (resource owners) to delegate access to other users (requesting parties) across the security domain boundaries. The requesting party is responsible for creating the request, while the resource owner approves this request either when it is online or by creating a policy. The resource owner and the requesting party may belong to different security domains administered by the respective authorities.</p>
 <p class="abstract">
 &emsp;The proposed concept uses a permission ticket issued by the resource owner's authorization server as a correlation handle that binds the requesting party's claims to the authorization process. An email address is used as the unique requesting party identifier. The requesting party authenticates to the resource owner's authorization server using a challenge-response authentication protocol, while the holder-of-key assertion mechanism establishes trust between the respective authorities. On the requesting party side, Correlated Authorization uses the token exchange extension of the OAuth 2.0 protocol [4] as a counterpart to the UMA protocol.
 </p>
@@ -56,11 +56,19 @@ The UMA wide ecosystem concept uses relationship-driven policies to drive automa
 Fig.&nbsp;2.&emsp;Unilateral entity authentication protocol
 </p>
 
-&emsp;Successful completion of steps means that the claimant has authenticated himself to the verifier. The ticket represents the random challenge, and the signed ticket hash represents the response. Ticket hash is used here to ensure that the actual value of the ticket is not disclosed to the authenticator.
+&emsp;Successful completion of steps means that the claimant has authenticated himself to the verifier. The ticket represents the random challenge, and the signed ticket hash together with the ticket represents the response. Ticket hash is used here to ensure that the actual value of the ticket is not disclosed to the authenticator.
 
-## V. Holder-of-Key Assertion
+## V. Federation and Assertions
 
-&emsp;TBD
+&emsp;There are some similarities and a few differences between the Correlated Authorization federation scenario and the federation scenario described in NIST SP 800-63C [8] document.
+
+#### *A. Federation Model*
+
+&emsp;In a Correlated Authorization federation protocol, two two-party relationships are formed. The first is between the claimant and the authenticator, and second is between the claimant and the verifier, as shown in Figure&nbsp;2. The claimant communicates with both the authenticator and the verifier using a client. The verifier and the authenticator communicate with each other through the client, which acts as a transparent bridge that links the authenticator to the verifier.
+
+#### *B. Assertions*
+
+&emsp;According the UMA Grant specification [1], Section 3.3.1, the potential types of claim token formats are ID Tokens and SAML assertion. The Correlated Authorization framework uses the urn:ietf:params:oauth:client-assertion-type:jwt-bearer format for the asserted pushed claims tokens. To prove that the claimant is the rightful subject of the assertion the holder-of-key assertion [9] is used, which contains a hash value of the ticket possessed by the claimant. 
 
 ## VI. Sequence Diagram
 
@@ -137,9 +145,10 @@ The AS-RO performs a trust assessment by evaluating the RqP identity provenance/
 9. With the valid RPT the client tries to access the resource_uri to get or post data.
 10. The RS validates the RPT; it is valid, the RS allows access to the protected resource.
 
+<!--
 #### *B. JWT Assertion Profile*
 
-&emsp;If the client cannot be registered at the AS-RO, consider the authorization flow illustrated in Figure&nbsp;4 (see Appendix B for a detailed diagram). This flow uses the holder-of-key assertion [8, 9] where the ticket—referenced in assertion—is used as a key, which is in possession of the client. The JWT assertion profile may only be used for immediate one-time access.
+&emsp;If the client cannot be registered at the AS-RO, consider the authorization flow illustrated in Figure&nbsp;4 (see Appendix B for a detailed diagram). This flow uses the holder-of-key assertion [9] where the ticket—referenced in assertion—is used as a key, which is in possession of the client. The JWT assertion profile may only be used for immediate one-time access.
 
 ![Sequence Diagram](./images/correlated-authorization-jwt-assertion-profile.svg)
 
@@ -154,6 +163,7 @@ TBD
 Steps:
 
 TBD
+-->
 
 ## VII. Authority Boundaries, Interactions, and Scenarios
 
@@ -224,8 +234,8 @@ Fig.&nbsp;7.&emsp;Mesh federation scenario
 [5]&nbsp;OpenID specifications at "OpenID Foundation," 2022, https://openid.net/developers/specs/.<br>
 [6]&nbsp;"UMA telecon 2016-03-31," https://kantarainitiative.org/confluence/display/uma/UMA+telecon+2016-03-31<br>
 [7]&nbsp;National Institute of Standards and Technology, "FIPS PUB 196: Entity Authentication Using Public Key Cryptography," 1997. [Online]. Available: https://csrc.nist.gov/csrc/media/publications/fips/196/archive/1997-02-18/documents/fips196.pdf.<br>
-[8]&nbsp;Campbell, B., Mortimore, C., Jones, M., and Y. Goland, "Assertion Framework for OAuth 2.0 Client Authentication and Authorization Grants", RFC 7521, DOI 10.17487/RFC7521, May 2015, http://www.rfc-editor.org/info/rfc7521.<br>
-[9]&nbsp;Jones, M., Campbell, B., and C. Mortimore, "JSON Web Token (JWT) Profile for OAuth 2.0 Client Authentication and Authorization Grants", RFC 7523, DOI 10.17487/RFC7523, May 2015, https://www.rfc-editor.org/info/rfc7523.<br>
+[8]&nbsp;"Digital Identity Guidelines: Federation and Assertions", NIST Special Publication 800-63C, June 2017, https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-63c.pdf.<br>
+[9]&nbsp;Campbell, B., Mortimore, C., Jones, M., and Y. Goland, "Assertion Framework for OAuth 2.0 Client Authentication and Authorization Grants", RFC 7521, DOI 10.17487/RFC7521, May 2015, http://www.rfc-editor.org/info/rfc7521..<br>
 [10]&nbsp;I. Zboran "Authorization-Enhanced Mail System," GitHub repository, March 2022, https://github.com/umalabs/authorization-enhanced-mail-system/releases/download/v0.1/Authorization-Enhanced_Mail_System.pdf.<br>
 [11]&nbsp;"User-Managed Access" Work Group at "Kantara Initiative," https://kantarainitiative.org/confluence/display/uma/Home.<br>
 [12]&nbsp;"The WG-UMA Archives," https://kantarainitiative.org/pipermail/wg-uma/.<br>
@@ -237,9 +247,11 @@ Fig.&nbsp;7.&emsp;Mesh federation scenario
 <img src=./images/correlated-authorization-uma-profile-detail.svg alt="Sequence Diagram – UMA profile">
 </div>
 
+<!-->
 <br>
 
 <div class="diagram">
 <h2>Appendix B.</h2>
 <img src=./images/correlated-authorization-jwt-assertion-profile-detail.svg alt="Sequence Diagram – JWT assertion profile">
 </div>
+-->
