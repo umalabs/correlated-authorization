@@ -60,15 +60,23 @@ Fig.&nbsp;2.&emsp;Unilateral entity authentication protocol
 
 ## V. Federation and Assertions
 
-&emsp;There are some similarities and a few differences between the Correlated Authorization federation scenario and the federation scenario described in NIST SP 800-63C [8] document.
+&emsp; The Correlated Authorization framework uses a multiparty federation protocol, as illustrated in Figure&nbsp;3. There are some similarities and a few differences between the Correlated Authorization federation scenario and the federation scenario described in NIST SP 800-63C [8] document.
+
+![Multiparty Federation](./images/multiparty-federation.svg)
+
+<p class="figure">
+Fig.&nbsp;3.&emsp;Multiparty federation protocol
+</p>
 
 #### *A. Federation Model*
 
-&emsp;In a Correlated Authorization federation protocol, two two-party relationships are formed. The first is between the claimant and the authenticator, and second is between the claimant and the verifier, as shown in Figure&nbsp;2. The claimant communicates with both the authenticator and the verifier using a client. The verifier and the authenticator communicate with each other through the client, which acts as a transparent bridge that links the authenticator to the verifier.
+&emsp;Two two-party relationships are formed in a Correlated Authorization federation protocol, as shown in Figure&nbsp;3. The first one is between the claimant and the authenticator, pre-established, e.g., by a dynamic registration. The second one is between the claimant and the verifier, and can be ephemeral, established dynamically. The claimant communicates with both the authenticator and the verifier using a client. The verifier and the authenticator communicate with each other through the client, which acts as a transparent bridge that links the authenticator to the verifier.
 
 #### *B. Assertions*
 
 &emsp;According the UMA Grant specification [1], Section 3.3.1, the potential types of claim token formats are ID Tokens and SAML assertion. The Correlated Authorization framework uses the urn:ietf:params:oauth:client-assertion-type:jwt-bearer format for the asserted pushed claims tokens. To prove that the claimant is the rightful subject of the assertion the holder-of-key assertion [9] is used, which contains a hash value of the ticket possessed by the claimant. 
+
+&emsp;According the RFC7521 [9] "Assertion authorization grants may be used with or without client authentication or identification. Whether or not client authentication is needed in conjunction with an assertion authorization grant, as well as the supported types of client authentication, are policy decisions at the discretion of the authorization server.". It follows that the UMA grant with assertions may be used without client authentication. This only applies for specific scenarios. Be careful.
 
 ## VI. Sequence Diagram
 
@@ -76,12 +84,12 @@ Fig.&nbsp;2.&emsp;Unilateral entity authentication protocol
 
 #### *A. UMA Profile*
 
-&emsp;The sequence diagram (see Appendix A for a detailed diagram) illustrated in Figure&nbsp;3 represents a profile of the UMA protocol and is in full compliance with the UMA 2.0 specification. Unlike the UMA specification, the Correlated Authorization framework allows the use of the UMA grant with or without client authentication or identification. Whether or not to allow unauthenticated or unidentified clients are policy decisions that are at the discretion of the authorization server.
+&emsp;The sequence diagram (see Appendix A for a detailed diagram) illustrated in Figure&nbsp;4 represents a profile of the UMA protocol and is in full compliance with the UMA 2.0 specification. Unlike the UMA specification, the Correlated Authorization framework allows the use of the UMA grant with or without client authentication or identification. Whether or not to allow unauthenticated or unidentified clients are policy decisions that are at the discretion of the authorization server.
 
 ![Sequence Diagram](./images/correlated-authorization-uma-profile.svg)
 
 <p class="figure">
-Fig.&nbsp;3.&emsp;Correlated Authorization sequence diagram — UMA profile
+Fig.&nbsp;4.&emsp;Correlated Authorization sequence diagram — UMA profile
 </p>
 
 Prerequisites:
@@ -90,7 +98,7 @@ Prerequisites:
 * The AS-RqP publishes its metadata on a URL /.well-known/oauth-authorization-server (alternatively on /.well-known/openid-configuration).
 * The AS-RqP also acts as RqP's Identity Provider.
 * The client is registered at the AS-RqP as a public or confidential client and acts as a Relying Party in an RqP's Identity Provider in order to obtain an access token with user claims.
-* The client should be registered at the AS-RO as a public or confidential client.
+* The client can be registered at the AS-RO as a public or confidential client. The registration is optional.
 * The RO has set up the RS and registers his resource at the AS-RO to get his resource_uri according to the UMA Federated Authorization [2] specification and the Resource Description extension.
 * The RO sets policies to the resource sets with the authorization server to indicate who can access the resources. 
 
@@ -144,26 +152,6 @@ The AS-RO performs a trust assessment by evaluating the RqP identity provenance/
 8. After a trust assessment, it is positive, the AS-RO returns RPT.
 9. With the valid RPT the client tries to access the resource_uri to get or post data.
 10. The RS validates the RPT; it is valid, the RS allows access to the protected resource.
-
-<!--
-#### *B. JWT Assertion Profile*
-
-&emsp;If the client cannot be registered at the AS-RO, consider the authorization flow illustrated in Figure&nbsp;4 (see Appendix B for a detailed diagram). This flow uses the holder-of-key assertion [9] where the ticket—referenced in assertion—is used as a key, which is in possession of the client. The JWT assertion profile may only be used for immediate one-time access.
-
-![Sequence Diagram](./images/correlated-authorization-jwt-assertion-profile.svg)
-
-<p class="figure">
-Fig.&nbsp;4.&emsp;Correlated Authorization sequence diagram — JWT assertion profile
-</p>
-
-Prerequisites:
-
-TBD
-
-Steps:
-
-TBD
--->
 
 ## VII. Authority Boundaries, Interactions, and Scenarios
 
