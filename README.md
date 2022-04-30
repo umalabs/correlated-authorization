@@ -72,6 +72,8 @@ Fig.&nbsp;3.&emsp;Multiparty federation protocol
 
 &emsp;Two two-party relationships are formed in a Correlated Authorization federation protocol, as shown in Figure&nbsp;3. The first one is between the claimant and the authenticator, pre-established, e.g., by a dynamic registration. The second one is between the claimant and the verifier, and can be ephemeral, established dynamically. The claimant communicates with both the authenticator and the verifier using a client. The verifier and the authenticator communicate with each other through the client, which acts as a transparent bridge that links the authenticator to the verifier.
 
+&emsp;Authenticator may establish whitelists of verifiers authorized to receive authentication, and verifiers may establish whitelists of authenticators that the verifier will accept authentication. Authenticators may also establish blacklists of verifiers not authorized to receive authentication, and verifiers may also establish blacklists of authenticators that the verifier will not accept authentication.
+
 #### *B. Assertions*
 
 &emsp;According the UMA Grant specification [1], Section 3.3.1, the potential types of claim token formats are ID Tokens and SAML assertion. The Correlated Authorization framework uses the urn:ietf:params:oauth:client-assertion-type:jwt-bearer format for the asserted pushed claims tokens. To prove that the claimant is the rightful subject of the assertion the holder-of-key assertion [9] is used, which contains a hash value of the ticket possessed by the claimant. 
