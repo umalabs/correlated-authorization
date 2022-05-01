@@ -108,12 +108,13 @@ Steps:
 
 1. The RqP directs the client to access the resource_uri, e.g. to get or post data, with no access token.
 2. Using a valid PAT the RS requests a permission ticket and resource claims token. <dl><dt></dt><dd>The AS generates the permission ticket itself (ticket is a random NONCE) and resource claims token, which is bound to the permission ticket through a permission ticket hash. The resource claims token contains these claims:<br>
-{issuer,&nbsp;ts,&nbsp;audience,&nbsp;email_address,&nbsp;resource_uri_hash,&nbsp;permission_ticket_hash}<br>
+{issuer,&nbsp;ts,&nbsp;audience,&nbsp;email_address,&nbsp;action,&nbsp;resource_uri_hash,&nbsp;permission_ticket_hash}<br>
 where<br>
 -&nbsp;issuer is the URI that identifies who issues the resource claims token  
 -&nbsp;ts is the timestamp of when the permission ticket was created  
 -&nbsp;audience is the URI that identifies the resource server  
 -&nbsp;email_address is the email address of the resource owner  
+-&nbsp;action is the HTTP request method  
 -&nbsp;resource_uri_hash</em>&nbsp;=&nbsp;Base64URL-Encode(SHA256(resource_uri))  
 -&nbsp;permission_ticket_hash</em>&nbsp;=&nbsp;Base64URL-Encode(SHA256(permission_ticket))<br>
 The resource claims token is not mentioned in the UMA specification. A detailed description of the resource claims token format is out of the scope of this paper.</dd></dl>
@@ -131,7 +132,8 @@ The AS-RqP performs a trust assessment by evaluating the resource URI provenance
 &nbsp;3.&nbsp;compare AS-RO url with the iss claim from resource_claims_token
 &nbsp;4.&nbsp;verify the resource_claims_token signature
 &nbsp;5.&nbsp;extract resource_uri_hash claim from resource_claims_token
-&nbsp;6.&nbsp;compare resource_uri_hash vs. Base64URL-Encode(SHA256(resource_uri))<br>
+&nbsp;6.&nbsp;compare resource_uri_hash vs. Base64URL-Encode(SHA256(resource_uri))
+&nbsp;7.&nbsp;evaluate the remaining resource claims<br>
 The AS-RqP generates the identity claim token, which contains these claims:<br>
 {audience, user_claims,&nbsp;permission_ticket_hash}<br>
 where<br>
@@ -150,12 +152,13 @@ The AS-RO performs a trust assessment by evaluating the RqP identity provenance/
 &nbsp;6.&nbsp;compare AS-RO url with the iss claim from resource_claims_token
 &nbsp;7.&nbsp;verify the identity_claims_token signature
 &nbsp;8.&nbsp;extract permission_ticket_hash claim from identity_claims_token
-&nbsp;9.&nbsp;compare permission_ticket_hash vs. Base64URL-Encode(SHA256(permission_ticket))</dd></dl>
+&nbsp;9.&nbsp;compare permission_ticket_hash vs. Base64URL-Encode(SHA256(permission_ticket))
+&nbsp;10.&nbsp;evaluate the remaining identity claims</dd></dl>
 8. After a trust assessment, it is positive, the AS-RO returns RPT and optionally a refresh token.
 9. With the valid RPT the client tries to access the resource_uri to get or post data.
 10. The RS validates the RPT; it is valid, the RS allows access to the protected resource.
 
-&emsp;The centralized AS-RqP policy verifies the provenance of the resource claims token in order to issue the identity claims token. The centralized AS-RO policy verifies the provenance of the identity claims token in order to issue the requesting party token. The final authorization decision is made at the resource server by an Attribute-Based Access Control (ABAC) system, as it is shown in Figure&nbsp;5.
+&emsp;The centralized AS-RqP policy verifies the provenance of the resource claims in order to issue the identity claims token. The centralized AS-RO policy verifies the provenance of the identity claims in order to issue the requesting party token. The authorization decisions are made at the resource owner's authorization server and the requesting party's authorization server using an Attribute-Based Access Control (ABAC) system, which is shown in Figure&nbsp;5.
 
 ![Attribute-Based Access Control](./images/attribute-based-access-control.svg)
 
@@ -163,15 +166,16 @@ The AS-RO performs a trust assessment by evaluating the RqP identity provenance/
 Fig.&nbsp;5.&emsp;Attribute-Based Access Control system
 </p>
 
-The input of the ABAC system is grouped into three categories:
+The input of the ABAC system is grouped into four categories:
 
-* Identity attributes about the user making request, taken from the identity claims token.
-* Resource attributes about the resource being accessed, defined by the URI.
+* Subject attributes about the user making request, taken from the access token or identity claims token.
+* Resource attributes about the resource being accessed, taken from resource claims token or defined by the ticket.
 * Action attributes about the HTTP request method (GET, POST, PUT, DELETE).
+* Attributes about the context in which the operation is taking place, e.g., level of assurance.
 
 The output of the ABAC system is an allow or deny decision.
 
-&emsp;To avoid overloading the authorization server, information about which user has access to which resources, together with a set of permissions that define what each user can do, should be stored on the resource server in the access control lists.
+&emsp;To avoid overloading the authorization server, information about which user has access to which resources, together with a set of permissions that define what each user can do, should be stored on the resource server in the access control lists. It is also possible to use the local ABAC engine on the resource server. Given that, the final authorization decision is made on the resource server.
 
 ## VII. Authority Boundaries, Interactions, and Scenarios
 
