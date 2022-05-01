@@ -175,7 +175,7 @@ The input of the ABAC system is grouped into four categories:
 
 The output of the ABAC system is an allow or deny decision.
 
-&emsp;To avoid overloading the authorization server, information about which user has access to which resources, together with a set of permissions that define what each user can do, should be stored on the resource server in the access control lists. It is also possible to use the local ABAC engine on the resource server. Given that, the final authorization decision is made on the resource server.
+&emsp;To avoid overloading the authorization server, information about which user has access to which resources, together with a set of permissions that define what each user can do, should be stored on the resource server in the access control lists. It is also possible to use a local ABAC engine on the resource server, where the PDP can go through the access control list and the PIP can use groups or roles resolved from the RPT. Given that, the final authorization decision is made on the resource server.
 
 ## VII. Authority Boundaries, Interactions, and Scenarios
 
