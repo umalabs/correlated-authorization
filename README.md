@@ -96,7 +96,7 @@ Fig.&nbsp;4.&emsp;Correlated Authorization sequence diagram — UMA profile
 
 Prerequisites:
 
-* The AS-RqP supports the OAuth 2.0 Token Exchange [4] extension of OAuth 2.0.
+* The AS-RqP supports the OAuth 2.0 Token Exchange [4] extension of OAuth 2.0, as an STS service.
 * The AS-RqP publishes its metadata on a URL /.well-known/oauth-authorization-server (alternatively on /.well-known/openid-configuration).
 * The AS-RqP also acts as RqP's Identity Provider.
 * The client is registered at the AS-RqP as a public or confidential client and acts as a Relying Party in an RqP's Identity Provider in order to obtain an access token with user claims.
@@ -151,9 +151,27 @@ The AS-RO performs a trust assessment by evaluating the RqP identity provenance/
 &nbsp;7.&nbsp;verify the identity_claims_token signature
 &nbsp;8.&nbsp;extract permission_ticket_hash claim from identity_claims_token
 &nbsp;9.&nbsp;compare permission_ticket_hash vs. Base64URL-Encode(SHA256(permission_ticket))</dd></dl>
-8. After a trust assessment, it is positive, the AS-RO returns RPT.
+8. After a trust assessment, it is positive, the AS-RO returns RPT and optionally a refresh token.
 9. With the valid RPT the client tries to access the resource_uri to get or post data.
 10. The RS validates the RPT; it is valid, the RS allows access to the protected resource.
+
+&emsp;The centralized AS-RqP policy verifies the provenance of the resource claims token in order to issue the identity claims token. The centralized AS-RO policy verifies the provenance of the identity claims token in order to issue the requesting party token. The final authorization decision is made at the resource server by an Attribute-Based Access Control (ABAC) system, as it is shown in Figure&nbsp;5.
+
+![Attribute-Based Access Control](./images/attribute-based-access-control.svg)
+
+<p class="figure">
+Fig.&nbsp;5.&emsp;Attribute-Based Access Control system
+</p>
+
+The input of the ABAC system is grouped into three categories:
+
+* Identity attributes about the user making request, taken from the identity claims token.
+* Resource attributes about the resource being accessed, defined by the URI.
+* Action attributes about the HTTP request method (GET, POST, PUT, DELETE).
+
+The output of the ABAC system is an allow or deny decision.
+
+&emsp;To avoid overloading the authorization server, information about which user has access to which resources, together with a set of permissions that define what each user can do, should be stored on the resource server in the access control lists.
 
 ## VII. Authority Boundaries, Interactions, and Scenarios
 
@@ -161,43 +179,43 @@ The AS-RO performs a trust assessment by evaluating the RqP identity provenance/
 
 #### *A. Identity Federation Scenario*
 
-&emsp;The scenario illustrated in Figure&nbsp;5 allows you to link a single authorization server to multiple identity providers. The client falls under the governance of the resource owner's respective authority.
+&emsp;The scenario illustrated in Figure&nbsp;6 allows you to link a single authorization server to multiple identity providers. The client falls under the governance of the resource owner's respective authority.
 
 ![Scenario-1](./images/authority-boundaries-scenario-1.svg)
 
 <p class="figure">
-Fig.&nbsp;5.&emsp;Identity federation scenario
+Fig.&nbsp;6.&emsp;Identity federation scenario
 </p>
 
 &emsp;The identity federation with many-to-one topology uses third-party identity providers. The requesting party can operate across resource servers governed by a single resource owner's respective authority.
 
 #### *B. Data Federation Scenario*
 
-&emsp;The data federation scenario illustrated in Figure&nbsp;6 allows you to link a single identity provider to multiple authorization servers. The client falls under the governance of the requesting party's respective authority.
+&emsp;The data federation scenario illustrated in Figure&nbsp;7 allows you to link a single identity provider to multiple authorization servers. The client falls under the governance of the requesting party's respective authority.
 
 ![Scenario-2](./images/authority-boundaries-scenario-2.svg)
 
 <p class="figure">
-Fig.&nbsp;6.&emsp;Data federation scenario
+Fig.&nbsp;7.&emsp;Data federation scenario
 </p>
 
 &emsp;The data federation with one-to-many topology uses third-party authorization servers. The requesting party can operate across many resource servers, each of which is governed by a different respective authority of resource owners.
 
 #### *C. Mesh Federation Scenario*
 
-&emsp;As the name suggests, the scenario illustrated in Figure&nbsp;7 allows multiple authorization servers to be linked to multiple identity providers. The client does not fall under the governance of the resource owner's respective authority nor the requesting party's respective authority.
+&emsp;As the name suggests, the scenario illustrated in Figure&nbsp;8 allows multiple authorization servers to be linked to multiple identity providers. The client does not fall under the governance of the resource owner's respective authority nor the requesting party's respective authority.
 
 ![Scenario-3](./images/authority-boundaries-scenario-3.svg)
 
 <p class="figure">
-Fig.&nbsp;7.&emsp;Mesh federation scenario
+Fig.&nbsp;8.&emsp;Mesh federation scenario
 </p>
 
 &emsp;The mesh federation with many-to-many topology uses third-party identity providers and third-party authorization servers. The requesting party can operate across many resource servers governed by many resource owners' respective authorities.
 
-## VIII. Use Cases
+## VIII. Applications and Use Cases
 
-&emsp;Secure cross-domain data exchange systems. In particular, Authorization-Enhanced Mail System [10]. Furthermore, file sharing, instant messaging, teleconferencing. Also, Healthcare systems, Fintech, and Telco services.
+&emsp;The Correlated Authorization framework may be used to secure cross-domain data exchange systems. In particular, Authorization-Enhanced Mail System [10]. Furthermore, file sharing, instant messaging, teleconferencing. Also, Healthcare systems, Fintech, and Telco services.
 
 ## IX. Conclusion and Future Work
 
