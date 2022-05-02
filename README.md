@@ -56,6 +56,10 @@ The UMA wide ecosystem concept uses relationship-driven policies to drive automa
 Fig.&nbsp;2.&emsp;Unilateral entity authentication protocol
 </p>
 
+* The authenticator is represented by the requesting party's identity provider and the requesting party's authorization server.
+* The verifier is represented by the resource owner's authorization server and the resource owner's resource server.
+* The claimant represents a principal which communicates with both the authenticator and the verifier using a client.
+
 &emsp;Successful completion of steps means that the claimant has authenticated himself to the verifier. The ticket represents the random challenge, and the signed ticket hash together with the ticket represents the response. Ticket hash is used here to ensure that the actual value of the ticket is not disclosed to the authenticator.
 
 ## V. Federation and Assertions
