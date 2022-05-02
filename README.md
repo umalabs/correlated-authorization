@@ -158,6 +158,8 @@ The AS-RO performs a trust assessment by evaluating the RqP identity provenance/
 9. With the valid RPT the client tries to access the resource_uri to get or post data.
 10. The RS validates the RPT; it is valid, the RS allows access to the protected resource.
 
+## VII. Coarse-Grained Authorization
+
 &emsp;The centralized AS-RqP policy verifies the provenance of the resource claims in order to issue the identity claims token. The centralized AS-RO policy verifies the provenance of the identity claims in order to issue the requesting party token. The authorization decisions are made at the resource owner's authorization server and the requesting party's authorization server using an Attribute-Based Access Control (ABAC) system, which is shown in Figure&nbsp;5.
 
 ![Attribute-Based Access Control](./images/attribute-based-access-control.svg)
@@ -175,9 +177,11 @@ The input of the ABAC system is grouped into four categories:
 
 The output of the ABAC system is an allow or deny decision.
 
-&emsp;To avoid overloading the authorization server, information about which user has access to which resources, together with a set of permissions that define what each user can do, should be stored on the resource server in the access control lists. It is also possible to use a local ABAC engine on the resource server, where the PDP can go through the access control list and the PIP can use groups or roles resolved from the RPT. Given that, the final authorization decision is made on the resource server.
+## VIII. Fine-Grained Access Control
 
-## VII. Authority Boundaries, Interactions, and Scenarios
+&emsp;To avoid overloading the authorization server, information about which user has access to which resources, together with a set of permissions that define what each user can do, should be stored on the resource server in the access control list (ACL). ACLs should be managed through the resource server API. It is also possible to use a local ABAC engine on the resource server, where the Policy Decision Point (PDP) can go through the ACL and the Policy Information Points (PIP) can use groups or roles resolved from the RPT. Given that, the final authorization decision is made on the resource server.
+
+## IX. Authority Boundaries, Interactions, and Scenarios
 
 &emsp;The Correlated Authorization framework allows us to indirectly (through the client) link identity providers with authorization servers governed by different authorities that are not required to share information or collaborate. The following scenarios demonstrate a system of trust between multiple authorities that allows the conveyance of identity information from identity providers to authorization servers across the security domain boundaries.
 
@@ -217,11 +221,11 @@ Fig.&nbsp;8.&emsp;Mesh federation scenario
 
 &emsp;The mesh federation with many-to-many topology uses third-party identity providers and third-party authorization servers. The requesting party can operate across many resource servers governed by many resource owners' respective authorities.
 
-## VIII. Applications and Use Cases
+## X. Applications and Use Cases
 
 &emsp;The Correlated Authorization framework may be used to secure cross-domain data exchange systems. In particular, Authorization-Enhanced Mail System [10]. Furthermore, file sharing, instant messaging, teleconferencing. Also, Healthcare systems, Fintech, and Telco services.
 
-## IX. Conclusion and Future Work
+## XI. Conclusion and Future Work
 
 &emsp;The UMA philosophy of the resource owner and the requesting party projected onto the Correlated Authorization trust framework matches the philosophy of the sender and recipient of the mail system. In fact, the Correlated Authorization concept has been designed with the Authorization-Enhanced Mail System [10] in mind. The following are potential future R&D areas:
 
