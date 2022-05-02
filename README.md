@@ -233,8 +233,9 @@ Fig.&nbsp;8.&emsp;Mesh federation scenario
 
 &emsp;The UMA philosophy of the resource owner and the requesting party projected onto the Correlated Authorization trust framework matches the philosophy of the sender and recipient of the mail system. In fact, the Correlated Authorization concept has been designed with the Authorization-Enhanced Mail System [10] in mind. The following are potential future R&D areas:
 
-1. Move the Correlated Authorization flow to the RFC.
-2. Explore other ways of data origin authenticity (WebFinger, DKIM). Use the DKIM signed email in a claims token as an expedient way to convey some asserted attributes about the sender (alternatively, after forwarding, about the recipient also).
+1. Write the Correlated Authorization feamework RFC.
+2. Extend the UMA specification (in the first step of the flow, the client must specify the URI of the authenticator it is supposed to use) to allow the use of encrypted claims. Both resource and identity claims should be encrypted.
+3. Explore other ways of data origin authenticity (WebFinger, DKIM). Use the DKIM signed email in a claims token as an expedient way to convey some asserted attributes about the sender (alternatively, after forwarding, about the recipient also).
 
 &emsp;The ability to dynamically establish ephemeral trust between the requesting party and the resource owner's resources makes the Correlated Authorization framework compatible with the Zero Trust concept.
 
