@@ -112,13 +112,11 @@ Steps:
 
 1. The RqP directs the client to access the resource_uri, e.g. to get or post data, with no access token.
 2. Using a valid PAT the RS requests a permission ticket and resource claims token. <dl><dt></dt><dd>The AS generates the permission ticket itself (ticket is a random NONCE) and resource claims token, which is bound to the permission ticket through a permission ticket hash. The resource claims token contains these claims:<br>
-{issuer,&nbsp;ts,&nbsp;audience,&nbsp;email_address,&nbsp;action,&nbsp;resource_uri_hash,&nbsp;permission_ticket_hash}<br>
+{issuer,&nbsp;ts,&nbsp;audience,&nbsp;resource_uri_hash,&nbsp;permission_ticket_hash}<br>
 where<br>
 -&nbsp;issuer is the URI that identifies who issues the resource claims token  
 -&nbsp;ts is the timestamp of when the permission ticket was created  
 -&nbsp;audience is the URI that identifies the resource server  
--&nbsp;email_address is the email address of the resource owner  
--&nbsp;action is the HTTP request method  
 -&nbsp;resource_uri_hash</em>&nbsp;=&nbsp;Base64URL-Encode(SHA256(resource_uri))  
 -&nbsp;permission_ticket_hash</em>&nbsp;=&nbsp;Base64URL-Encode(SHA256(permission_ticket))<br>
 The resource claims token is not mentioned in the UMA specification. A detailed description of the resource claims token format is out of the scope of this paper.</dd></dl>
@@ -131,13 +129,10 @@ The resource claims token is not mentioned in the UMA specification. A detailed 
 &nbsp;subject_token_type&nbsp;=&nbsp;urn:ietf:params:oauth:token-type:access_token,
 &nbsp;requested_token_type&nbsp;=&nbsp;urn:ietf:params:oauth:token-type:jwt}<br>
 The AS-RqP performs a trust assessment by evaluating the resource URI provenance/ownership
-&nbsp;1.&nbsp;select the email_address claim from resource_claims_token
-&nbsp;2.&nbsp;bootstrap discovery of AS-RO url from email address via WebFinger; if this does not work, build well-known url using domain part of email_address
-&nbsp;3.&nbsp;compare AS-RO url with the iss claim from resource_claims_token
-&nbsp;4.&nbsp;verify the resource_claims_token signature
-&nbsp;5.&nbsp;extract resource_uri_hash claim from resource_claims_token
-&nbsp;6.&nbsp;compare resource_uri_hash vs. Base64URL-Encode(SHA256(resource_uri))
-&nbsp;7.&nbsp;evaluate the remaining resource claims<br>
+&nbsp;1.&nbsp;verify the resource_claims_token signature
+&nbsp;2.&nbsp;extract resource_uri_hash claim from resource_claims_token
+&nbsp;3.&nbsp;compare resource_uri_hash vs. Base64URL-Encode(SHA256(resource_uri))
+&nbsp;4.&nbsp;evaluate the resource claims<br>
 The AS-RqP generates the identity claim token, which contains these claims:<br>
 {audience, user_claims,&nbsp;permission_ticket_hash}<br>
 where<br>
