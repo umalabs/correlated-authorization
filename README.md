@@ -74,13 +74,13 @@ Fig.&nbsp;3.&emsp;Multiparty federation protocol
 
 #### *A. Federation Model*
 
-&emsp;Two two-party relationships are formed in a Correlated Authorization federation protocol, as shown in Figure&nbsp;3. The first one is between the claimant and the authenticator, pre-established, e.g., by a dynamic registration. The second one is between the claimant and the verifier, and can be ephemeral, established dynamically. The claimant communicates with both the authenticator and the verifier using a client. The verifier and the authenticator communicate with each other through the client, which acts as a transparent bridge that links the authenticator to the verifier.
+&emsp;Two two-party relationships are formed in a Correlated Authorization federation protocol, as shown in Figure&nbsp;3. The first one is between the claimant and the authenticator, pre-established, e.g., by a dynamic registration. The second one is between the claimant and the verifier, also pre-established, e.g., by a dynamic registration. The claimant communicates with both the authenticator and the verifier using a client. The verifier and the authenticator communicate with each other through the client, which acts as a transparent bridge that links the authenticator to the verifier.
 
 &emsp;Authenticator may establish whitelists of verifiers authorized to receive authentication, and verifiers may establish whitelists of authenticators that the verifier will accept authentication. Authenticators may also establish blacklists of verifiers not authorized to receive authentication, and verifiers may also establish blacklists of authenticators that the verifier will not accept authentication.
 
 #### *B. Assertions*
 
-&emsp;According the UMA Grant specification [1], Section 3.3.1, the potential types of claim token formats are ID Tokens and SAML assertion. The Correlated Authorization framework uses the urn:ietf:params:oauth:client-assertion-type:jwt-bearer format for the asserted pushed claims tokens. To prove that the claimant is the rightful subject of the assertion the holder-of-key assertion [9] is used, which contains a hash value of the ticket possessed by the claimant. 
+&emsp;According the UMA Grant specification [1], Section 3.3.1, the potential types of claim token formats are ID Tokens and SAML assertion. The Correlated Authorization framework uses the urn:ietf:params:oauth:token-type:jwt format for the pushed claims tokens. ~~To prove that the claimant is the rightful subject of the assertion the holder-of-key assertion [9] is used, which contains a hash value of the ticket possessed by the claimant.~~ 
 
 &emsp;According the RFC7521 [9] "Assertion authorization grants may be used with or without client authentication or identification. Whether or not client authentication is needed in conjunction with an assertion authorization grant, as well as the supported types of client authentication, are policy decisions at the discretion of the authorization server.". It follows that the UMA grant with assertions may be used without client authentication. This only applies for specific scenarios. Be careful.
 
@@ -228,9 +228,9 @@ Fig.&nbsp;8.&emsp;Mesh federation scenario
 
 &emsp;The UMA philosophy of the resource owner and the requesting party projected onto the Correlated Authorization trust framework matches the philosophy of the sender and recipient of the mail system. In fact, the Correlated Authorization concept has been designed with the Authorization-Enhanced Mail System [10] in mind. The following are potential future R&D areas:
 
-1. Write the Correlated Authorization feamework RFC.
-2. Extend the UMA specification (in the first step of the flow, the client must specify the URI of the authenticator that it is going to use) to allow the use of encrypted claims. Both resource and identity claims should be encrypted.
-3. Explore other ways of data origin authenticity (WebFinger, DKIM). Use the DKIM signed email in a claims token as an expedient way to convey some asserted attributes about the sender (alternatively, after forwarding, about the recipient also).
+1. Explore authentication methods of unregistered clients.
+2. Evaluate other ways of data origin authenticity (WebFinger, DKIM). Use the DKIM signed email in a claims token as an expedient way to convey some asserted attributes about the sender (alternatively, after forwarding, about the recipient also).
+3. Write the Correlated Authorization feamework RFC.
 
 &emsp;The ability to dynamically establish ephemeral trust between the requesting party and the resource owner's resources makes the Correlated Authorization framework compatible with the Zero Trust concept.
 
