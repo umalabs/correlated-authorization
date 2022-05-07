@@ -271,3 +271,11 @@ Fig.&nbsp;8.&emsp;Mesh federation scenario
 <img src=./images/correlated-authorization-token-exchange-profile-detail.svg alt="Sequence Diagram – Token Exchange profile">
 </div>
 
+
+<br>
+
+<div class="diagram">
+<h2>Appendix C.</h2>
+<img src=./images/correlated-authorization-detail.svg alt="Sequence Diagram – Basic profile">
+</div>
+
