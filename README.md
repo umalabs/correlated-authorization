@@ -74,7 +74,7 @@ Fig.&nbsp;3.&emsp;Multiparty federation protocol
 
 #### *A. Federation Model*
 
-&emsp;Two two-party relationships are formed in a Correlated Authorization federation protocol, as shown in Figure&nbsp;3. The first one is between the claimant and the authenticator, pre-established, e.g., by a dynamic registration. The second one is between the claimant and the verifier, also pre-established, e.g., by a dynamic registration. The claimant communicates with both the authenticator and the verifier using a client. The verifier and the authenticator communicate with each other through the client, which acts as a transparent bridge that links the authenticator to the verifier.
+&emsp;Two two-party relationships are formed in a Correlated Authorization federation protocol, as shown in Figure&nbsp;3. The first one is between the claimant and the authenticator, pre-established, e.g., by a dynamic registration. The second one is between the claimant and the verifier, also pre-established, e.g., by a dynamic registration. The claimant communicates with both the authenticator and the verifier using a client. The verifier and the authenticator communicate with each other through the client, which acts as a token forwarder that forwards tokens from the authenticator to the verifier.
 
 &emsp;Authenticator may establish whitelists of verifiers authorized to receive authentication, and verifiers may establish whitelists of authenticators that the verifier will accept authentication. Authenticators may also establish blacklists of verifiers not authorized to receive authentication, and verifiers may also establish blacklists of authenticators that the verifier will not accept authentication.
 
