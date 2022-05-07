@@ -276,6 +276,6 @@ Fig.&nbsp;8.&emsp;Mesh federation scenario
 
 <div class="diagram">
 <h2>Appendix C.</h2>
-<img src=./images/correlated-authorization-detail.svg alt="Sequence Diagram – Basic profile">
+<img src=./images/NIST_SP_800-63C.svg alt="Sequence Diagram – NIST SP 800-63C profile">
 </div>
 
