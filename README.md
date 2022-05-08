@@ -271,11 +271,3 @@ Fig.&nbsp;8.&emsp;Mesh federation scenario
 <img src=./images/correlated-authorization-oauth-profile-detail.svg alt="Sequence Diagram – OAuth profile">
 </div>
 
-
-<br>
-
-<div class="diagram">
-<h2>Appendix C.</h2>
-<img src=./images/identity_propagator.svg alt="Sequence Diagram – Identity Propagator">
-</div>
-
