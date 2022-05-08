@@ -74,7 +74,7 @@ Fig.&nbsp;3.&emsp;Multiparty federation protocol
 
 #### *A. Federation Model*
 
-&emsp;Two two-party relationships are formed in a Correlated Authorization federation protocol, as shown in Figure&nbsp;3. The first one is between the claimant and the authenticator, pre-established, e.g., by a dynamic registration. The second one is between the claimant and the verifier, also pre-established, e.g., by a dynamic registration. The claimant communicates with both the authenticator and the verifier using a client. The verifier and the authenticator communicate with each other through the client, which acts as a token forwarder that forwards tokens from the authenticator to the verifier.
+&emsp;Two two-party relationships are formed in a Correlated Authorization federation protocol, as shown in Figure&nbsp;3. The first one is between the claimant and the authenticator, pre-established, e.g., by a dynamic registration. The second one is between the claimant and the verifier, also pre-established, e.g., by a dynamic registration. The claimant communicates with both the authenticator and the verifier using a client. The verifier and the authenticator communicate with each other through the client, which acts as a token propagator that propagates tokens from the authenticator to the verifier.
 
 &emsp;Authenticator may establish whitelists of verifiers authorized to receive authentication, and verifiers may establish whitelists of authenticators that the verifier will accept authentication. Authenticators may also establish blacklists of verifiers not authorized to receive authentication, and verifiers may also establish blacklists of authenticators that the verifier will not accept authentication.
 
@@ -268,7 +268,7 @@ Fig.&nbsp;8.&emsp;Mesh federation scenario
 
 <div class="diagram">
 <h2>Appendix B.</h2>
-<img src=./images/correlated-authorization-token-exchange-profile-detail.svg alt="Sequence Diagram – Token Exchange profile">
+<img src=./images/correlated-authorization-oauth-profile-detail.svg alt="Sequence Diagram – OAuth profile">
 </div>
 
 
@@ -276,6 +276,6 @@ Fig.&nbsp;8.&emsp;Mesh federation scenario
 
 <div class="diagram">
 <h2>Appendix C.</h2>
-<img src=./images/NIST_SP_800-63C.svg alt="Sequence Diagram – NIST SP 800-63C profile">
+<img src=./images/identity_propagator.svg alt="Sequence Diagram – Identity Propagator">
 </div>
 
