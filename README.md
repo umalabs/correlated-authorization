@@ -90,7 +90,7 @@ Fig.&nbsp;3.&emsp;Multiparty federation protocol
 
 #### *A. UMA Profile*
 
-&emsp;The sequence diagram (see Appendix A for a detailed diagram) illustrated in Figure&nbsp;4 represents a profile of the UMA protocol and is in full compliance with the UMA 2.0 specification. Unlike the UMA specification, the Correlated Authorization framework allows the use of the UMA grant with or without client authentication or identification. Whether or not to allow unauthenticated or unidentified clients are policy decisions that are at the discretion of the authorization server.
+&emsp;The sequence diagram (see Appendix A for a detailed diagram) illustrated in Figure&nbsp;4 represents a profile of the UMA protocol and is in full compliance with the UMA 2.0 specification.
 
 ![Sequence Diagram](./images/correlated-authorization-uma-profile.svg)
 
@@ -100,62 +100,76 @@ Fig.&nbsp;4.&emsp;Correlated Authorization sequence diagram — UMA profile
 
 Prerequisites:
 
-* The AS-RqP supports the OAuth 2.0 Token Exchange [4] extension of OAuth 2.0, as an STS service.
-* The AS-RqP publishes its metadata on a URL /.well-known/oauth-authorization-server (alternatively on /.well-known/openid-configuration).
-* The AS-RqP also acts as RqP's Identity Provider.
-* The client is registered at the AS-RqP as a public or confidential client and acts as a Relying Party in an RqP's Identity Provider in order to obtain an access token with user claims.
-* The client can be registered at the AS-RO as a public or confidential client. The registration is optional.
-* The RO has set up the RS and registers his resource at the AS-RO to get his resource_uri according to the UMA Federated Authorization [2] specification and the Resource Description extension.
-* The RO sets policies to the resource sets with the authorization server to indicate who can access the resources. 
+* The AS-RqP URI and domain part of the RqP's email address must match.
+* The AS-RqP provides an STS service that supports the Token Exchange extension of OAuth 2.0.
+* The client is registered at AS-RqP as a public or confidential client.
+* The client acts as a Relying Party in respect of the RqP's Identity Provider in order to obtain an access_token_with_user_claims.
+* The client is registered at AS-RO as a public or confidential client.
+* The client acts as a token propagator between the AS-RqP and AS-RO.
+* The RO has set up the RS, registers the resources at the AS-RO and sets policies.
+* The AS-RO URI and domain part of the RO's email address must match.
+* The AS-RO provides an STS service that supports the Token Exchange extension of OAuth 2.0
 
 Steps:
 
-1. The RqP directs the client to access the resource_uri, e.g. to get or post data, with no access token.
-2. Using a valid PAT the RS requests a permission ticket and resource claims token. <dl><dt></dt><dd>The AS generates the permission ticket itself (ticket is a random NONCE) and resource claims token, which is bound to the permission ticket through a permission ticket hash. The resource claims token contains these claims:<br>
-{issuer,&nbsp;ts,&nbsp;audience,&nbsp;resource_uri_hash,&nbsp;permission_ticket_hash}<br>
+1. The RqP directs the client to access the resource URI, e.g. to get or post data, with no access token.
+2. Using a valid PAT the RS requests a permission ticket and resource claims token. <dl><dt></dt><dd>The AS-RO generates the permission_ticket (a JWT with a random NONCE value in the sub claim)
+and the resource_claims_token which is bound to the permission_ticket through the permission_ticket sub claim hash. The resource claims token contains these claims:<br>
+{iss,&nbsp;ts,&nbsp;aud,&nbsp;sub,&nbsp;exp,&nbsp;nbf}<br>
 where<br>
--&nbsp;issuer is the URI that identifies who issues the resource claims token  
--&nbsp;ts is the timestamp of when the permission ticket was created  
--&nbsp;audience is the URI that identifies the resource server  
--&nbsp;resource_uri_hash</em>&nbsp;=&nbsp;Base64URL-Encode(SHA256(resource_uri))  
--&nbsp;permission_ticket_hash</em>&nbsp;=&nbsp;Base64URL-Encode(SHA256(permission_ticket))<br>
+-&nbsp;iss is the URI that identifies who issues the resource_claims_token  
+-&nbsp;aud is the URI that identifies the requested resource 
+-&nbsp;sub is the permission_ticket sub claim hash computed as Base64URL-Encode(SHA256(permission_ticket{sub}) 
+-&nbsp;exp, nbf are the standard JWT claims)<br>
 The resource claims token is not mentioned in the UMA specification. A detailed description of the resource claims token format is out of the scope of this paper.</dd></dl>
-3. The AS returns the permission ticket and resource claims token.
-4. Without an access token, the RS will return HTTP code 401 (Unauthorized) with the permission ticket and resource claims token.
-5. The client requests an identity claims token by presenting the access token with user claims, resource claims token, and resource URI (token exchange request). <dl><dt></dt><dd>{grant_type&nbsp;=&nbsp;token-exchange,
-&nbsp;resource&nbsp;=&nbsp;resource_uri,
-&nbsp;scope&nbsp;=&nbsp;resource_claims_token
+3. The AS-RO returns the permission ticket and resource claims token.
+4. Without an access token, the RS will return HTTP code 401 (Unauthorized) with the permission ticket and resource claims token, issued_token_type = urn:ietf:params:oauth:token-type:jwt.
+5. The client requests an identity claims token by presenting the access token with user claims, resource claims token, and RO's email address URI (optional). <dl><dt></dt><dd>{grant_type&nbsp;=&nbsp;token-exchange,
+&nbsp;requested_token_type&nbsp;=&nbsp;urn:ietf:params:oauth:token-type:jwt,
+&nbsp;resource&nbsp;=&nbsp;(RO's email address URI) — optional,
+&nbsp;scope&nbsp;=&nbsp;resource_claims_token,
 &nbsp;subject_token&nbsp;=&nbsp;access_token_with_user_claims,
 &nbsp;subject_token_type&nbsp;=&nbsp;urn:ietf:params:oauth:token-type:access_token,
 &nbsp;requested_token_type&nbsp;=&nbsp;urn:ietf:params:oauth:token-type:jwt}<br>
-The AS-RqP performs a trust assessment by evaluating the resource URI provenance/ownership
+The AS-RqP performs an authorization assessment:
 &nbsp;1.&nbsp;verify the resource_claims_token signature
-&nbsp;2.&nbsp;extract resource_uri_hash claim from resource_claims_token
-&nbsp;3.&nbsp;compare resource_uri_hash vs. Base64URL-Encode(SHA256(resource_uri))
-&nbsp;4.&nbsp;evaluate the resource claims<br>
-The AS-RqP generates the identity claim token, which contains these claims:<br>
-{audience, user_claims,&nbsp;permission_ticket_hash}<br>
+&nbsp;2.&nbsp;evaluate the subject_token claims
+&nbsp;3.&nbsp;verify the actor_token signature
+&nbsp;4.&nbsp;evaluate the actor claims 
+&nbsp;5.&nbsp;verify the resource parameter value — optional<br>
+After a trust assessment, it is positive, the AS-RqP generates the identity_claims_token with these claims:<br>
+{iss,&nbsp;aud,&nbsp;sub,&nbsp;exp,&nbsp;nbf,&nbsp;act{sub}}<br>
 where<br>
--&nbsp;audience&nbsp;=&nbsp;the iss claim value extracted from resource_claims_token
--&nbsp;user_claims are extracted from access_token_with_user_claims
--&nbsp;permission_ticket_hash is extracted from resource_claims_token</dd></dl>
-6. After a trust assessment, it is positive, the AS-RqP returns the identity claims token.
-7. At the AS-RO the client requests an RPT by presenting the identity claims token and the permission ticket. <dl><dt></dt><dd>{grant_type = uma-ticket,
-&nbsp;ticket = ticket,&nbsp;claim_token = identity_claims_token}<br>
-The AS-RO performs a trust assessment by evaluating the RqP identity provenance/ownership
-&nbsp;1.&nbsp;verify the permission_ticket
-&nbsp;2.&nbsp;verify the audience claim from identity_claims_token
-&nbsp;3.&nbsp;extract user_claims from identity_claims_token
-&nbsp;4.&nbsp;select the email_address claim from user_claims
-&nbsp;5.&nbsp;bootstrap discovery of AS-RqP url from email address via WebFinger; if this does not work, build well-known url using domain part of email_address
-&nbsp;6.&nbsp;compare AS-RO url with the iss claim from resource_claims_token
-&nbsp;7.&nbsp;verify the identity_claims_token signature
-&nbsp;8.&nbsp;extract permission_ticket_hash claim from identity_claims_token
-&nbsp;9.&nbsp;compare permission_ticket_hash vs. Base64URL-Encode(SHA256(permission_ticket))
-&nbsp;10.&nbsp;evaluate the remaining identity claims</dd></dl>
-8. After a trust assessment, it is positive, the AS-RO returns RPT and optionally a refresh token.
-9. With the valid RPT the client tries to access the resource_uri to get or post data.
-10. The RS validates the RPT; it is valid, the RS allows access to the protected resource.
+-&nbsp;iss is the URI that identifies who issues the identity_claims_token
+-&nbsp;aud identifies the target service and it is the iss claim value extracted from the actor_token
+-&nbsp;sub identifies the RqP by email address and was extracted from the access_token_with_user_claims
+-&nbsp;exp, nbf are the standard JWT claims
+-&nbsp;act{aud} is the the resource parameter value — optional
+-&nbsp;act{sub} is the sub value extracted from the actor_token</dd></dl>
+6. The AS-RqP the identity_claims_token in the access_token parameter, issued_token_type&nbsp;=&nbsp;urn:ietf:params:oauth:token-type:jwt.
+7. At the AS-RO the client requests an RPT by presenting the identity claims token and the permission ticket. <dl><dt></dt><dd>{grant_type&nbsp;=&nbsp;uma-ticket,
+&nbsp;ticket&nbsp;=&nbsp;permission_ticket,
+&nbsp;claim_token&nbsp;=&nbsp;identity_claims_token,
+&nbsp;claim_token_format = urn:ietf:params:oauth:token-type:jwt}<br>
+The AS-RO performs an authorization assessment:
+&nbsp;1.&nbsp;verify the permission ticket signature
+&nbsp;2.&nbsp;evaluate the permission_ticket claims
+&nbsp;3.&nbsp;verify the identity_claims_token signature
+&nbsp;4.&nbsp;evaluate the identity claims
+&nbsp;5.&nbsp;identity_claims_token{act{aud}} and the RO's email address URI must match — optional
+&nbsp;6.&nbsp;identity_claims_token{act{sub}} and Base64URL-Encode(SHA256(permission_ticket{sub})) must match</dd></dl>
+After a trust assessment, it is positive, the AS-RO generates the access token with the RqP's email address sub claim
+(though the RqP is not signed in, the client acts on behalf of RqP) and with the additional RPT claim:
+{permissions}
+permissions, all permissions granted by the authorization server
+8. The AS-RO returns RPT and optionally a refresh token.
+9. With the valid RPT the client tries to access the resource URI to get or post data.
+The RS validates the RPT; it is valid, the RS allows access to the protected resource.
+10. The RS return the HTTP response, typically with 200, 201 status code.
+
+#### *B. OAuth Profile*
+
+&emsp;The self-explanatory sequence diagram in Appendix B represents profile of the OAuth 2.0 protocol.
 
 ## VII. Coarse-Grained Authorization
 

@@ -5,26 +5,23 @@ participant "AuthZ Server – Resource Owner (AS-RO)" as AS-RO
 
 bottomparticipants
 
-note over AS-RqP:AS-RqP:\n• supports the token exchange extension of OAuth2 as an STS service\n• publishes its metadata on a URL /.well-known/oauth-authorization-server\n• also acts as RqP's Identity Provider
-note over Client:Client:\n• is registered at AS-RqP as a public or confidential client\n• acts as a Relying Party in respect of the RqP's Identity Provider in order to obtain an access_token_with_user_claims\n• is registered at AS-RO as a public or confidential client\n• acts as a token forwarder that forwards tokens between the RS and STS, and between the STS and AS-RO
-note over RS:RO has set up the RS, registers the resources at the AS-RO and sets policies
-RS<-Client:1. Send HTTP request to the resource_uri with no access token
+note over AS-RqP:AS-RqP:\n• URI and domain part of the RqP's email address must match\n• provides an STS service that supports the Token Exchange extension of OAuth 2.0
+note over Client:Client:\n• is registered at AS-RqP as a public or confidential client\n• acts as a Relying Party in respect of the RqP's Identity Provider in order to obtain an access_token_with_user_claims\n• is registered at AS-RO as a public or confidential client\n• acts as a token propagator between the AS-RqP and AS-RO
+note over RS:RO:\n• has set up the RS, registers the resources at the AS-RO and sets policies
+note over AS-RO:AS-RO:\n• URI and domain part of the RO's email address must match\n• provides an STS service that supports the Token Exchange extension of OAuth 2.0
+RS<-Client:1. Send an HTTP request to the resource URI with no access token
 RS->AS-RO:2. Request a permission_ticket and resource_claims_token\n{PAT}
 note over AS-RO: AS-RO generates the permission_ticket (a JWT with a random NONCE value in the sub claim)\nand the resource_claims_token which is bound to the permission_ticket through the permission_ticket sub claim hash.\nThe resource_claims_token contains these claims:\n{iss, aud, sub, exp, nbf}\niss is the URI that identifies who issues the resource_claims_token\naud is the URI that identifies the requested resource\nsub is the permission_ticket sub claim hash computed as Base64URL-Encode(SHA256(permission_ticket{sub})\nexp, nbf are the standard JWT claims)
 RS<-AS-RO:3. Return the permission_ticket, resource_claims_token,\n    issued_token_type = urn:ietf:params:oauth:token-type:jwt
 RS->Client:4. Return 401 with the permission_ticket, resource_claims_token,\n    issued_token_type = urn:ietf:params:oauth:token-type:jwt
-AS-RqP<-Client:5. Request an identity_claims_token (token exchange request)\n    {grant_type = token-exchange,\n     requested_token_type = urn:ietf:params:oauth:token-type:jwt,\n     subject_token = access_token_with_user_claims,\n     subject_token_type = urn:ietf:params:oauth:token-type:access_token,\n     actor_token = resource_claims_token,\n     actor_token_type = urn:ietf:params:oauth:token-type:jwt}
-group Authorization assessment – evaluate the resource provenance / ownership
-note over AS-RqP:1. verify the subject_token signature\n2. evaluate the subject_token claims\n3. verify the resource_claims_token signature\n4. evaluate the resource claims 
-end
-note over AS-RqP:AS-RqP generates the identity_claims_token with these claims:\n{iss, aud, sub, exp, nbf, act{sub}}\niss is the URI that identifies who issues the identity_claims_token\naud identifies the target service and it is the iss claim value extracted from the resource_claims_token\nsub identifies the principal by email address and was extracted from the access_token_with_user_claims\nexp, nbf are the standard JWT claims\nact{sub} is the sub value extracted from the resource_claims_token
+AS-RqP<-Client:5. Request an identity_claims_token\n    {grant_type = token-exchange,\n     requested_token_type = urn:ietf:params:oauth:token-type:jwt,\n     resource = (RO's email address URI) — optional\n     subject_token = access_token_with_user_claims,\n     subject_token_type = urn:ietf:params:oauth:token-type:access_token,\n     actor_token = resource_claims_token,\n     actor_token_type = urn:ietf:params:oauth:token-type:jwt}
+note over AS-RqP:Authorization assessment:\n1. verify the subject_token signature\n2. evaluate the subject_token claims\n3. verify the actor_token signature\n4. evaluate the actor claims \n5. verify the resource parameter value — optional
+note over AS-RqP:AS-RqP generates the identity_claims_token with these claims:\n{iss, aud, sub, exp, nbf, act{sub}}\niss is the URI that identifies who issues the identity_claims_token\naud identifies the target service and it is the iss claim value extracted from the actor_token\nsub identifies the RqP by email address and was extracted from the access_token_with_user_claims\nexp, nbf are the standard JWT claims\nact{aud} is the the resource parameter value — optional\nact{sub} is the sub value extracted from the actor_token\n
 Client<-AS-RqP:6. Return the identity_claims_token in the access_token parameter,\n    issued_token_type = urn:ietf:params:oauth:token-type:jwt
 
 Client->AS-RO:7. Request a Requesting Party Token (RPT)\n    {grant_type = uma-ticket,\n     ticket = permission_ticket,\n     claim_token = identity_claims_token,\n     claim_token_format = urn:ietf:params:oauth:token-type:jwt}
-group Authorization assessment – evaluate the RqP identity provenance / ownership
-note over AS-RO:1. verify the permission ticket signature\n2. evaluate the permission_ticket claims\n3. verify the identity_claims_token signature\n4. evaluate the identity claims\n5. compare identity_claims_token{act{sub}} vs. Base64URL-Encode(SHA256(permission_ticket{sub}))
-end
-note over AS-RO:AS-RO generates the RPT with these additional claims:\n{permissions}\npermissions, all permissions granted by the authorization server
+note over AS-RO:Authorization assessment:\n1. verify the permission ticket signature\n2. evaluate the permission_ticket claims\n3. verify the identity_claims_token signature\n4. evaluate the identity claims\n5. identity_claims_token{act{aud}} and the RO's email address URI must match — optional\n6. identity_claims_token{act{sub}} and Base64URL-Encode(SHA256(permission_ticket{sub})) must match
+note over AS-RO:AS-RO generates the access token with the RqP's email address sub claim\n(though the RqP is not signed in, the client acts on behalf of RqP) and with the additional RPT claim:\n{permissions}\npermissions, all permissions granted by the authorization server
 Client<-AS-RO:8. Return the RPT, optionally a refresh_token
-RS<-Client:9. Send HTTP request to resource_uri\n    {RPT}
-RS->Client:10. Return HTTP response, typically with 200, 201 status code
+RS<-Client:9. Send an HTTP request to the resource URI with RPT\n    {RPT}
+RS->Client:10. Return the HTTP response, typically with 200, 201 status code
