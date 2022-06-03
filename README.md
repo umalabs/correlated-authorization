@@ -80,7 +80,7 @@ Fig.&nbsp;3.&emsp;Multiparty federation protocol
 
 #### *B. Assertions*
 
-&emsp;According the UMA Grant specification [1], Section 3.3.1, the potential types of claim token formats are ID Tokens and SAML assertion. The Correlated Authorization framework uses the urn:ietf:params:oauth:token-type:jwt format for the pushed claims tokens. ~~To prove that the claimant is the rightful subject of the assertion the holder-of-key assertion [9] is used, which contains a hash value of the ticket possessed by the claimant.~~ 
+&emsp;According the UMA Grant specification [1], Section 3.3.1, the potential types of claim token formats are ID Tokens and SAML assertion. The Correlated Authorization framework uses the urn:ietf:params:oauth:token-type:jwt format for the pushed claims tokens. To prove that the claimant is the rightful subject of the assertion the holder-of-ticket assertion is used, which contains a hash value of the ticket possessed by the claimant. 
 
 &emsp;According the RFC7521 [9] "Assertion authorization grants may be used with or without client authentication or identification. Whether or not client authentication is needed in conjunction with an assertion authorization grant, as well as the supported types of client authentication, are policy decisions at the discretion of the authorization server.". It follows that the UMA grant with assertions may be used without client authentication. This only applies for specific scenarios. Be careful.
 
@@ -236,11 +236,11 @@ Fig.&nbsp;8.&emsp;Mesh federation scenario
 
 ## X. Applications and Use Cases
 
-&emsp;The Correlated Authorization framework may be used to secure cross-domain data exchange systems. In particular, Authorization-Enhanced Mail System [10]. Furthermore, file sharing, instant messaging, teleconferencing. Also, Healthcare systems, Fintech, and Telco services.
+&emsp;The Correlated Authorization framework may be used to secure cross-domain data exchange systems. Furthermore, file sharing, instant messaging, teleconferencing. Also, Healthcare systems, Fintech, and Telco services.
 
 ## XI. Conclusion and Future Work
 
-&emsp;The UMA philosophy of the resource owner and the requesting party projected onto the Correlated Authorization trust framework matches the philosophy of the sender and recipient of the mail system. In fact, the Correlated Authorization concept has been designed with the Authorization-Enhanced Mail System [10] in mind. The following are potential future R&D areas:
+&emsp;The UMA philosophy of the resource owner and the requesting party projected onto the Correlated Authorization trust framework matches the philosophy of the sender and recipient of the mail system. The following are potential future R&D areas:
 
 1. Explore authentication methods of unregistered clients.
 2. Evaluate other ways of data origin authenticity (WebFinger, DKIM). Use the DKIM signed email in a claims token as an expedient way to convey some asserted attributes about the sender (alternatively, after forwarding, about the recipient also).
@@ -252,7 +252,7 @@ Fig.&nbsp;8.&emsp;Mesh federation scenario
 
 ## Acknowledgment
 
-&emsp;This work has benefited from the valuable discussions with Eve Maler, founder of WG-UMA [11], and Alec Laws, chair of WG-UMA [11]. Both gave feedback that improved this paper's content. Last but not least, the UMA Work Group archives [12, 13] serve as a source of comprehensive information on authorization-related topics—many thanks to all involved.
+&emsp;This work has benefited from the valuable discussions with Eve Maler, founder of WG-UMA [10], and Alec Laws, chair of WG-UMA [10]. Both gave feedback that improved this paper's content. Last but not least, the UMA Work Group archives [11, 12] serve as a source of comprehensive information on authorization-related topics—many thanks to all involved.
 
 ## References
 
@@ -266,10 +266,9 @@ Fig.&nbsp;8.&emsp;Mesh federation scenario
 [7]&nbsp;National Institute of Standards and Technology, "FIPS PUB 196: Entity Authentication Using Public Key Cryptography," 1997. [Online]. Available: https://csrc.nist.gov/csrc/media/publications/fips/196/archive/1997-02-18/documents/fips196.pdf.<br>
 [8]&nbsp;"Digital Identity Guidelines: Federation and Assertions", NIST Special Publication 800-63C, June 2017, https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-63c.pdf.<br>
 [9]&nbsp;Campbell, B., Mortimore, C., Jones, M., and Y. Goland, "Assertion Framework for OAuth 2.0 Client Authentication and Authorization Grants", RFC 7521, DOI 10.17487/RFC7521, May 2015, http://www.rfc-editor.org/info/rfc7521..<br>
-[10]&nbsp;I. Zboran "Authorization-Enhanced Mail System," GitHub repository, March 2022, https://github.com/umalabs/authorization-enhanced-mail-system/releases/download/v0.1/Authorization-Enhanced_Mail_System.pdf.<br>
-[11]&nbsp;"User-Managed Access" Work Group at "Kantara Initiative," https://kantarainitiative.org/confluence/display/uma/Home.<br>
-[12]&nbsp;"The WG-UMA Archives," https://kantarainitiative.org/pipermail/wg-uma/.<br>
-[13]&nbsp;"Kantara Initiative User-Managed Access WG," https://groups.google.com/g/kantara-initiative-uma-wg.<br>
+[10]&nbsp;"User-Managed Access" Work Group at "Kantara Initiative," https://kantarainitiative.org/confluence/display/uma/Home.<br>
+[11]&nbsp;"The WG-UMA Archives," https://kantarainitiative.org/pipermail/wg-uma/.<br>
+[12]&nbsp;"Kantara Initiative User-Managed Access WG," https://groups.google.com/g/kantara-initiative-uma-wg.<br>
 </p>
 
 <div class="diagram">
